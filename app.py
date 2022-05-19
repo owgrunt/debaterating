@@ -555,6 +555,19 @@ def import_rounds():
                         update_keys = ["role"]
                         adjudicator["id"] = add_database_entry(db_name, adjudicator, search_keys, update_keys)
 
+                if "trainees" in debate["adjudicators"]:
+                    for trainee in debate["adjudicators"]["trainees"]:
+                        adjudicator["internal_id"] = trainee.replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
+                        adjudicator_internal_id = adjudicator["internal_id"]
+                        adjudicator["speaker_id"] = db.execute(f"SELECT id FROM tournament_participants WHERE speaker_internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["id"]
+                        adjudicator["role"] = "trainee"
+
+                        # Import adjudication instance into the db
+                        db_name = "adjudications"
+                        search_keys = ["speaker_id", "tournament_id", "debate_id"]
+                        update_keys = ["role"]
+                        adjudicator["id"] = add_database_entry(db_name, adjudicator, search_keys, update_keys)
+
                 # TODO import panellists and trainees
 
             # Get results
