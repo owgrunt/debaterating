@@ -542,6 +542,10 @@ def import_rounds():
                 update_keys = ["role"]
                 adjudicator["id"] = add_database_entry(db_name, adjudicator, search_keys, update_keys)
 
+                if "panellists" in debate["adjudicators"]:
+                    for panellist in debate["adjudicators"]["panellists"]:
+                        
+
                 # TODO import panellists and trainees
 
             # Get results
