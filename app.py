@@ -568,8 +568,6 @@ def import_rounds():
                         update_keys = ["role"]
                         adjudicator["id"] = add_database_entry(db_name, adjudicator, search_keys, update_keys)
 
-                # TODO import panellists and trainees
-
             # Get results
             results = lookup_link(debate["url"] + "/ballots")
             # results = lookup_link(debate["url"] + "/ballots")[0]["result"]["sheets"][0]["teams"]
