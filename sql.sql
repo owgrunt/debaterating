@@ -6,5 +6,6 @@
 SELECT
    *
 FROM
-   team_performances
-INNER JOIN teams USING(team_id);
+   team_performances l
+INNER JOIN teams r ON
+    l.team_id = r.id;
