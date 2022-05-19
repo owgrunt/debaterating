@@ -697,8 +697,14 @@ def import_rounds():
                             update_keys = ["position", "score"]
                             result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
+    return redirect("/import/debate/success")
 
-    return redirect("/import/team/success")
+
+@app.route("/import/debate/success", methods=["GET", "POST"])
+@login_required
+def teams_success():
+    """Show the speakers that have been added to the database"""
+    return render_template("0-import-debate-success.html", speakers=speakers, tournament=tournament, teams=teams, rounds=rounds)
 
 
 @app.route("/register", methods=["GET", "POST"])
