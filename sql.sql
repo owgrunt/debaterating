@@ -9,7 +9,8 @@ SELECT
    team_performances.debate_id,
    teams.speaker_one_id AS speaker_one,
    teams.speaker_two_id AS speaker_two,
-   speaker_one.rating + speaker_two.rating AS sum
+   speaker_one.rating AS speaker_one_rating,
+   speaker_two.rating AS speaker_two_rating
 FROM
    team_performances
 INNER JOIN teams ON

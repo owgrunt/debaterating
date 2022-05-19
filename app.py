@@ -708,11 +708,13 @@ def debates_success():
 @app.route("/import/elo", methods=["GET", "POST"])
 @login_required
 def calculate_elo():
-    """Show the speakers that have been added to the database"""
+    """Calculate and update new ELO values"""
 
     # elo = open('test.sql').read().replace('xxxxxx', table)
     tournament_id = str(1)
     elo = db.execute(open("sql.sql").read().replace("xxxxxx", tournament_id))
+
+    for i in range(len(elo))
 
     return render_template("0-import-elo.html", elo=elo)
 
