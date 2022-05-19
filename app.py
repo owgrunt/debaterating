@@ -536,7 +536,7 @@ def import_rounds():
                 adjudicator["speaker_id"] = db.execute(f"SELECT id FROM tournament_participants WHERE speaker_internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["id"]
                 adjudicator["role"] = "chair"
 
-                # Import adjudication data into the db
+                # Import adjudication instances into the db
                 db_name = "adjudications"
                 search_keys = ["speaker_id", "tournament_id", "debate_id"]
                 update_keys = ["role"]
