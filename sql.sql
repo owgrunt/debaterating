@@ -8,6 +8,6 @@ SELECT
 FROM
    team_performances l
 INNER JOIN teams r ON
-    l.team_id = r.id
+    team_performances.team_id = teams.id
 WHERE
-    l.debate_id = 1;
+    team_performances.debate_id = 1;
