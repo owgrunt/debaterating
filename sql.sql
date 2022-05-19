@@ -2,3 +2,10 @@
 -- ALTER TABLE speakers ADD internal_id INTEGER NOT NULL DEFAULT 0;
 -- DROP TABLE team_performances;
 -- DELETE FROM speakers;
+
+SELECT
+   Title,
+   Name
+FROM
+   albums
+INNER JOIN artists USING(ArtistId);
