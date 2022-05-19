@@ -5,7 +5,7 @@
 
 SELECT
    team_performances.team_id,
-   speaker_one.rating + speaker_two.rating
+   speaker_one.rating + speaker_two.rating AS sum
 FROM
    team_performances
 INNER JOIN teams ON
