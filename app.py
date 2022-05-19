@@ -714,6 +714,8 @@ def calculate_elo():
     tournament_id = str(1)
     elo = db.execute(open("sql.sql").read().replace("xxxxxx", tournament_id))
 
+    # Set the k-factor constant
+    k_factor = 32
     updated_ratings = []
     for i in range(len(elo)):
         for j in range(len(elo)):
@@ -726,6 +728,8 @@ def calculate_elo():
                     loser_rating = ( elo[j]["speaker_one_rating"] + elo[j]["speaker_two_rating"] ) / 2
                     # Calculate victor's expected score
                     victors_expected_score = 1 / ( 1 + pow(10, (loser_rating - victor_rating) / 400))
+                    # Calculate how much the rating will be adjusted
+                    rating_adjustment = ( 1 - victors_expected_score ) * k_factor
 
 
     return render_template("0-import-elo.html", elo=elo)
