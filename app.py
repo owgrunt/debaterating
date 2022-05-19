@@ -711,7 +711,8 @@ def calculate_elo():
     """Show the speakers that have been added to the database"""
 
     # elo = open('test.sql').read().replace('xxxxxx', table)
-    elo = db.execute(open("sql.sql").read())
+    debate_id = 1
+    elo = db.execute(open("sql.sql").read().replace('xxxxxx', table)
 
     return render_template("0-import-elo.html", elo=elo)
 
