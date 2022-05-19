@@ -9,8 +9,6 @@ SELECT
    speaker_one.rating + speaker_two.rating AS sum
 FROM
    team_performances
-ORDER BY
-    team_performances.score
 INNER JOIN teams ON
     team_performances.team_id = teams.id
 INNER JOIN speakers AS speaker_one ON
@@ -18,4 +16,6 @@ INNER JOIN speakers AS speaker_one ON
 INNER JOIN speakers AS speaker_two ON
     teams.speaker_two_id = speaker_two.id
 WHERE
-    team_performances.debate_id = 1;
+    team_performances.debate_id = 1
+ORDER BY
+    team_performances.score DESC;
