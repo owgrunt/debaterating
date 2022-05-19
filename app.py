@@ -716,7 +716,9 @@ def calculate_elo():
 
     updated_ratings = []
     for i in range(len(elo)):
-        j = 1
+        for j in range(len(elo)):
+            if elo[i]["debate_id"] = elo[j]["debate_id"]:
+                elo[i]["score"] > elo[j]["score"]
 
     return render_template("0-import-elo.html", elo=elo)
 
