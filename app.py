@@ -732,6 +732,8 @@ def calculate_elo():
                     rating_adjustment = ( 1 - victors_expected_score ) * k_factor
                     # Check if the speakers are in updated_ratings
                     if not any(d["speaker"] == elo[i]["speaker_one"] for d in updated_ratings):
+                        update = {speaker: elo[i]["speaker_one"],
+                                  }
                         updated_ratings.append
 
 
