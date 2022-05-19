@@ -732,9 +732,22 @@ def calculate_elo():
                     rating_adjustment = ( 1 - victors_expected_score ) * k_factor
                     # Check if the speakers are in updated_ratings
                     if not any(d["speaker"] == elo[i]["speaker_one"] for d in updated_ratings):
-                        update = {speaker: elo[i]["speaker_one"],
-                                  }
-                        updated_ratings.append
+                        update = {"speaker": elo[i]["speaker_one"],
+                                  "initial_rating": elo[i]["speaker_one_rating"],
+                                  "rating_adjustment": rating_adjustment}
+                        updated_ratings.append(update)
+                        update = {"speaker": elo[i]["speaker_two"],
+                                  "initial_rating": elo[i]["speaker_two_rating"],
+                                  "rating_adjustment": rating_adjustment}
+                        updated_ratings.append(update)
+                        update = {"speaker": elo[j]["speaker_one"],
+                                  "initial_rating": elo[j]["speaker_one_rating"],
+                                  "rating_adjustment": rating_adjustment}
+                        updated_ratings.append(update)
+                        update = {"speaker": elo[j]["speaker_two"],
+                                  "initial_rating": elo[j]["speaker_two_rating"],
+                                  "rating_adjustment": rating_adjustment}
+                        updated_ratings.append(update)
 
 
     return render_template("0-import-elo.html", elo=elo)
