@@ -705,6 +705,13 @@ def teams_success():
     return render_template("0-import-debate-success.html", speakers=speakers, tournament=tournament, teams=teams, rounds=rounds)
 
 
+@app.route("/import/elo", methods=["GET", "POST"])
+@login_required
+def teams_success():
+    """Show the speakers that have been added to the database"""
+    return render_template("0-import-debate-success.html", speakers=speakers, tournament=tournament, teams=teams, rounds=rounds)
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
