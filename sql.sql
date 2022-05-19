@@ -5,6 +5,7 @@
 
 SELECT
    team_performances.team_id,
+   team_performances.score,
    speaker_one.rating + speaker_two.rating AS sum
 FROM
    team_performances
