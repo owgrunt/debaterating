@@ -730,7 +730,8 @@ def calculate_elo():
                     victors_expected_score = 1 / ( 1 + pow(10, (loser_rating - victor_rating) / 400))
                     # Calculate how much the rating will be adjusted
                     rating_adjustment = ( 1 - victors_expected_score ) * k_factor
-                    
+                    # Check if the speakers are in updated_ratings
+                    if not any(d['main_color'] == 'red' for d in a):
 
 
     return render_template("0-import-elo.html", elo=elo)
