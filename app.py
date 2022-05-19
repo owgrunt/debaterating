@@ -731,7 +731,8 @@ def calculate_elo():
                     # Calculate how much the rating will be adjusted
                     rating_adjustment = ( 1 - victors_expected_score ) * k_factor
                     # Check if the speakers are in updated_ratings
-                    if not any(d['main_color'] == 'red' for d in a):
+                    if not any(d["speaker"] == elo[i]["speaker_one"] for d in updated_ratings):
+                        updated_ratings.append
 
 
     return render_template("0-import-elo.html", elo=elo)
