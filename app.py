@@ -700,16 +700,20 @@ def import_rounds():
 
 @app.route("/import/debate/success", methods=["GET", "POST"])
 @login_required
-def teams_success():
+def debates_success():
     """Show the speakers that have been added to the database"""
     return render_template("0-import-debate-success.html", speakers=speakers, tournament=tournament, teams=teams, rounds=rounds)
 
 
 @app.route("/import/elo", methods=["GET", "POST"])
 @login_required
-def teams_success():
+def calculate_elo():
     """Show the speakers that have been added to the database"""
-    return render_template("0-import-debate-success.html", speakers=speakers, tournament=tournament, teams=teams, rounds=rounds)
+
+    # elo = open('test.sql').read().replace('xxxxxx', table)
+    elo = db.execute(open("sql.sql").read())
+
+    return render_template("0-import-elo.html", elo=elo)
 
 
 @app.route("/register", methods=["GET", "POST"])
