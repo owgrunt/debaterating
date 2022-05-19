@@ -4,8 +4,7 @@
 -- DELETE FROM speakers;
 
 SELECT
-   Title,
-   Name
+   *
 FROM
-   albums
-INNER JOIN artists USING(ArtistId);
+   team_performances
+INNER JOIN teams USING(team_id);
