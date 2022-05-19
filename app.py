@@ -714,6 +714,7 @@ def calculate_elo():
     tournament_id = str(1)
     elo = db.execute(open("sql.sql").read().replace("xxxxxx", tournament_id))
 
+    updated_ratings = []
     for i in range(len(elo)):
         j = 1
 

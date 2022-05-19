@@ -90,7 +90,7 @@ CREATE TABLE speeches (
     speaker_id INTEGER NOT NULL,
     debate_id INTEGER NOT NULL,
     score INTEGER NOT NULL,
-    rating_change 
+    rating_change INTEGER,
     position INTEGER NOT NULL,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
     FOREIGN KEY(speaker_id) REFERENCES speakers(id),
