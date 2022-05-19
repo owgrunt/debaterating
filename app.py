@@ -714,7 +714,8 @@ def calculate_elo():
     tournament_id = str(1)
     elo = db.execute(open("sql.sql").read().replace("xxxxxx", tournament_id))
 
-    for i in range(len(elo))
+    for i in range(len(elo)):
+        j = 1
 
     return render_template("0-import-elo.html", elo=elo)
 
