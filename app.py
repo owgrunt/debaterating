@@ -721,7 +721,8 @@ def calculate_elo():
             if elo[i]["debate_id"] = elo[j]["debate_id"]:
                 # Only change score if team i won
                 if elo[i]["score"] > elo[j]["score"]:
-                    
+                    victor_rating = ( elo[i]["speaker_one_rating"] + elo[i]["speaker_two_rating"] ) / 2
+                    loser_rating = ( elo[j]["speaker_one_rating"] + elo[j]["speaker_two_rating"] ) / 2
 
 
     return render_template("0-import-elo.html", elo=elo)
