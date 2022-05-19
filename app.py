@@ -567,7 +567,7 @@ def import_rounds():
                     # Assign points
                     if not result["points"]:
                         if result["win"] == True:
-                            result["score"] = 1
+                            result["score"] = 4
                         else:
                             result["score"] = 0
                     else:
