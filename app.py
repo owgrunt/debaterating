@@ -545,6 +545,7 @@ def import_rounds():
                 if "panellists" in debate["adjudicators"]:
                     for panellist in debate["adjudicators"]["panellists"]:
                         adjudicator["internal_id"] = panellist.replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
+                        adjudicator_internal_id = adjudicator["internal_id"]
                         adjudicator["speaker_id"] = db.execute(f"SELECT id FROM tournament_participants WHERE speaker_internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["id"]
                         adjudicator["role"] = "panellist"
 
