@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Проверяем, есть ли спикер в базе</h2>
+    <div class="container">
+        <div class="section">
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker/check" role="button">Назад</a>
+        </div>
+        <div class="section">
+            <form action="/import/speaker/add" method="post">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 25%">Спикер</th>
+                            <th style="width: 25%">Совпадение</th>
+                            <th style="width: 25%">ID спикера</th>
+                            <th style="width: 25%">ID клуба</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for speaker in speakers %}
+                            <tr>
+                                <td>
+                                    {% if speaker["middle_name"] is defined %}
+                                        {{ speaker["last_name"] }} {{ speaker["first_name"] }} {{ speaker["middle_name"] }}
+                                    {% else %}
+                                        {{ speaker["last_name"] }} {{ speaker["first_name"] }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if speaker["candidates"] is defined %}
+                                        {% for candidate in speaker["candidates"] %}
+                                            {{ candidate["last_name"] }} {{ candidate["first_name"] }} {{ candidate["middle_name"] }}, ID: {{ candidate["id"] }}
+                                        {% endfor %}
+                                    {% else %}
+                                        Нет совпадения
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ speaker["internal_id"] }}-id" name="{{ speaker["internal_id"] }}-id" value="{% if speaker["candidates"] is defined %}{{ speaker["candidates"][0]["id"] }}{% endif %}" placeholder="Добавь ID, если спикер есть в базе" type="number">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ speaker["internal_id"] }}-society" name="{{ speaker["internal_id"] }}-society" placeholder="Добавь ID клуба" type="number">
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a class="btn btn-secondary mt-2 mx-1" href="/import/speaker/check" role="button">Назад</a>
+                <button class="btn btn-primary mt-2 mx-1" type="submit">Продолжить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

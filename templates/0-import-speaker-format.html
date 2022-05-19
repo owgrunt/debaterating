@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">В каком порядке указаны ФИО участников?</h2>
+    <div class="container">
+        <div class="section">
+            <form action="/import/adjudicator/format" method="post">
+                <button class="btn btn-primary mt-4 mx-1 mb-4" type="submit" name="format" id="fio" value="fio">Фамилия Имя Отчество</button>
+                <button class="btn btn-primary mt-4 mx-1 mb-4" type="submit" name="format" id="iof" value="iof">Имя Отчество Фамилия</button>
+                <button class="btn btn-primary mt-4 mx-1 mb-4" type="submit" name="format" id="if" value="if">Имя Фамилия</button>
+                <button class="btn btn-primary mt-4 mx-1 mb-4" type="submit" name="format" id="fi" value="fi">Фамилия Имя</button>
+            </form>
+        </div>
+        <div class="section">
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/tournament/edit" role="button">Назад</a>
+        </div>
+        <div class="section">
+            {% set i = namespace(value=1) %}
+            {% for speaker in speakers %}
+                {% if i.value < count %}
+                    {{ speaker["name"] }},
+                    {% set i.value = i.value + 1 %}
+                {% else %}
+                    {{ speaker["name"] }}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="section">
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/tournament/edit" role="button">Назад</a>
+        </div>
+    </div>
+{% endblock %}

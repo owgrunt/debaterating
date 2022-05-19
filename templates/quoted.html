@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Quote</h2>
+    <div class="container">
+        <div class="section">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">Date</th>
+                        <th style="width: 25%">Symbol</th>
+                        <th style="width: 25%">Name</th>
+                        <th style="width: 25%">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ date }}</td>
+                        <td>{{ quote["symbol"] }}</td>
+                        <td>{{ quote["name"] }}</td>
+                        <td>{{ quote["price"] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,10 @@
+DROP TABLE speakers;
+DROP TABLE societies;
+DROP TABLE tournaments;
+DROP TABLE teams;
+DROP TABLE rounds;
+DROP TABLE debates;
+DROP TABLE speeches;
+DROP TABLE team_performances;
+DROP TABLE tournament_participants;
+DROP TABLE adjudications;

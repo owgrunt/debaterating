@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="h2 mb-5 mt-2">Hello, {{ user }}</div>
+        <div class="section">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%">Symbol</th>
+                        <th style="width: 20%">Name</th>
+                        <th style="width: 20%">Price</th>
+                        <th style="width: 20%">Number</th>
+                        <th style="width: 20%">Sum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stock in portfolio %}
+                    <tr>
+                        <td>{{ stock["symbol"] }}</td>
+                        <td>{{ stock["name"] }}</td>
+                        <td>{{ stock["price"] }}</td>
+                        <td>{{ stock["number"] }}</td>
+                        <td>{{ stock["sum"] }}</td>
+                        <td>
+                            <form action="/buy" method="get">
+                                <button class="btn btn-success" type="submit" name="symbol" value="{{ stock["symbol"] }}">Buy</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/sell" method="get">
+                                <button class="btn btn-danger" type="submit" name="symbol" value="{{ stock["symbol"] }}">Sell</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><b>Total</b></td>
+                        <td>{{ sum }}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Available Balance:</td>
+                        <td>{{ cash }}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

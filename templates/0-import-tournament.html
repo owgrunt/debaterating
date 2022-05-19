@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Начинаем импорт турнира</h2>
+    <div class="container">
+        <div class="section">
+            <form action="/import/tournament" method="post">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Адрес турнира</label>
+                    <input autocomplete="off" autofocus class="form-control mx-auto" id="address" name="address" placeholder="https://domain.herokuapp.com/tournament/" value="https://strathclydepresisdentscup.herokuapp.com/strathcup2021/" type="url" required>
+                </div>
+                <button class="btn btn-primary" type="submit">Продолжить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
