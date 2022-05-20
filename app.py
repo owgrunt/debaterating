@@ -252,8 +252,10 @@ def import_adjudicators():
     if adjudicators != None:
         for speaker in adjudicators:
             speaker["adjudicator"] = 1
-            if :
+            if speaker["adj_core"] == True:
                 speaker["ca"] = 1
+            else:
+                speaker["ca"] = 0
         count = len(adjudicators)
         return render_template("0-import-adjudicator-format.html", speakers=adjudicators, count=count, tournament=tournament)
     else:
@@ -375,6 +377,7 @@ def add_speakers():
             participant["tournament_id"] = tournament["id"]
             participant["speaker_id"] = speaker["id"]
             participant["adjudicator"] = speaker["adjudicator"]
+            participant["ca"] = speaker["ca"]
             participant["internal_name"] = speaker["name"]
             participant["speaker_internal_id"] = speaker["internal_id"]
             search_keys = ["speaker_internal_id", "tournament_id", "adjudicator"]

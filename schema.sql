@@ -120,6 +120,7 @@ CREATE TABLE tournament_participants (
     speaker_internal_id INTEGER NOT NULL,
     internal_name TEXT NOT NULL,
     adjudicator INTEGER NOT NULL DEFAULT 0,
+    ca INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
     FOREIGN KEY(speaker_id) REFERENCES speakers(id)
 );
