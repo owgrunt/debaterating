@@ -18,6 +18,8 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% set i = namespace(value=0) %}
+                    {% set previous_score = namespace(value=0) %}
                     {% for speaker in speakers %}
                         <tr>
                             <td>
