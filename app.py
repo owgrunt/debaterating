@@ -226,8 +226,9 @@ def import_speakers():
             speaker["adjudicator"] = 0
             speaker["ca"] = 0
             for team in teams:
-                for speaker in team["speakers"]:
-                    # TODO
+                for member in team["speakers"]:
+                    if speaker["id"] == member["id"]:
+                        speaker["team_name"] = 
         count = len(speakers)
         return render_template("0-import-speaker-format.html", speakers=speakers, count=count, tournament=tournament)
     else:
@@ -284,7 +285,7 @@ def check_speakers():
         adjudicator_name_format = request.form.get("format")
 
         global speaker_name_format
-        # Assign first, middle and last name to the speakers and adjudicators
+        # Assign first, middle and last name to the speakers and adjudicators and clean up ids
         global speakers
         for speaker in speakers:
             speaker = split_name_by_format(speaker, speaker_name_format)
