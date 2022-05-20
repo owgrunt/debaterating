@@ -748,7 +748,9 @@ def calculate_elo():
                         victor_rating = ( debates[i]["speaker_one_rating"] + debates[i]["speaker_two_rating"] ) / 2
                         loser_rating = ( debates[j]["speaker_one_rating"] + debates[j]["speaker_two_rating"] ) / 2
                         # Calculate victor's expected score
-                        victors_expected_score = 1 / ( 1 + pow(10, (loser_rating - victor_rating) / 400))
+                        modified_difference = (loser_rating - victor_rating) / 400
+                        denominator = 1 + pow(10, modified_difference)
+                        victors_expected_score = 1 / denominator
                         # Calculate how much the rating will be adjusted
                         rating_adjustment_float = k_factor*(1-victors_expected_score)
                         rating_adjustment = round(rating_adjustment_float)
