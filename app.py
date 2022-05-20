@@ -770,6 +770,8 @@ def calculate_elo():
             db.execute("UPDATE speeches SET rating_change = ? WHERE speaker_id = ? AND debate_id = ?",
                        update["rating_adjustment"], update["speaker"], update["debate"])
 
+            # Change the rating in the speaker database
+
     updated_count = len(updated_ratings)
 
     return render_template("0-import-elo.html", round=round, updated_ratings=updated_ratings, updated_count=updated_count)
