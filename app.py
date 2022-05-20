@@ -226,7 +226,8 @@ def import_speakers():
             speaker["adjudicator"] = 0
             speaker["ca"] = 0
             for team in teams:
-                if 
+                for speaker in team["speakers"]:
+                    
         count = len(speakers)
         return render_template("0-import-speaker-format.html", speakers=speakers, count=count, tournament=tournament)
     else:
