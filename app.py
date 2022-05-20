@@ -572,7 +572,7 @@ def import_rounds():
             results = lookup_link(debate["url"] + "/ballots")
             # results = lookup_link(debate["url"] + "/ballots")[0]["result"]["sheets"][0]["teams"]
             # Get to the team result
-            if not results == [] and not results["detail"]:
+            if not results == [] and not "detail" results:
                 results = results[0]["result"]["sheets"][0]["teams"]
                 for result in results:
                     # Prepare data for import
