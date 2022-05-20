@@ -559,7 +559,7 @@ def import_rounds():
                     for trainee in debate["adjudicators"]["trainees"]:
                         adjudicator["internal_id"] = trainee.replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
                         adjudicator_internal_id = adjudicator["internal_id"]
-                        adjudicator["speaker_id"] = db.execute(f"SELECT id FROM tournament_participants WHERE speaker_internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["id"]
+                        adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE speaker_internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
                         adjudicator["role"] = "trainee"
 
                         # Import adjudication instance into the db
