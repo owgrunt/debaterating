@@ -252,6 +252,8 @@ def import_adjudicators():
     if adjudicators != None:
         for speaker in adjudicators:
             speaker["adjudicator"] = 1
+            if :
+                speaker["ca"] = 1
         count = len(adjudicators)
         return render_template("0-import-adjudicator-format.html", speakers=adjudicators, count=count, tournament=tournament)
     else:
