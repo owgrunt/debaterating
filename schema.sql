@@ -53,7 +53,7 @@ CREATE TABLE teams (
     FOREIGN KEY(speaker_two_id) REFERENCES speakers(id)
 );
 CREATE UNIQUE INDEX team_id ON teams (id);
-CREATE UNIQUE INDEX team_internal_id ON teams (internal_id);
+CREATE INDEX team_internal_id ON teams (internal_id);
 CREATE INDEX speaker_one_id ON teams (speaker_one_id);
 CREATE INDEX speaker_two_id ON teams (speaker_two_id);
 
