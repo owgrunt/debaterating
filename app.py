@@ -724,9 +724,11 @@ def calculate_elo():
     for i in range(len(round)):
         if round[i]["swing"] != 1:
             speaker_one = {"speaker": round[i]["speaker_one"],
+                           "debate": round[i]["debate_id"],
                            "initial_rating": round[i]["speaker_one_rating"],
                            "rating_adjustment": 0}
             speaker_two = {"speaker": round[i]["speaker_two"],
+                           "debate": round[i]["debate_id"],
                            "initial_rating": round[i]["speaker_two_rating"],
                            "rating_adjustment": 0}
             updated_ratings.extend([speaker_one, speaker_two])
@@ -764,6 +766,9 @@ def calculate_elo():
                         return apology("scores not updated", 400)
 
     # Add rating change to the speech database
+    for update in updated_ratings:
+        if update["rating_adjustment"] != 0:
+            db.execute()
 
     updated_count = len(updated_ratings)
 
