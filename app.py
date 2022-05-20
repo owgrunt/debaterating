@@ -801,7 +801,7 @@ def calculate_elo():
                 # Change the rating in the speaker database
                 new_rating = update["initial_rating"] + update["rating_adjustment"]
                 db.execute("UPDATE speakers SET rating = ? WHERE id = ? AND rating = ?",
-                        new_rating, update["speaker"], update["initial_rating"])
+                           new_rating, update["speaker"], update["initial_rating"])
 
         all_updated_ratings = all_updated_ratings + updated_ratings
 
@@ -818,6 +818,8 @@ def calculate_speaker_scores():
     for speaker in speakers:
         new_average = db.execute("SELECT avg(score) FROM speeches WHERE speaker_id = ?",
                                  speaker["id"])
+        db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
+                   new_average, speaker["id"])
 
 
 @app.route("/register", methods=["GET", "POST"])
