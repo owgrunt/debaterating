@@ -15,11 +15,12 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 20%">Оригинал имени</th>
-                            <th style="width: 20%">Фамилия</th>
-                            <th style="width: 20%">Имя</th>
-                            <th style="width: 20%">Отчество</th>
-                            <th style="width: 20%">Свинг</th>
+                            <th>Оригинал имени</th>
+                            <th>Фамилия</th>
+                            <th>Имя</th>
+                            <th>Отчество</th>
+                            <th>Команда</th>
+                            <th>Свинг</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,6 +44,9 @@
                                     <div>
                                         <input autocomplete="off" class="form-control mx-auto" id="{{ speaker["internal_id"] }}-middle-name" name="{{ speaker["internal_id"] }}-middle-name" value="{{ speaker["middle_name"] }}" type="text">
                                     </div>
+                                </td>
+                                <td>
+                                    {{ speaker["team_name"] }}
                                 </td>
                                 <td>
                                     <div class="form-check-inline text-center">

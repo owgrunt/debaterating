@@ -228,7 +228,7 @@ def import_speakers():
             for team in teams:
                 for member in team["speakers"]:
                     if speaker["id"] == member["id"]:
-                        speaker["team_name"] = 
+                        speaker["team_name"] = team["short_name"]
         count = len(speakers)
         return render_template("0-import-speaker-format.html", speakers=speakers, count=count, tournament=tournament)
     else:
