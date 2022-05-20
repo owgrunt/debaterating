@@ -216,13 +216,17 @@ def import_speakers():
     global speakers
     speakers = lookup_data(domain, slug, "speakers")
 
-    # Import team data to show team name in the next screen. These are NOT global teams
+    # Import team data to show team name in the next screen. The same list will be used further in team import
+    global teams
+    teams = []
     teams = lookup_data(domain, slug, "teams")
 
     if speakers != None:
         for speaker in speakers:
             speaker["adjudicator"] = 0
             speaker["ca"] = 0
+            for team in teams:
+                if 
         count = len(speakers)
         return render_template("0-import-speaker-format.html", speakers=speakers, count=count, tournament=tournament)
     else:
@@ -408,13 +412,13 @@ def import_teams():
 
     # Clean teams just in case
     global teams
-    teams = []
+    # teams = []
 
-    # Import team data
-    global tournament
-    domain = tournament["domain"]
-    slug = tournament["slug"]
-    teams = lookup_data(domain, slug, "teams")
+    # # Import team data
+    # global tournament
+    # domain = tournament["domain"]
+    # slug = tournament["slug"]
+    # teams = lookup_data(domain, slug, "teams")
 
     # Ensure the teams are imported
     if teams == None:
