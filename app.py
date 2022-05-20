@@ -785,7 +785,7 @@ def calculate_elo():
                 db.execute("UPDATE speakers SET rating = ? WHERE id = ? AND rating = ?",
                         new_rating, update["speaker"], update["initial_rating"])
 
-        all_updated_ratings.append(updated_ratings)
+        all_updated_ratings = all_updated_ratings + updated_ratings
 
     updated_count = len(all_updated_ratings)
 
