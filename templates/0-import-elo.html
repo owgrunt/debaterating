@@ -15,7 +15,38 @@
             {{ updated_count }}
             <br>
             {{ all_updated_ratings }}
-            
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%">ID раунда</th>
+                        <th style="width: 20%">ID дебатов</th>
+                        <th style="width: 20%">ID спикера</th>
+                        <th style="width: 20%">Исходный рейтинг</th>
+                        <th style="width: 20%">Изменение рейтинга</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for update in all_updated_ratings %}
+                        <tr>
+                            <td>
+                                {{ update["round"] }}
+                            </td>
+                            <td>
+                                {{ update["debate"] }}
+                            </td>
+                            <td>
+                                {{ update["speaker"] }}
+                            </td>
+                            <td>
+                                {{ update["initial_rating"] }}
+                            </td>
+                            <td>
+                                {{ update["rating_adjustment"] }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}
