@@ -814,6 +814,9 @@ def calculate_elo():
 @login_required
 def calculate_speaker_scores():
     """Calculate and update new average speaker scores"""
+    global speakers
+    for speaker in speakers:
+
 
 
 @app.route("/register", methods=["GET", "POST"])
