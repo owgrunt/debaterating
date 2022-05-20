@@ -817,8 +817,9 @@ def calculate_speaker_scores():
     global speakers
     for speaker in speakers:
         if speaker["adjudicator"] == 0:
-            speaker["new_average"] = db.execute("SELECT avg(score) FROM speeches WHERE speaker_id = ?",
+            new_average = db.execute("SELECT avg(score) FROM speeches WHERE speaker_id = ?",
                                     speaker["id"])[0]["avg(score)"]
+            speaker["new_average"] = round(new_average, 2)
             db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
                     speaker["new_average"], speaker["id"])
 
