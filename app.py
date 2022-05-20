@@ -809,6 +809,12 @@ def calculate_elo():
     return render_template("0-import-elo.html", all_updated_ratings=all_updated_ratings, updated_count=updated_count)
 
 
+@app.route("/import/speaker-scores", methods=["GET", "POST"])
+@login_required
+def calculate_speaker_scores():
+    """Calculate and update new average speaker scores"""
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
