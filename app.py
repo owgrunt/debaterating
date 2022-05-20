@@ -718,7 +718,7 @@ def calculate_elo():
 
     # Set the k-factor constant
     k_factor = 32
-    
+
     # Set up a list of dict with all the speakers to have their ratings adjusted
     updated_ratings = []
     for i in range(len(round)):
@@ -763,7 +763,7 @@ def calculate_elo():
                     if k != 4:
                         return apology("scores not updated", 400)
 
-    # TODO update ratings in the database
+    # Add rating change to the speech database
 
     updated_count = len(updated_ratings)
 
