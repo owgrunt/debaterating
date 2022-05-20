@@ -816,10 +816,11 @@ def calculate_speaker_scores():
     """Calculate and update new average speaker scores"""
     global speakers
     for speaker in speakers:
-        speaker["new_average"] = db.execute("SELECT avg(score) FROM speeches WHERE speaker_id = ?",
-                                 speaker["id"])[0]["avg(score)"]
-        db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
-                   speaker["new_average"], speaker["id"])
+        if speaker["adjudicator"] == 0:
+            speaker["new_average"] = db.execute("SELECT avg(score) FROM speeches WHERE speaker_id = ?",
+                                    speaker["id"])[0]["avg(score)"]
+            db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
+                    speaker["new_average"], speaker["id"])
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
