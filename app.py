@@ -816,7 +816,8 @@ def calculate_speaker_scores():
     """Calculate and update new average speaker scores"""
     global speakers
     for speaker in speakers:
-
+        new_average = db.execute("SELECT avg(score) FROM speeches WHERE speaker_id = ?",
+                                 speaker["id"])
 
 
 @app.route("/register", methods=["GET", "POST"])
