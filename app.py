@@ -708,7 +708,7 @@ def debates_success():
 def calculate_elo():
     """Calculate and update new ELO values"""
 
-    tournament_id = tournament["id"]
+    tournament_id = str(tournament["id"])
     # TODO get the list of rounds: SELECT id FROM rounds ORDER BY seq;
     # rounds
     round_id = str(1)
