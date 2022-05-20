@@ -711,7 +711,7 @@ def calculate_elo():
     tournament_id = str(tournament["id"])
     # TODO get the list of rounds: SELECT id FROM rounds ORDER BY seq;
     # rounds
-    round_id = str(1)
+    round_id = str(2)
     debates = db.execute(open("sql_get_team_performances.sql").read().replace("xxxxxx", tournament_id).replace("yyyyyy", round_id))
 
     # Set the k-factor constant
