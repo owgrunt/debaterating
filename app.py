@@ -708,11 +708,12 @@ def debates_success():
 def calculate_elo():
     """Calculate and update new ELO values"""
 
-    tournament_id = str(tournament["id"])
+    tournament_id = tournament["id"]
     # TODO get the list of rounds: SELECT id FROM rounds ORDER BY seq;
-    # rounds
-    round_id = str(2)
-    debates = db.execute(open("sql_get_team_performances.sql").read().replace("xxxxxx", tournament_id).replace("yyyyyy", round_id))
+    rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
+                        tournament_id)
+    round_id = 2
+    debates = db.execute(open("sql_get_team_performances.sql").read().replace("xxxxxx", str(tournament_id)).replace("yyyyyy", str(round_id)))
 
     # Set the k-factor constant
     k_factor = 32
