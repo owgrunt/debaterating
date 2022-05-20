@@ -752,8 +752,9 @@ def calculate_elo():
                         denominator = 1 + pow(10, modified_difference)
                         victors_expected_score = 1 / denominator
                         # Calculate how much the rating will be adjusted
-                        rating_adjustment_float = k_factor*(1-victors_expected_score)
-                        rating_adjustment = round(rating_adjustment_float)
+                        expectation_deviation = 1 - victors_expected_score
+                        rating_adjustment = k_factor * expectation_deviation
+                        # rating_adjustment = round(rating_adjustment_float)
                         # Adjust the ratings
                         k = 0
                         for update in updated_ratings:
