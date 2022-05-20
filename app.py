@@ -714,8 +714,8 @@ def calculate_elo():
     rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
                         tournament_id)
     # Make ELO calculation for all the rounds in a sequence
-    for round in rounds:
-        round_id = round["id"]
+    for round_instance in rounds:
+        round_id = round_instance["id"]
         debates = db.execute(open("sql_get_team_performances.sql").read().replace("xxxxxx", str(tournament_id)).replace("yyyyyy", str(round_id)))
 
         # Set the k-factor constant
@@ -754,7 +754,7 @@ def calculate_elo():
                         # Calculate how much the rating will be adjusted
                         expectation_deviation = 1 - victors_expected_score
                         rating_adjustment_float = k_factor * expectation_deviation
-                        rating_adjustment = round[rating_adjustment_float]
+                        rating_adjustment = round(rating_adjustment_float)
                         # Adjust the ratings
                         k = 0
                         for update in updated_ratings:
