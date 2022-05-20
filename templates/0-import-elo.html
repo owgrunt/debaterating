@@ -24,22 +24,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for update in all_updated_ratings %}
+                    {% for instance in all_updated_ratings %}
                         <tr>
                             <td>
-                                {{ update["round"] }}
+                                {{ instance["round"] }}
                             </td>
                             <td>
-                                {{ update["debate"] }}
+                                {{ instance["debate"] }}
                             </td>
                             <td>
-                                {{ update["speaker"] }}
+                                {{ instance["speaker"] }}
                             </td>
                             <td>
-                                {{ update["initial_rating"] }}
+                                {{ instance["initial_rating"] }}
                             </td>
                             <td>
-                                {{ update["rating_adjustment"] }}
+                                {{ instance["rating_adjustment"] }}
                             </td>
                         </tr>
                     {% endfor %}
