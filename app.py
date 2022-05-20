@@ -617,7 +617,7 @@ def import_rounds():
                             speech["speaker_internal_id"] = speech["speaker"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speakers/", "")
                             speaker_internal_id = speech["speaker_internal_id"]
                             tournament_id = tournament["id"]
-                            speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE speaker_internal_id = {speaker_internal_id} AND tournament_id = {tournament_id}")[0]["id"]
+                            speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE speaker_internal_id = {speaker_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
                             # Assign position
                             if i == 0:
                                 if result["side"] == "og":
