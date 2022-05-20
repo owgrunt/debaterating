@@ -15,30 +15,30 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 20%">ID раунда</th>
-                        <th style="width: 20%">ID игры</th>
                         <th style="width: 20%">ID спикера</th>
-                        <th style="width: 20%">Исходный рейтинг</th>
-                        <th style="width: 20%">Изменение рейтинга</th>
+                        <th style="width: 20%">Внутренний ID спикера</th>
+                        <th style="width: 20%">Спикер</th>
+                        <th style="width: 20%">Предыдущий средний спикерский</th>
+                        <th style="width: 20%">Новый средний спикерский</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for speaker in speakers %}
                         <tr>
                             <td>
-                                {{ instance["round"] }}
+                                {{ speaker["id"] }}
                             </td>
                             <td>
-                                {{ instance["debate"] }}
+                                {{ speaker["internal_id"] }}
                             </td>
                             <td>
-                                {{ instance["speaker"] }}
+                                {{ speaker["last_name"] }} {{ speaker["first_name"] }}
                             </td>
                             <td>
-                                {{ instance["initial_rating"] }}
+                                {{ speaker["speaker_score"] }}
                             </td>
                             <td>
-                                {{ instance["rating_adjustment"] }}
+                                {{ speaker["new_average"] }}
                             </td>
                         </tr>
                     {% endfor %}
