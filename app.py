@@ -219,6 +219,7 @@ def import_speakers():
     if speakers != None:
         for speaker in speakers:
             speaker["adjudicator"] = 0
+            speaker["ca"] = 0
         count = len(speakers)
         return render_template("0-import-speaker-format.html", speakers=speakers, count=count, tournament=tournament)
     else:
@@ -251,6 +252,10 @@ def import_adjudicators():
     if adjudicators != None:
         for speaker in adjudicators:
             speaker["adjudicator"] = 1
+            if speaker["adj_core"] == True:
+                speaker["ca"] = 1
+            else:
+                speaker["ca"] = 0
         count = len(adjudicators)
         return render_template("0-import-adjudicator-format.html", speakers=adjudicators, count=count, tournament=tournament)
     else:
@@ -372,6 +377,7 @@ def add_speakers():
             participant["tournament_id"] = tournament["id"]
             participant["speaker_id"] = speaker["id"]
             participant["adjudicator"] = speaker["adjudicator"]
+            participant["ca"] = speaker["ca"]
             participant["internal_name"] = speaker["name"]
             participant["speaker_internal_id"] = speaker["internal_id"]
             search_keys = ["speaker_internal_id", "tournament_id", "adjudicator"]
@@ -533,22 +539,48 @@ def import_rounds():
                 adjudicator["internal_id"] = debate["adjudicators"]["chair"].replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
                 adjudicator_internal_id = adjudicator["internal_id"]
                 tournament_id = tournament["id"]
-                adjudicator["speaker_id"] = db.execute(f"SELECT id FROM tournament_participants WHERE speaker_internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["id"]
+                adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE speaker_internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
                 adjudicator["role"] = "chair"
 
-                # Import adjudication data into the db
+                # Import adjudication instance into the db
                 db_name = "adjudications"
                 search_keys = ["speaker_id", "tournament_id", "debate_id"]
                 update_keys = ["role"]
                 adjudicator["id"] = add_database_entry(db_name, adjudicator, search_keys, update_keys)
 
-                # TODO import panellists and trainees
+                if "panellists" in debate["adjudicators"]:
+                    for panellist in debate["adjudicators"]["panellists"]:
+                        adjudicator["internal_id"] = panellist.replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
+                        adjudicator_internal_id = adjudicator["internal_id"]
+                        adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE speaker_internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
+                        adjudicator["role"] = "panellist"
+
+                        # Import adjudication instance into the db
+                        db_name = "adjudications"
+                        search_keys = ["speaker_id", "tournament_id", "debate_id"]
+                        update_keys = ["role"]
+                        adjudicator["id"] = add_database_entry(db_name, adjudicator, search_keys, update_keys)
+
+                if "trainees" in debate["adjudicators"]:
+                    for trainee in debate["adjudicators"]["trainees"]:
+                        adjudicator["internal_id"] = trainee.replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
+                        adjudicator_internal_id = adjudicator["internal_id"]
+                        adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE speaker_internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
+                        adjudicator["role"] = "trainee"
+
+                        # Import adjudication instance into the db
+                        db_name = "adjudications"
+                        search_keys = ["speaker_id", "tournament_id", "debate_id"]
+                        update_keys = ["role"]
+                        adjudicator["id"] = add_database_entry(db_name, adjudicator, search_keys, update_keys)
 
             # Get results
             results = lookup_link(debate["url"] + "/ballots")
             # results = lookup_link(debate["url"] + "/ballots")[0]["result"]["sheets"][0]["teams"]
             # Get to the team result
-            if not results == []:
+            if results is None:
+                return apology(f"tabmaster needs to publish ballots", 400)
+            elif not results == []:
                 results = results[0]["result"]["sheets"][0]["teams"]
                 for result in results:
                     # Prepare data for import
@@ -567,7 +599,7 @@ def import_rounds():
                     # Assign points
                     if not result["points"]:
                         if result["win"] == True:
-                            result["score"] = 1
+                            result["score"] = 4
                         else:
                             result["score"] = 0
                     else:
@@ -579,8 +611,6 @@ def import_rounds():
                     search_keys = ["debate_id", "tournament_id", "team_id"]
                     update_keys = ["side", "score"]
                     result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
-
-                    # TODO calculate ELO
 
                     # Get speeches
                     global speakers
@@ -595,7 +625,7 @@ def import_rounds():
                             speech["speaker_internal_id"] = speech["speaker"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speakers/", "")
                             speaker_internal_id = speech["speaker_internal_id"]
                             tournament_id = tournament["id"]
-                            speech["speaker_id"] = db.execute(f"SELECT id FROM tournament_participants WHERE speaker_internal_id = {speaker_internal_id} AND tournament_id = {tournament_id}")[0]["id"]
+                            speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE speaker_internal_id = {speaker_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
                             # Assign position
                             if i == 0:
                                 if result["side"] == "og":
@@ -671,8 +701,103 @@ def import_rounds():
                             update_keys = ["position", "score"]
                             result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
+    return redirect("/import/debate/success")
 
-    return redirect("/import/team/success")
+
+@app.route("/import/debate/success", methods=["GET", "POST"])
+@login_required
+def debates_success():
+    """Show the speakers that have been added to the database"""
+    return render_template("0-import-debate-success.html", speakers=speakers, tournament=tournament, teams=teams, rounds=rounds)
+
+
+@app.route("/import/elo", methods=["GET", "POST"])
+@login_required
+def calculate_elo():
+    """Calculate and update new ELO values"""
+
+    tournament_id = tournament["id"]
+    all_updated_ratings = []
+    # get the list of rounds
+    rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
+                        tournament_id)
+    # Make ELO calculation for all the rounds in a sequence
+    for round_instance in rounds:
+        round_id = round_instance["id"]
+        debates = db.execute(open("sql_get_team_performances.sql").read().replace("xxxxxx", str(tournament_id)).replace("yyyyyy", str(round_id)))
+
+        # Set the k-factor constant
+        k_factor = 32
+
+        # Set up a list of dict with all the speakers to have their ratings adjusted
+        updated_ratings = []
+        for i in range(len(debates)):
+            if debates[i]["swing"] != 1:
+                speaker_one = {"speaker": debates[i]["speaker_one"],
+                               "round": round_id,
+                               "debate": debates[i]["debate_id"],
+                               "initial_rating": debates[i]["speaker_one_rating"],
+                               "rating_adjustment": 0}
+                speaker_two = {"speaker": debates[i]["speaker_two"],
+                               "round": round_id,
+                               "debate": debates[i]["debate_id"],
+                               "initial_rating": debates[i]["speaker_two_rating"],
+                               "rating_adjustment": 0}
+                updated_ratings.extend([speaker_one, speaker_two])
+
+        # Update ratings for the round
+        for i in range(len(debates)):
+            for j in range(len(debates)):
+                # Check for teams in the same debate and not swings
+                if debates[i]["debate_id"] == debates[j]["debate_id"] and debates[i]["swing"] != 1 and debates[j]["swing"] != 1 and debates[i]["speaker_one"] != debates[i]["speaker_two"] and debates[j]["speaker_one"] != debates[j]["speaker_two"]:
+                    # Only change score if team i won
+                    if debates[i]["score"] > debates[j]["score"]:
+                        # Calculate initial team ratings
+                        victor_rating = ( debates[i]["speaker_one_rating"] + debates[i]["speaker_two_rating"] ) / 2
+                        loser_rating = ( debates[j]["speaker_one_rating"] + debates[j]["speaker_two_rating"] ) / 2
+                        # Calculate victor's expected score
+                        modified_difference = (loser_rating - victor_rating) / 400
+                        denominator = 1 + pow(10, modified_difference)
+                        victors_expected_score = 1 / denominator
+                        # Calculate how much the rating will be adjusted
+                        expectation_deviation = 1 - victors_expected_score
+                        rating_adjustment_float = k_factor * expectation_deviation
+                        rating_adjustment = round(rating_adjustment_float)
+                        # Adjust the ratings
+                        k = 0
+                        for update in updated_ratings:
+                            if update["speaker"] == debates[i]["speaker_one"]:
+                                update["rating_adjustment"] = update["rating_adjustment"] + rating_adjustment
+                                k = k + 1
+                            if update["speaker"] == debates[i]["speaker_two"]:
+                                update["rating_adjustment"] = update["rating_adjustment"] + rating_adjustment
+                                k = k + 1
+                            if update["speaker"] == debates[j]["speaker_one"]:
+                                update["rating_adjustment"] = update["rating_adjustment"] - rating_adjustment
+                                k = k + 1
+                            if update["speaker"] == debates[j]["speaker_two"]:
+                                update["rating_adjustment"] = update["rating_adjustment"] - rating_adjustment
+                                k = k + 1
+                        if k != 4:
+                            return apology("scores not updated", 400)
+
+        # Update the database
+        for update in updated_ratings:
+            if update["rating_adjustment"] != 0:
+                # Add rating change to the speech database
+                db.execute("UPDATE speeches SET rating_change = ? WHERE speaker_id = ? AND debate_id = ?",
+                        update["rating_adjustment"], update["speaker"], update["debate"])
+
+                # Change the rating in the speaker database
+                new_rating = update["initial_rating"] + update["rating_adjustment"]
+                db.execute("UPDATE speakers SET rating = ? WHERE id = ? AND rating = ?",
+                        new_rating, update["speaker"], update["initial_rating"])
+
+        all_updated_ratings = all_updated_ratings + updated_ratings
+
+    updated_count = len(all_updated_ratings)
+
+    return render_template("0-import-elo.html", all_updated_ratings=all_updated_ratings, updated_count=updated_count)
 
 
 @app.route("/register", methods=["GET", "POST"])

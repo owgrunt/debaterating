@@ -53,7 +53,7 @@ CREATE TABLE teams (
     FOREIGN KEY(speaker_two_id) REFERENCES speakers(id)
 );
 CREATE UNIQUE INDEX team_id ON teams (id);
-CREATE UNIQUE INDEX team_internal_id ON teams (internal_id);
+CREATE INDEX team_internal_id ON teams (internal_id);
 CREATE INDEX speaker_one_id ON teams (speaker_one_id);
 CREATE INDEX speaker_two_id ON teams (speaker_two_id);
 
@@ -90,6 +90,7 @@ CREATE TABLE speeches (
     speaker_id INTEGER NOT NULL,
     debate_id INTEGER NOT NULL,
     score INTEGER NOT NULL,
+    rating_change INTEGER,
     position INTEGER NOT NULL,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
     FOREIGN KEY(speaker_id) REFERENCES speakers(id),
@@ -119,6 +120,7 @@ CREATE TABLE tournament_participants (
     speaker_internal_id INTEGER NOT NULL,
     internal_name TEXT NOT NULL,
     adjudicator INTEGER NOT NULL DEFAULT 0,
+    ca INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
     FOREIGN KEY(speaker_id) REFERENCES speakers(id)
 );

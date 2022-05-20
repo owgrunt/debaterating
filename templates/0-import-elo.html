@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">ELO рейтинг обновлён</h2>
+    <div class="container">
+        <div class="section">
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
+            <a class="btn btn-primary mt-2 mb-2 mx-1" href="/import/elo" role="button">Продолжить</a>
+        </div>
+        <div class="section">
+            <!-- {{ updated_count }}
+            {{ all_updated_ratings }} -->
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%">ID раунда</th>
+                        <th style="width: 20%">ID игры</th>
+                        <th style="width: 20%">ID спикера</th>
+                        <th style="width: 20%">Исходный рейтинг</th>
+                        <th style="width: 20%">Изменение рейтинга</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for instance in all_updated_ratings %}
+                        <tr>
+                            <td>
+                                {{ instance["round"] }}
+                            </td>
+                            <td>
+                                {{ instance["debate"] }}
+                            </td>
+                            <td>
+                                {{ instance["speaker"] }}
+                            </td>
+                            <td>
+                                {{ instance["initial_rating"] }}
+                            </td>
+                            <td>
+                                {{ instance["rating_adjustment"] }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
