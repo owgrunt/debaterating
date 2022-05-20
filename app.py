@@ -763,9 +763,10 @@ def calculate_elo():
                     if k != 4:
                         return apology("scores not updated", 400)
 
-    # Add rating change to the speech database
+    # Update the database
     for update in updated_ratings:
         if update["rating_adjustment"] != 0:
+            # Add rating change to the speech database
             db.execute("UPDATE speeches SET rating_change = ? WHERE speaker_id = ? AND debate_id = ?",
                        update["rating_adjustment"], update["speaker"], update["debate"])
 
