@@ -19,11 +19,15 @@
                 </thead>
                 <tbody>
                     {% set i = namespace(value=0) %}
-                    {% set previous_score = namespace(value=0) %}
+                    {% set previous_score = namespace(value=101) %}
                     {% for speaker in speakers %}
                         <tr>
                             <td>
-                                {{ speaker["id"] }}
+                                {% if speaker["speaker_score"] < previous_score.value %}
+                                    {% set i.value = i.value + 1 %}
+                                    {% set previous_score.value = speaker["speaker_score"] %}
+                                {% endif %}
+                                {{ i.value }}
                             </td>
                             <td>
                                 {{ speaker["last_name"] }} {{ speaker["first_name"] }}
