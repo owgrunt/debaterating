@@ -826,6 +826,16 @@ def calculate_speaker_scores():
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
 
+@app.route("/speaker-scores", methods=["GET", "POST"])
+def show_speaker_scores():
+    """Calculate and update new average speaker scores"""
+
+    new_average = db.execute("SELECT id, first_name, last_name, middle_name,  FROM speeches WHERE speaker_id = ?",
+                             speaker["id"])[0]["avg(score)"]
+
+    return render_template("0-import-speaker-scores.html", speakers=speakers)
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
