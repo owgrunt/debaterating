@@ -708,39 +708,39 @@ def debates_success():
 def calculate_elo():
     """Calculate and update new ELO values"""
 
+    tournament_id = tournament["id"]
     # TODO get the list of rounds: SELECT id FROM rounds ORDER BY seq;
-    # TODO run the code for each round
-    tournament_id = str(1)
+    # rounds
     round_id = str(1)
-    round = db.execute(open("sql_get_team_performances.sql").read().replace("xxxxxx", tournament_id).replace("yyyyyy", round_id))
+    debates = db.execute(open("sql_get_team_performances.sql").read().replace("xxxxxx", tournament_id).replace("yyyyyy", round_id))
 
     # Set the k-factor constant
     k_factor = 32
 
     # Set up a list of dict with all the speakers to have their ratings adjusted
     updated_ratings = []
-    for i in range(len(round)):
-        if round[i]["swing"] != 1:
-            speaker_one = {"speaker": round[i]["speaker_one"],
-                           "debate": round[i]["debate_id"],
-                           "initial_rating": round[i]["speaker_one_rating"],
+    for i in range(len(debates)):
+        if debates[i]["swing"] != 1:
+            speaker_one = {"speaker": debates[i]["speaker_one"],
+                           "debate": debates[i]["debate_id"],
+                           "initial_rating": debates[i]["speaker_one_rating"],
                            "rating_adjustment": 0}
-            speaker_two = {"speaker": round[i]["speaker_two"],
-                           "debate": round[i]["debate_id"],
-                           "initial_rating": round[i]["speaker_two_rating"],
+            speaker_two = {"speaker": debates[i]["speaker_two"],
+                           "debate": debates[i]["debate_id"],
+                           "initial_rating": debates[i]["speaker_two_rating"],
                            "rating_adjustment": 0}
             updated_ratings.extend([speaker_one, speaker_two])
 
     # Update ratings for the round
-    for i in range(len(round)):
-        for j in range(len(round)):
+    for i in range(len(debates)):
+        for j in range(len(debates)):
             # Check for teams in the same debate and not swings
-            if round[i]["debate_id"] == round[j]["debate_id"] and round[i]["swing"] != 1 and round[j]["swing"] != 1 and round[i]["speaker_one"] != round[i]["speaker_two"] and round[j]["speaker_one"] != round[j]["speaker_two"]:
+            if debates[i]["debate_id"] == debates[j]["debate_id"] and debates[i]["swing"] != 1 and debates[j]["swing"] != 1 and debates[i]["speaker_one"] != debates[i]["speaker_two"] and debates[j]["speaker_one"] != debates[j]["speaker_two"]:
                 # Only change score if team i won
-                if round[i]["score"] > round[j]["score"]:
+                if debates[i]["score"] > debates[j]["score"]:
                     # Calculate initial team ratings
-                    victor_rating = ( round[i]["speaker_one_rating"] + round[i]["speaker_two_rating"] ) / 2
-                    loser_rating = ( round[j]["speaker_one_rating"] + round[j]["speaker_two_rating"] ) / 2
+                    victor_rating = ( debates[i]["speaker_one_rating"] + debates[i]["speaker_two_rating"] ) / 2
+                    loser_rating = ( debates[j]["speaker_one_rating"] + debates[j]["speaker_two_rating"] ) / 2
                     # Calculate victor's expected score
                     victors_expected_score = 1 / ( 1 + pow(10, (loser_rating - victor_rating) / 400))
                     # Calculate how much the rating will be adjusted
@@ -748,16 +748,16 @@ def calculate_elo():
                     # Adjust the ratings
                     k = 0
                     for update in updated_ratings:
-                        if update["speaker"] == round[i]["speaker_one"]:
+                        if update["speaker"] == debates[i]["speaker_one"]:
                             update["rating_adjustment"] = update["rating_adjustment"] + rating_adjustment
                             k = k + 1
-                        if update["speaker"] == round[i]["speaker_two"]:
+                        if update["speaker"] == debates[i]["speaker_two"]:
                             update["rating_adjustment"] = update["rating_adjustment"] + rating_adjustment
                             k = k + 1
-                        if update["speaker"] == round[j]["speaker_one"]:
+                        if update["speaker"] == debates[j]["speaker_one"]:
                             update["rating_adjustment"] = update["rating_adjustment"] - rating_adjustment
                             k = k + 1
-                        if update["speaker"] == round[j]["speaker_two"]:
+                        if update["speaker"] == debates[j]["speaker_two"]:
                             update["rating_adjustment"] = update["rating_adjustment"] - rating_adjustment
                             k = k + 1
                     if k != 4:
@@ -777,7 +777,7 @@ def calculate_elo():
 
     updated_count = len(updated_ratings)
 
-    return render_template("0-import-elo.html", round=round, updated_ratings=updated_ratings, updated_count=updated_count)
+    return render_template("0-import-elo.html", debates=debates, updated_ratings=updated_ratings, updated_count=updated_count)
 
 
 @app.route("/register", methods=["GET", "POST"])
