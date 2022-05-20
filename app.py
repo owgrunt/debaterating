@@ -830,8 +830,7 @@ def calculate_speaker_scores():
 def show_speaker_scores():
     """Calculate and update new average speaker scores"""
 
-    new_average = db.execute("SELECT id, first_name, last_name, middle_name,  FROM speeches WHERE speaker_id = ?",
-                             speaker["id"])[0]["avg(score)"]
+    new_average = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speeches")
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
