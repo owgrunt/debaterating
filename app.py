@@ -216,6 +216,9 @@ def import_speakers():
     global speakers
     speakers = lookup_data(domain, slug, "speakers")
 
+    # Import team data to show team name in the next screen. These are NOT global teams
+    teams = lookup_data(domain, slug, "teams")
+
     if speakers != None:
         for speaker in speakers:
             speaker["adjudicator"] = 0
