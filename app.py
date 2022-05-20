@@ -768,8 +768,8 @@ def calculate_elo():
     # Add rating change to the speech database
     for update in updated_ratings:
         if update["rating_adjustment"] != 0:
-            db.execute("UPDATE speeches SET rating_change = ? WHERE slug = ? AND domain = ?",
-                       update["rating_adjustment"], tournament["short_name"], tournament["date"], tournament["type"], tournament["internal_id"], tournament["slug"], tournament["domain"])
+            db.execute("UPDATE speeches SET rating_change = ? WHERE speaker_id = ? AND debate_id = ?",
+                       update["rating_adjustment"], update["speaker"], update["debate"])
 
     updated_count = len(updated_ratings)
 

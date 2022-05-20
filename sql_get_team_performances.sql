@@ -20,7 +20,7 @@ INNER JOIN debates ON
 WHERE
     team_performances.tournament_id = xxxxxx
 AND
-    team_performances.debate_id = 8
+    team_performances.debate_id = 1
 AND
     debates.round_id = yyyyyy
 ORDER BY
