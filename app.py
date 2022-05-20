@@ -677,7 +677,7 @@ def import_rounds():
                             speech["tournament_id"] = tournament["id"]
                             speech["debate_id"] = debate["id"]
                             speech["speaker_id"] = team_speakers[i]
-                            speech["score"] = 0
+                            # TODO delete speech["score"] = 0
                             # Assign position
                             if i == 0:
                                 if result["side"] == "og":
@@ -707,7 +707,8 @@ def import_rounds():
                             db_name = "speeches"
                             entry = speech
                             search_keys = ["debate_id", "tournament_id", "speaker_id"]
-                            update_keys = ["position", "score"]
+                            # TODO delete update_keys = ["position", "score"]
+                            update_keys = ["position"]
                             result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
     return redirect("/import/debate/success")
