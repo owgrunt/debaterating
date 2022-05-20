@@ -604,8 +604,6 @@ def import_rounds():
                     update_keys = ["side", "score"]
                     result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
-                    # TODO calculate ELO
-
                     # Get speeches
                     global speakers
                     if "speeches" in result:
