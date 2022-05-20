@@ -830,7 +830,7 @@ def calculate_speaker_scores():
 def ranking_speaker_score():
     """Calculate and update new average speaker scores"""
 
-    speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers")
+    speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
 
     return render_template("0-ranking-speaker-score.html", speakers=speakers)
 
