@@ -821,7 +821,7 @@ def calculate_speaker_scores():
         db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
                    speaker["new_average"], speaker["id"])
 
-    return render_template("0-import-elo.html", speakers=speakers)
+    return render_template("0-import-speaker-scores.html", speakers=speakers)
 
 
 @app.route("/register", methods=["GET", "POST"])

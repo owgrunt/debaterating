@@ -9,11 +9,9 @@
     <div class="container">
         <div class="section">
             <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
-            <a class="btn btn-primary mt-2 mb-2 mx-1" href="/import/speaker-scores" role="button">Продолжить</a>
+            <a class="btn btn-primary mt-2 mb-2 mx-1" href="/" role="button">Завершить</a>
         </div>
         <div class="section">
-            <!-- {{ updated_count }}
-            {{ all_updated_ratings }} -->
             <table>
                 <thead>
                     <tr>
@@ -25,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for instance in all_updated_ratings %}
+                    {% for speaker in speakers %}
                         <tr>
                             <td>
                                 {{ instance["round"] }}
