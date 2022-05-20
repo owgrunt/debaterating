@@ -709,6 +709,7 @@ def calculate_elo():
     """Calculate and update new ELO values"""
 
     tournament_id = tournament["id"]
+    all_updated_ratings = []
     # get the list of rounds
     rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
                         tournament_id)
@@ -725,13 +726,15 @@ def calculate_elo():
         for i in range(len(debates)):
             if debates[i]["swing"] != 1:
                 speaker_one = {"speaker": debates[i]["speaker_one"],
-                            "debate": debates[i]["debate_id"],
-                            "initial_rating": debates[i]["speaker_one_rating"],
-                            "rating_adjustment": 0}
+                               "round": round_id,
+                               "debate": debates[i]["debate_id"],
+                               "initial_rating": debates[i]["speaker_one_rating"],
+                               "rating_adjustment": 0}
                 speaker_two = {"speaker": debates[i]["speaker_two"],
-                            "debate": debates[i]["debate_id"],
-                            "initial_rating": debates[i]["speaker_two_rating"],
-                            "rating_adjustment": 0}
+                               "round": round_id,
+                               "debate": debates[i]["debate_id"],
+                               "initial_rating": debates[i]["speaker_two_rating"],
+                               "rating_adjustment": 0}
                 updated_ratings.extend([speaker_one, speaker_two])
 
         # Update ratings for the round
@@ -778,9 +781,11 @@ def calculate_elo():
                 db.execute("UPDATE speakers SET rating = ? WHERE id = ? AND rating = ?",
                         new_rating, update["speaker"], update["initial_rating"])
 
-        updated_count = len(updated_ratings)
+        all_updated_ratings.append(updated_ratings)
 
-    return render_template("0-import-elo.html", debates=debates, updated_ratings=updated_ratings, updated_count=updated_count)
+    updated_count = len(all_updated_ratings)
+
+    return render_template("0-import-elo.html", all_updated_ratings=all_updated_ratings, updated_count=updated_count)
 
 
 @app.route("/register", methods=["GET", "POST"])
