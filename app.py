@@ -876,6 +876,8 @@ def speaker_profile():
             new_value = speaks_by_position_calculation[i]["score"] / speaks_by_position_calculation[i]["number"]
         except (ZeroDivisionError):
             new_value = 0
+        if new_value < 60:
+            new_value = 60
         speaks_by_position = speaks_by_position + [new_value]
 
     return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, positions=positions, speaks_by_position_calculation=speaks_by_position_calculation)
