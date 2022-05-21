@@ -9,10 +9,10 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                Рейтинг: {{ speaker["rating"] }}
+                <h3>Рейтинг: {{ speaker["rating"] }}</h3>
             </div>
             <div class="col">
-                Средний спикерский: {{ speaker["speaker_score"] }}
+                <h3>Средний спикерский: {{ speaker["speaker_score"] }}</h3>
             </div>
         </div>
         <div class="row">
@@ -41,7 +41,7 @@
                 const data = {
                   labels: labels,
                   datasets: [{
-                    label: 'My First dataset',
+                    label: 'Спикерские',
                     backgroundColor: 'rgb(255, 99, 132)',
                     borderColor: 'rgb(255, 99, 132)',
                     data: [
@@ -62,7 +62,16 @@
                 const config = {
                   type: 'line',
                   data: data,
-                  options: {}
+                  options: {
+                        plugins: {
+                            legend: {
+                                display: false,
+                                labels: {
+                                    color: 'rgb(255, 99, 132)'
+                                }
+                            }
+                        }
+                    }
                 };
             </script>
             <script>
