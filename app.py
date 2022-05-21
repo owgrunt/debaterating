@@ -866,6 +866,7 @@ def speaker_profile():
 
     speeches = db.execute(open("sql_get_speeches.sql").read().replace("xxxxxx", str(id)))
 
+    # Add additional data to the speech entries
     positions = ["ПМ", "ЛО", "ЗПМ", "ЗЛО", "ЧП", "ЧО", "СП", "СО"]
     for i in range(len(speeches)):
         # Add position name to the speech entry
@@ -913,6 +914,9 @@ def speaker_profile():
             new_value = 0
         new_value = round(new_value, 2)
         points_by_side = points_by_side + [new_value]
+
+    # Prepare data to show your points depending on room strength
+    points_by_room_strength = []
 
     return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side)
 
