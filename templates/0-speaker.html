@@ -8,136 +8,125 @@
     <h2 class="mb-5 mt-2">{{ speaker["last_name"] }} {{ speaker["first_name"] }}</h2>
     <div class="container">
         <div class="row">
-            <div class="col">
-                <h3>Средний спикерский: {{ speaker["speaker_score"] }}</h3>
-            </div>
-            <div class="col">
-                <h3>Рейтинг: {{ speaker["rating"] }}</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                {{ speeches }}
-            </div>
-        </div>
-        <div class="row">
             <div class="col-6">
+                <h3>Средний спикерский: {{ speaker["speaker_score"] }}</h3>
                 <canvas id="speaksChart"></canvas>
-            </div>
-            <script>
-                const labels_speaks = [
-                    {% set i = namespace(value=1) %}
-                    {% for speech in speeches %}
-                        {% if speech["score"] != None %}
-                            {% if i.value < count %}
-                                "{{ speech["position_name"] }}",
-                                {% set i.value = i.value + 1 %}
-                            {% else %}
-                                "{{ speech["position_name"] }}"
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}];
-
-                const data_speaks = {
-                  labels: labels_speaks,
-                  datasets: [{
-                    label: 'Спикерские',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [
+                <script>
+                    const labels_speaks = [
                         {% set i = namespace(value=1) %}
                         {% for speech in speeches %}
                             {% if speech["score"] != None %}
                                 {% if i.value < count %}
-                                    {{ speech["score"] }},
+                                    "{{ speech["position_name"] }}",
                                     {% set i.value = i.value + 1 %}
                                 {% else %}
-                                    {{ speech["score"] }}
+                                    "{{ speech["position_name"] }}"
                                 {% endif %}
                             {% endif %}
-                        {% endfor %}],
-                  }]
-                };
+                        {% endfor %}];
 
-                const config_speaks = {
-                  type: 'line',
-                  data: data_speaks,
-                  options: {
-                        plugins: {
-                            legend: {
-                                display: false,
-                                labels: {
-                                    color: 'rgb(255, 99, 132)'
+                    const data_speaks = {
+                    labels: labels_speaks,
+                    datasets: [{
+                        label: 'Спикерские',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: [
+                            {% set i = namespace(value=1) %}
+                            {% for speech in speeches %}
+                                {% if speech["score"] != None %}
+                                    {% if i.value < count %}
+                                        {{ speech["score"] }},
+                                        {% set i.value = i.value + 1 %}
+                                    {% else %}
+                                        {{ speech["score"] }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}],
+                    }]
+                    };
+
+                    const config_speaks = {
+                    type: 'line',
+                    data: data_speaks,
+                    options: {
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        color: 'rgb(255, 99, 132)'
+                                    }
                                 }
                             }
                         }
-                    }
-                };
+                    };
 
-                const speaksChart = new Chart(
-                  document.getElementById('speaksChart'),
-                  config_speaks
-                );
-            </script>
+                    const speaksChart = new Chart(
+                    document.getElementById('speaksChart'),
+                    config_speaks
+                    );
+                </script>
+            </div>
 
             <div class="col-6">
+                <h3>Рейтинг: {{ speaker["rating"] }}</h3>
                 <canvas id="ratingChart"></canvas>
-            </div>
-            <script>
-                const labels_rating = [
-                    {% set i = namespace(value=1) %}
-                    {% for speech in speeches %}
-                        {% if speech["rating"] != None %}
-                            {% if i.value < count %}
-                                "{{ speech["position_name"] }}",
-                                {% set i.value = i.value + 1 %}
-                            {% else %}
-                                "{{ speech["position_name"] }}"
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}];
-
-                const data_rating = {
-                  labels: labels_rating,
-                  datasets: [{
-                    label: 'Рейтинг',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [
+                <script>
+                    const labels_rating = [
                         {% set i = namespace(value=1) %}
                         {% for speech in speeches %}
                             {% if speech["rating"] != None %}
                                 {% if i.value < count %}
-                                    {{ speech["rating"] }},
+                                    "{{ speech["position_name"] }}",
                                     {% set i.value = i.value + 1 %}
                                 {% else %}
-                                    {{ speech["rating"] }}
+                                    "{{ speech["position_name"] }}"
                                 {% endif %}
                             {% endif %}
-                        {% endfor %}],
-                  }]
-                };
+                        {% endfor %}];
 
-                const config_rating = {
-                  type: 'line',
-                  data: data_rating,
-                  options: {
-                        plugins: {
-                            legend: {
-                                display: false,
-                                labels: {
-                                    color: 'rgb(255, 99, 132)'
+                    const data_rating = {
+                      labels: labels_rating,
+                      datasets: [{
+                        label: 'Рейтинг',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: [
+                            {% set i = namespace(value=1) %}
+                            {% for speech in speeches %}
+                                {% if speech["rating"] != None %}
+                                    {% if i.value < count %}
+                                        {{ speech["rating"] }},
+                                        {% set i.value = i.value + 1 %}
+                                    {% else %}
+                                        {{ speech["rating"] }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}],
+                      }]
+                    };
+
+                    const config_rating = {
+                      type: 'line',
+                      data: data_rating,
+                      options: {
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        color: 'rgb(255, 99, 132)'
+                                    }
                                 }
                             }
                         }
-                    }
-                };
+                    };
 
-                const ratingChart = new Chart(
-                  document.getElementById('ratingChart'),
-                  config_rating
-                );
-            </script>
+                    const ratingChart = new Chart(
+                      document.getElementById('ratingChart'),
+                      config_rating
+                    );
+                </script>
+            </div>
         </div>
         <div class="row">
             <div class="col-4">
