@@ -7,11 +7,17 @@ SELECT
 --    teams.speaker_two_id AS speaker_two,
 --    speaker_one.rating AS speaker_one_rating,
 --    speaker_two.rating AS speaker_two_rating
-    
+    speeches.id,
+    speeches.tournament_id,
+    speeches.debate_id,
+    speeches.score,
+    speeches.rating_change,
+    speeches.position,
+
 FROM
-   team_performances
-INNER JOIN teams ON
-    team_performances.team_id = teams.id
+   speeches
+INNER JOIN team_performances ON
+    team_performances.debate_id = teams.id
 INNER JOIN speakers AS speaker_one ON
     teams.speaker_one_id = speaker_one.id
 INNER JOIN speakers AS speaker_two ON
