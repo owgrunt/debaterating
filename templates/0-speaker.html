@@ -82,8 +82,64 @@
             </script>
 
             <div class="col-6">
-                test
+                <canvas id="ratingChart"></canvas>
             </div>
+            <script>
+                const labels = [
+                    {% set i = namespace(value=1) %}
+                    {% for speech in speeches %}
+                        {% if speech["score"] != None %}
+                            {% if i.value < count %}
+                                "{{ speech["position_name"] }}",
+                                {% set i.value = i.value + 1 %}
+                            {% else %}
+                                "{{ speech["position_name"] }}"
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}];
+
+                const data = {
+                  labels: labels,
+                  datasets: [{
+                    label: 'Спикерские',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [
+                        {% set i = namespace(value=1) %}
+                        {% for speech in speeches %}
+                            {% if speech["score"] != None %}
+                                {% if i.value < count %}
+                                    {{ speech["score"] }},
+                                    {% set i.value = i.value + 1 %}
+                                {% else %}
+                                    {{ speech["score"] }}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}],
+                  }]
+                };
+
+                const config = {
+                  type: 'line',
+                  data: data,
+                  options: {
+                        plugins: {
+                            legend: {
+                                display: false,
+                                labels: {
+                                    color: 'rgb(255, 99, 132)'
+                                }
+                            }
+                        }
+                    }
+                };
+            </script>
+            <script>
+                const ratingChart = new Chart(
+                  document.getElementById('ratingChart'),
+                  config
+                );
+            </script>
             <!-- <table>
                 <thead>
                     <tr>
