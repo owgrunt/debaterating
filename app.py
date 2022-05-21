@@ -758,6 +758,7 @@ def calculate_elo():
 
         # Update ratings for the round
         for i in range(len(debates)):
+            # Iterate through all the other team_performances in the round
             for j in range(len(debates)):
                 # Check for teams in the same debate and not swings
                 if debates[i]["debate_id"] == debates[j]["debate_id"] and debates[i]["swing"] != 1 and debates[j]["swing"] != 1 and debates[i]["speaker_one"] != debates[i]["speaker_two"] and debates[j]["speaker_one"] != debates[j]["speaker_two"]:
