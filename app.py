@@ -915,6 +915,9 @@ def speaker_profile():
         new_value = round(new_value, 2)
         points_by_side = points_by_side + [new_value]
 
+    # Prepare data to show a pie chart of your team rankings
+    
+
     # Prepare data to show your points depending on room strength
     points_by_room_strength = []
     for speech in speeches:
