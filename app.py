@@ -851,7 +851,8 @@ def speaker_profile():
 
     positions = ["ПМ", "ЛО", "ЗПМ", "ЗЛО", "ЧП", "ЧО", "СП", "СО"]
     for i in range(len(speeches)):
-        speeches[i]["position_name"] = positions[speeches[i]["position"]]
+        
+        speeches[i]["position_name"] = positions[speeches[i]["position"]-1]
         if i == 0:
             speeches[i]["rating"] = speaker["rating"]
         else:
