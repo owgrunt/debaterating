@@ -88,7 +88,7 @@
                 const labels = [
                     {% set i = namespace(value=1) %}
                     {% for speech in speeches %}
-                        {% if speech["score"] != None %}
+                        {% if speech["rating"] != None %}
                             {% if i.value < count %}
                                 "{{ speech["position_name"] }}",
                                 {% set i.value = i.value + 1 %}
@@ -101,18 +101,18 @@
                 const data = {
                   labels: labels,
                   datasets: [{
-                    label: 'Спикерские',
+                    label: 'Рейтинг',
                     backgroundColor: 'rgb(255, 99, 132)',
                     borderColor: 'rgb(255, 99, 132)',
                     data: [
                         {% set i = namespace(value=1) %}
                         {% for speech in speeches %}
-                            {% if speech["score"] != None %}
+                            {% if speech["rating"] != None %}
                                 {% if i.value < count %}
-                                    {{ speech["score"] }},
+                                    {{ speech["rating"] }},
                                     {% set i.value = i.value + 1 %}
                                 {% else %}
-                                    {{ speech["score"] }}
+                                    {{ speech["rating"] }}
                                 {% endif %}
                             {% endif %}
                         {% endfor %}],
