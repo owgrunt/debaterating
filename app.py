@@ -756,6 +756,10 @@ def calculate_elo():
                                "rating_adjustment": 0}
                 updated_ratings.extend([speaker_one, speaker_two])
 
+        # Create a set of unique debates in this round
+        debates_in_round = set()
+        for performance in team_performances:
+            debates_in_round.add(performance["debate_id"])
         # Calculate the average speaker rating in the TODO debate
         total_rating = 0
         for initial_rating in updated_ratings:
