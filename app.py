@@ -846,7 +846,7 @@ def speaker_profile():
 
     speaker = db.execute(f"SELECT * FROM speakers WHERE id = {id}")[0]
 
-    speeches = db.execute(f"SELECT * FROM speeches WHERE speaker_id = {id}")
+    speeches = db.execute(f"SELECT * FROM speeches WHERE speaker_id = {id} ORDER BY id DESC")
 
     positions = ["ПМ", "ЛО", "ЗПМ", "ЗЛО", "ЧП", "ЧО", "СП", "СО"]
     for speech in speeches:
