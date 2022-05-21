@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 from helpers import apology, login_required, lookup_data, lookup_tournament, lookup_link, add_database_entry, split_name_by_format, has_yo
 
 from datetime import datetime
+from operator import itemgetter
 
 # Configure application
 app = Flask(__name__)
