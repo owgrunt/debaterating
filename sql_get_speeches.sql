@@ -22,6 +22,6 @@ INNER JOIN team_performances
                 speeches.speaker_id = teams.speaker_two_id
         )
 WHERE
-    speeches.speaker_id = 66
+    speeches.speaker_id = xxxxxx
 ORDER BY
     speeches.id ASC;
