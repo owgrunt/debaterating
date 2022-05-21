@@ -32,8 +32,8 @@
                     labels: labels_speaks,
                     datasets: [{
                         label: 'Спикерские',
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgb(220, 53, 69)',
+                        borderColor: 'rgb(220, 53, 69)',
                         data: [
                             {% set i = namespace(value=1) %}
                             {% for speech in speeches %}
@@ -57,7 +57,7 @@
                                 legend: {
                                     display: false,
                                     labels: {
-                                        color: 'rgb(255, 99, 132)'
+                                        color: 'rgb(220, 53, 69)'
                                     }
                                 }
                             }
@@ -92,8 +92,8 @@
                       labels: labels_rating,
                       datasets: [{
                         label: 'Рейтинг',
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgb(220, 53, 69)',
+                        borderColor: 'rgb(220, 53, 69)',
                         data: [
                             {% set i = namespace(value=1) %}
                             {% for speech in speeches %}
@@ -117,7 +117,7 @@
                                 legend: {
                                     display: false,
                                     labels: {
-                                        color: 'rgb(255, 99, 132)'
+                                        color: 'rgb(220, 53, 69)'
                                     }
                                 }
                             }
@@ -143,12 +143,12 @@
                       datasets: [{
                         label: 'Рейтинг',
                         fill: true,
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        pointBackgroundColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(220, 53, 69, 0.2)',
+                        borderColor: 'rgb(220, 53, 69)',
+                        pointBackgroundColor: 'rgb(220, 53, 69)',
                         pointBorderColor: '#fff',
                         pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(255, 99, 132)',
+                        pointHoverBorderColor: 'rgb(220, 53, 69)',
                         data: {{ speaks_by_position }},
                       }]
                     };
@@ -167,7 +167,7 @@
                                 legend: {
                                     display: false,
                                     labels: {
-                                        color: 'rgb(255, 99, 132)'
+                                        color: 'rgb(220, 53, 69)'
                                     }
                                 }
                             }
@@ -191,12 +191,12 @@
                     datasets: [{
                         label: 'Рейтинг',
                         fill: true,
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        pointBackgroundColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(220, 53, 69, 0.2)',
+                        borderColor: 'rgb(220, 53, 69)',
+                        pointBackgroundColor: 'rgb(220, 53, 69)',
                         pointBorderColor: '#fff',
                         pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(255, 99, 132)',
+                        pointHoverBorderColor: 'rgb(220, 53, 69)',
                         data: {{ points_by_side }},
                     }]
                     };
@@ -215,7 +215,7 @@
                                 legend: {
                                     display: false,
                                     labels: {
-                                        color: 'rgb(255, 99, 132)'
+                                        color: 'rgb(220, 53, 69)'
                                     }
                                 }
                             }
@@ -245,7 +245,7 @@
                                     },
                                 {% endfor %}
                             ],
-                            backgroundColor: 'rgba(255, 99, 132)'
+                            backgroundColor: 'rgba(220, 53, 69)'
                         }],
                     };
 
@@ -263,7 +263,7 @@
                                 legend: {
                                     display: false,
                                     labels: {
-                                        color: 'rgb(255, 99, 132)'
+                                        color: 'rgb(220, 53, 69)'
                                     }
                                 }
                             }
