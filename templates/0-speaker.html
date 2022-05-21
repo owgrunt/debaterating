@@ -26,13 +26,17 @@
             </div>
             <script>
                 const labels = [
-                  'January',
-                  'February',
-                  'March',
-                  'April',
-                  'May',
-                  'June',
-                ];
+                    {% set i = namespace(value=1) %}
+                    {% for speech in speeches %}
+                        {% if speech["score"] != None %}
+                            {% if i.value < count %}
+                                {{ speech["score"] }},
+                                {% set i.value = i.value + 1 %}
+                            {% else %}
+                                {{ speech["score"] }}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}];
 
                 const data = {
                   labels: labels,
@@ -43,11 +47,13 @@
                     data: [
                         {% set i = namespace(value=1) %}
                         {% for speech in speeches %}
-                            {% if i.value < count %}
-                                {{ speech["score"] }},
-                                {% set i.value = i.value + 1 %}
-                            {% else %}
-                                {{ speech["score"] }}
+                            {% if speech["score"] != None %}
+                                {% if i.value < count %}
+                                    {{ speech["score"] }},
+                                    {% set i.value = i.value + 1 %}
+                                {% else %}
+                                    {{ speech["score"] }}
+                                {% endif %}
                             {% endif %}
                         {% endfor %}],
                   }]
