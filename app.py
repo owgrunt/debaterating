@@ -761,7 +761,8 @@ def calculate_elo():
         for initial_rating in updated_ratings:
             total_rating = total_rating + initial_rating["initial_rating"]
         average_rating = total_rating / len(updated_ratings)
-        # Update the 
+        # Update the debate table to include average rating of the speakers
+        for debate in debates
 
         # Update ratings for the round
         for i in range(len(debates)):
