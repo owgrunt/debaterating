@@ -13,7 +13,6 @@ SELECT
     speeches.score,
     speeches.rating_change,
     speeches.position,
-
 FROM
    speeches
 INNER JOIN team_performances ON
