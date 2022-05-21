@@ -30,10 +30,10 @@
                     {% for speech in speeches %}
                         {% if speech["score"] != None %}
                             {% if i.value < count %}
-                                {{ speech["score"] }},
+                                {{ speech["position"] }},
                                 {% set i.value = i.value + 1 %}
                             {% else %}
-                                {{ speech["score"] }}
+                                {{ speech["position"] }}
                             {% endif %}
                         {% endif %}
                     {% endfor %}];
