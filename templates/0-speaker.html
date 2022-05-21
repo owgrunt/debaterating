@@ -144,65 +144,6 @@
             </script>
         </div>
         <div class="row">
-            <div class="col">
-                <canvas id="SpeaksByPositionChart"></canvas>
-            </div>
-            <script>
-                const labels_speaks = [
-                    {% set i = namespace(value=1) %}
-                    {% for speech in speeches %}
-                        {% if speech["score"] != None %}
-                            {% if i.value < count %}
-                                "{{ speech["position_name"] }}",
-                                {% set i.value = i.value + 1 %}
-                            {% else %}
-                                "{{ speech["position_name"] }}"
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}];
-
-                const data_speaks = {
-                  labels: labels_speaks,
-                  datasets: [{
-                    label: 'Спикерские',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [
-                        {% set i = namespace(value=1) %}
-                        {% for speech in speeches %}
-                            {% if speech["score"] != None %}
-                                {% if i.value < count %}
-                                    {{ speech["score"] }},
-                                    {% set i.value = i.value + 1 %}
-                                {% else %}
-                                    {{ speech["score"] }}
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}],
-                  }]
-                };
-
-                const config_speaks = {
-                  type: 'line',
-                  data: data_speaks,
-                  options: {
-                        plugins: {
-                            legend: {
-                                display: false,
-                                labels: {
-                                    color: 'rgb(255, 99, 132)'
-                                }
-                            }
-                        }
-                    }
-                };
-
-                const speaksChart = new Chart(
-                  document.getElementById('speaksChart'),
-                  config_speaks
-                );
-            </script>
-
             <div class="col-2">
                 <canvas id="speaksByPositionChart"></canvas>
             </div>
