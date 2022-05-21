@@ -45,9 +45,20 @@
                 };
 
                 const config = {
-                  type: 'line',
-                  data: data,
-                  options: {}
+                    type: 'line',
+                    data: data,
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                        return tooltipItem.yLabel;
+                                }
+                            }
+                        }
+                    }
                 };
             </script>
             <script>
