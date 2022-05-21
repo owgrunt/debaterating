@@ -171,10 +171,12 @@
                     type: 'radar',
                     data: data_speaks_by_position,
                     options: {
-                        scale: {
-                            ticks: {
-                                beginAtZero: false,
-                                max: 85
+                        plugins: {
+                            legend: {
+                                display: false,
+                                labels: {
+                                    color: 'rgb(255, 99, 132)'
+                                }
                             }
                         }
                     }
