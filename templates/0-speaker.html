@@ -168,12 +168,13 @@
                 };
 
                 const config_speaks_by_position = {
-                  type: 'radar',
-                  data: data_speaks_by_position,
-                  options: {
-                        plugins: {
-                            legend: {
-                                display: false
+                    type: 'radar',
+                    data: data_speaks_by_position,
+                    options: {
+                        scale: {
+                            ticks: {
+                                min: 65,
+                                max: 85
                             }
                         }
                     }
