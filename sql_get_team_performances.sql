@@ -1,13 +1,12 @@
 SELECT
---    team_performances.team_id,
---    team_performances.score,
---    team_performances.debate_id,
---    teams.swing,
---    teams.speaker_one_id AS speaker_one,
---    teams.speaker_two_id AS speaker_two,
---    speaker_one.rating AS speaker_one_rating,
---    speaker_two.rating AS speaker_two_rating
-    team_performances.score AS team_score,
+   team_performances.team_id,
+   team_performances.score,
+   team_performances.debate_id,
+   teams.swing,
+   teams.speaker_one_id AS speaker_one,
+   teams.speaker_two_id AS speaker_two,
+   speaker_one.rating AS speaker_one_rating,
+   speaker_two.rating AS speaker_two_rating
 FROM
    team_performances
 INNER JOIN teams ON
