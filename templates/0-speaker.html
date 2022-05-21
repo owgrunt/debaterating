@@ -7,10 +7,10 @@
 {% block main %}
     <h2 class="mb-5 mt-2">{{ speaker["last_name"] }} {{ speaker["first_name"] }}</h2>
     <div class="container">
-        <div class="row">
+        <!-- <div class="row">
             {{ speeches }}<br><br>{{ rankings_by_round_seq }}<br><br>{{ round_seq }}
-        </div>
-        <div class="row">
+        </div> -->
+        <div class="row mt-3">
             <div class="col-6">
                 <h3>Средний спикерский: {{ speaker["speaker_score"] }}</h3>
                 <canvas id="speaksChart"></canvas>
@@ -132,7 +132,7 @@
                 </script>
             </div>
         </div>
-        <div class="row">
+        <div class="row mt-3">
             <div class="col-4">
                 <h3>Спикерские по роли</h3>
                 <canvas id="speaksByPositionChart"></canvas>
@@ -275,7 +275,7 @@
                 </script>
             </div>
         </div>
-        <div class="row">
+        <div class="row mt-3">
             <div class="col-6">
                 <h3>Очки по силе комнаты</h3>
                 <canvas id="pointsByRoomStrengthChart"></canvas>
