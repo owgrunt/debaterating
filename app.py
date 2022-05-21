@@ -862,12 +862,14 @@ def speaker_profile():
     count = len(speeches)
 
     # Prepare data to show your average speaker score by position
-    speaks_by_position = [{"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}]
+    speaks_by_position_calculation = [{"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}]
     for speech in speeches:
         position = speech["position"] - 1
-        speaks_by_position[position]["number"] = speaks_by_position[position]["number"] + 1
-        speaks_by_position[position]["score"] = speaks_by_position[position]["score"] + speech["position"]
-
+        speaks_by_position_calculation[position]["number"] = speaks_by_position_calculation[position]["number"] + 1
+        speaks_by_position_calculation[position]["score"] = speaks_by_position_calculation[position]["score"] + speech["position"]
+    speaks_by_position = []
+    for i in range(len(speaks_by_position_calculation)):
+        speaks_by_position[i] = speaks_by_position_calculation[i]["score"] / speaks_by_position_calculation[i]["number"]
 
     return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count)
 
