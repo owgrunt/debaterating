@@ -851,8 +851,9 @@ def speaker_profile():
 
     positions = ["ПМ", "ЛО", "ЗПМ", "ЗЛО", "ЧП", "ЧО", "СП", "СО"]
     for i in range(len(speeches)):
-        
+        # Add position name to the speech entry
         speeches[i]["position_name"] = positions[speeches[i]["position"]-1]
+        # Add rating after the debate to the speech entry
         if i == 0:
             speeches[i]["rating"] = speaker["rating"]
         else:
