@@ -7,8 +7,18 @@
 {% block main %}
     <h2 class="mb-5 mt-2">{{ speaker["last_name"] }} {{ speaker["first_name"] }}</h2>
     <div class="container">
-        <div class="section">
-            
+        <div class="row">
+            <div class="column">
+                Рейтинг: {{ speaker["rating"] }}
+            </div>
+            <div class="column">
+                Средний спикерский: {{ speaker["speaker_score"] }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                {{ speeches }}
+            </div>
         </div>
         <div class="section">
             <div>
