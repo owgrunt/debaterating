@@ -846,7 +846,9 @@ def speaker_profile():
 
     speaker = db.execute(f"SELECT * FROM speakers WHERE id = {id}")[0]
 
-    return render_template("0-speaker.html", speaker=speaker)
+    speeches = db.execute(f"SELECT * FROM speeches WHERE speaker_id = {id}")
+
+    return render_template("0-speaker.html", speaker=speaker, speeches=speeches)
 
 
 @app.route("/register", methods=["GET", "POST"])
