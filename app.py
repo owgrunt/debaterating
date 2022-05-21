@@ -837,7 +837,7 @@ def ranking_speaker_score():
 
 @app.route("/speaker", methods=["GET", "POST"])
 def speaker_profile():
-    """Calculate and update new average speaker scores"""
+    """Show speaker profile"""
 
     speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
 
