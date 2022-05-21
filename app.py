@@ -917,8 +917,13 @@ def speaker_profile():
 
     # Prepare data to show your points depending on room strength
     points_by_room_strength = []
+    for speech in speeches:
+        entry = {}
+        entry["y"] = speech["team_score"]
+        entry["x"] = speech["average_rating"]
+        points_by_room_strength = points_by_room_strength + [entry]
 
-    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side)
+    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength)
 
 
 @app.route("/register", methods=["GET", "POST"])

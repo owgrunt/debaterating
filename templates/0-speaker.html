@@ -236,6 +236,45 @@
                     );
                 </script>
             </div>
+            <div class="col-4">
+                <h3>Очки по силе комнаты</h3>
+                <canvas id="pointsByRoomStrengthChart"></canvas>
+                <script>
+                    const data_points_by_room_strength = {
+                    datasets: [{
+                        label: 'Рейтинг',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        data: {{ points_by_room_strength }},
+                    }]
+                    };
+
+                    const config_points_by_room_strength = {
+                        type: 'scatter',
+                        data: data_points_by_room_strength,
+                        options: {
+                            scales: {
+                                x: {
+                                  type: 'linear',
+                                  position: 'bottom'
+                                },
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        color: 'rgb(255, 99, 132)'
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    const pointsByRoomStrengthChart = new Chart(
+                    document.getElementById('pointsByRoomStrengthChart'),
+                    config_points_by_room_strength
+                    );
+                </script>
+            </div>
         </div>
     </div>
 {% endblock %}
