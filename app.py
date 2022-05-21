@@ -935,10 +935,16 @@ def speaker_profile():
         entry["x"] = speech["average_rating"]
         points_by_room_strength = points_by_room_strength + [entry]
 
-    # Prepare data to show a chart of your team rankings by round number
-    round_numbers = []
+    # Prepare data to show a chart of your team rankings by round sequence number
+    round_seq = []
+    rankings_by_round_seq = []
     for speech in speeches:
-        if speech["seq"] in 
+        if speech["seq"] is not in round_seq:
+            round_seq = round_seq + [speech["seq"]]
+            round_instance = {"seq": speech["seq"], "score": speech["team_score"], "number": 0}
+            rankings_by_round_seq = rankings_by_round_seq + [round_instance]
+
+
 
     return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings)
 
