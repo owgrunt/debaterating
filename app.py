@@ -936,6 +936,9 @@ def speaker_profile():
         points_by_room_strength = points_by_room_strength + [entry]
 
     # Prepare data to show a chart of your team rankings by round number
+    round_numbers = []
+    for speech in speeches:
+        if speech["seq"] in 
 
     return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings)
 
