@@ -8,7 +8,7 @@
     <h2 class="mb-5 mt-2">{{ speaker["last_name"] }} {{ speaker["first_name"] }}</h2>
     <div class="container">
         <div class="row">
-            {{ speeches }}
+            {{ speeches }}<br><br>{{ rankings_by_round_seq }}<br><br>{{ round_seq }}
         </div>
         <div class="row">
             <div class="col-6">
@@ -328,7 +328,7 @@
                 <script>
                     const labels_score_by_sequence = [
                         {% set i = namespace(value=1) %}
-                        {% for speech in speeches %}
+                        {% for speech in rankings_by_round_seq %}
                             {% if speech["score"] != None %}
                                 {% if i.value < count %}
                                     {{ speech["seq"] }},
@@ -362,7 +362,7 @@
                     };
 
                     const config_score_by_sequence = {
-                    type: 'line',
+                    type: 'bar',
                     data: data_score_by_sequence,
                     options: {
                             plugins: {

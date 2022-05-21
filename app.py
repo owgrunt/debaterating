@@ -951,7 +951,7 @@ def speaker_profile():
     for ranking in rankings_by_round_seq:
         ranking["average_score"] = ranking["score"] / ranking["number"]
 
-    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq)
+    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq, round_seq=round_seq)
 
 
 @app.route("/register", methods=["GET", "POST"])
