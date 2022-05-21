@@ -760,6 +760,8 @@ def calculate_elo():
         total_rating = 0
         for initial_rating in updated_ratings:
             total_rating = total_rating + initial_rating["initial_rating"]
+        average_rating = total_rating / len(updated_ratings)
+        # Update the 
 
         # Update ratings for the round
         for i in range(len(debates)):
