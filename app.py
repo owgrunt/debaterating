@@ -921,11 +921,11 @@ def speaker_profile():
         if speech["team_score"] == 3:
             team_rankings[0] = team_rankings[0] + 1
         elif speech["team_score"] == 2:
-            team_rankings[0] = team_rankings[1] + 1
+            team_rankings[1] = team_rankings[1] + 1
         elif speech["team_score"] == 1:
-            team_rankings[0] = team_rankings[2] + 1
+            team_rankings[2] = team_rankings[2] + 1
         elif speech["team_score"] == 0:
-            team_rankings[0] = team_rankings[3] + 1
+            team_rankings[3] = team_rankings[3] + 1
 
     # Prepare data to show your points depending on room strength
     points_by_room_strength = []
