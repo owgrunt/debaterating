@@ -866,7 +866,7 @@ def speaker_profile():
     # Prepare data to show your average speaker score by position
     speaks_by_position_calculation = [{"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}]
     for speech in speeches:
-        if "score" in speech:
+        if speech["score"] is not None:
             position = speech["position"] - 1
             speaks_by_position_calculation[position]["number"] = speaks_by_position_calculation[position]["number"] + 1
             speaks_by_position_calculation[position]["score"] = speaks_by_position_calculation[position]["score"] + speech["score"]
