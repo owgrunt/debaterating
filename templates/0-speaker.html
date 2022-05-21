@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">{{ speaker["last_name"] }} {{ speaker["first_name"] }}</h2>
+    <div class="container">
+        <div class="section">
+            <!-- <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">Место</th>
+                        <th style="width: 25%">Спикер</th>
+                        <th style="width: 25%">Средний спикерский</th>
+                        <th style="width: 25%">Рейтинг</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set i = namespace(value=0) %}
+                    {% set previous_score = namespace(value=101) %}
+                    {% for speaker in speakers %}
+                        <tr>
+                            <td>
+                                {% if speaker["speaker_score"] < previous_score.value %}
+                                    {% set i.value = i.value + 1 %}
+                                    {% set previous_score.value = speaker["speaker_score"] %}
+                                {% endif %}
+                                {{ i.value }}
+                            </td>
+                            <td>
+                                {{ speaker["last_name"] }} {{ speaker["first_name"] }}
+                            </td>
+                            <td>
+                                {{ speaker["speaker_score"] }}
+                            </td>
+                            <td>
+                                {{ speaker["rating"] }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table> -->
+        </div>
+    </div>
+{% endblock %}
