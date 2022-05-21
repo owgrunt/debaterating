@@ -144,7 +144,7 @@
             </script>
         </div>
         <div class="row">
-            <div class="col-2">
+            <div class="col-4">
                 <canvas id="speaksByPositionChart"></canvas>
             </div>
             <script>
@@ -161,7 +161,7 @@
                     pointBorderColor: '#fff',
                     pointHoverBackgroundColor: '#fff',
                     pointHoverBorderColor: 'rgb(255, 99, 132)',
-                    data: [{{ speaks_by_position }}],
+                    data: {{ speaks_by_position }},
                   }]
                 };
 
