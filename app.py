@@ -756,6 +756,8 @@ def calculate_elo():
                                "rating_adjustment": 0}
                 updated_ratings.extend([speaker_one, speaker_two])
 
+        # Calculate the average speaker rating in the round
+
         # Update ratings for the round
         for i in range(len(debates)):
             # Iterate through all the other team_performances in the round
