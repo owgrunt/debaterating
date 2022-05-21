@@ -85,7 +85,7 @@
                 <canvas id="ratingChart"></canvas>
             </div>
             <script>
-                const labels = [
+                const labels_rating = [
                     {% set i = namespace(value=1) %}
                     {% for speech in speeches %}
                         {% if speech["rating"] != None %}
@@ -98,8 +98,8 @@
                         {% endif %}
                     {% endfor %}];
 
-                const data = {
-                  labels: labels,
+                const data_rating = {
+                  labels: labels_rating,
                   datasets: [{
                     label: 'Рейтинг',
                     backgroundColor: 'rgb(255, 99, 132)',
@@ -119,9 +119,9 @@
                   }]
                 };
 
-                const config = {
+                const config_rating = {
                   type: 'line',
-                  data: data,
+                  data: data_rating,
                   options: {
                         plugins: {
                             legend: {
@@ -137,7 +137,7 @@
             <script>
                 const ratingChart = new Chart(
                   document.getElementById('ratingChart'),
-                  config
+                  config_rating
                 );
             </script>
             <!-- <table>
