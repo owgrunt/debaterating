@@ -797,7 +797,7 @@ def calculate_elo():
             if update["rating_adjustment"] != 0:
                 # Add rating change to the speech database
                 db.execute("UPDATE speeches SET rating_change = ? WHERE speaker_id = ? AND debate_id = ?",
-                        update["rating_adjustment"], update["speaker"], update["debate"])
+                           update["rating_adjustment"], update["speaker"], update["debate"])
 
                 # Change the rating in the speaker database
                 new_rating = update["initial_rating"] + update["rating_adjustment"]
@@ -819,10 +819,10 @@ def calculate_speaker_scores():
     for speaker in speakers:
         if speaker["adjudicator"] == 0:
             new_average = db.execute("SELECT avg(score) FROM speeches WHERE speaker_id = ?",
-                                    speaker["id"])[0]["avg(score)"]
+                                     speaker["id"])[0]["avg(score)"]
             speaker["new_average"] = round(new_average, 2)
             db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
-                    speaker["new_average"], speaker["id"])
+                       speaker["new_average"], speaker["id"])
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
