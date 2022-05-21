@@ -171,9 +171,13 @@
                   type: 'radar',
                   data: data_speaks_by_position,
                   options: {
-                        plugins: {
-                            legend: {
-                                display: false
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    display: false
+                                },
+                                suggestedMin: 50,
+                                suggestedMax: 100
                             }
                         }
                     }
