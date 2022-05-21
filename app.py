@@ -864,7 +864,8 @@ def speaker_profile():
     speaks_by_position = [{"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}]
     for speech in speeches:
         position = speech["position"]
-        
+        speaks_by_position[position]["number"] = speaks_by_position[position]["number"] + 1
+        speaks_by_position[position]["score"] = speaks_by_position[position]["score"] + speech["position"]
 
     return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count)
 
