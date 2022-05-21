@@ -941,12 +941,15 @@ def speaker_profile():
     for speech in speeches:
         if speech["seq"] is not in round_seq:
             round_seq = round_seq + [speech["seq"]]
-            round_instance = {"seq": speech["seq"], "score": speech["team_score"], "number": 0}
+            round_instance = {"seq": speech["seq"], "score": speech["team_score"], "number": 1}
             rankings_by_round_seq = rankings_by_round_seq + [round_instance]
+        else:
+            for ranking in rankings_by_round_seq:
+                if ranking["seq"] == speech["seq"]:
+                    ranking["score"] = speech["team_score"]
+                    ranking["number"] = ranking["number"] + 1
 
-
-
-    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings)
+    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq)
 
 
 @app.route("/register", methods=["GET", "POST"])
