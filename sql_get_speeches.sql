@@ -7,7 +7,8 @@ SELECT
     speeches.position,
     team_performances.score AS team_score,
     team_performances.side,
-    debates.average_rating
+    debates.average_rating,
+    rounds.seq
 FROM
    speeches
 INNER JOIN team_performances
@@ -25,6 +26,8 @@ INNER JOIN team_performances
         )
 INNER JOIN debates
     ON speeches.debate_id = debates.id
+INNER JOIN rounds
+    ON debates.round_id = rounds.id
 WHERE
     speeches.speaker_id = xxxxxx
 ORDER BY
