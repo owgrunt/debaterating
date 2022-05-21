@@ -18,6 +18,10 @@
         <div class="row">
             <div class="col">
                 {{ speeches }}
+                <br>
+                {{ speaks_by_position }}
+                <br>
+                {{ positions }}
             </div>
         </div>
         <div class="row">
@@ -203,8 +207,7 @@
                 <canvas id="speaksByPositionChart"></canvas>
             </div>
             <script>
-                const labels_speaks_by_position = [
-                ];
+                const labels_speaks_by_position = [{{ positions }}];
 
                 const data_speaks_by_position = {
                   labels: labels_speaks_by_position,
