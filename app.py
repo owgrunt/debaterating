@@ -939,7 +939,7 @@ def speaker_profile():
     round_seq = []
     rankings_by_round_seq = []
     for speech in speeches:
-        if speech["seq"] is not in round_seq:
+        if speech["seq"] not in round_seq:
             round_seq = round_seq + [speech["seq"]]
             round_instance = {"seq": speech["seq"], "score": speech["team_score"], "number": 1}
             rankings_by_round_seq = rankings_by_round_seq + [round_instance]

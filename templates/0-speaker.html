@@ -322,6 +322,66 @@
                     );
                 </script>
             </div>
+            <div class="col-6">
+                <h3>Очки по раундам</h3>
+                <canvas id="scoreBySequenceChart"></canvas>
+                <script>
+                    const labels_score_by_sequence = [
+                        {% set i = namespace(value=1) %}
+                        {% for speech in speeches %}
+                            {% if speech["score"] != None %}
+                                {% if i.value < count %}
+                                    "",
+                                    {% set i.value = i.value + 1 %}
+                                {% else %}
+                                    ""
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    ];
+
+                    const data_score_by_sequence = {
+                    labels: labels_score_by_sequence,
+                    datasets: [{
+                        label: '',
+                        backgroundColor: 'rgb(220, 53, 69)',
+                        borderColor: 'rgb(220, 53, 69)',
+                        data: [
+                            {% set i = namespace(value=1) %}
+                            {% for speech in speeches %}
+                                {% if speech["score"] != None %}
+                                    {% if i.value < count %}
+                                        {{ speech["score"] }},
+                                        {% set i.value = i.value + 1 %}
+                                    {% else %}
+                                        {{ speech["score"] }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}],
+                    }]
+                    };
+
+                    const config_score_by_sequence = {
+                    type: 'line',
+                    data: data_score_by_sequence,
+                    options: {
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        color: 'rgb(220, 53, 69)'
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    const scoreBySequenceChart = new Chart(
+                    document.getElementById('scoreBySequenceChart'),
+                    config_score_by_sequence
+                    );
+                </script>
+            </div>
         </div>
     </div>
 {% endblock %}
