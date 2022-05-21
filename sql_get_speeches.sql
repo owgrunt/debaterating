@@ -24,4 +24,4 @@ INNER JOIN team_performances
 WHERE
     speeches.speaker_id = xxxxxx
 ORDER BY
-    speeches.id ASC;
+    speeches.id DESC;
