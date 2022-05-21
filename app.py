@@ -839,11 +839,14 @@ def ranking_speaker_score():
 def speaker_profile():
     """Show speaker profile"""
 
-    speaker = request.args.get('id')
+    if not request.form.get("id"):
+            return apology("must provide speaker id", 400)
 
-    speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
+    id = request.args.get("id")
 
-    return render_template("0-ranking-speaker-score.html", speakers=speakers)
+    speaker = db.execute(f"SELECT * FROM speakers WHERE id = {id}")
+
+    return render_template("0-ranking-speaker-score.html", speaker=speaker)
 
 
 @app.route("/register", methods=["GET", "POST"])
