@@ -848,8 +848,9 @@ def speaker_profile():
 
     speeches = db.execute(f"SELECT * FROM speeches WHERE speaker_id = {id}")
 
+    positions = [{1: "ПМ"}, {2: "ЛО"}, {3: "ЗПМ"}, {4: "ЗЛО"}, {5: "ЧП"}, {6: "ЧО"}, {7: "СП"}, {8: "СО"}]
     for speech in speeches:
-        
+        speech["]
 
     count = len(speeches)
 
