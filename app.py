@@ -861,6 +861,8 @@ def speaker_profile():
 
     count = len(speeches)
 
+    speaks_by_position = [{}]
+
     return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count)
 
 
