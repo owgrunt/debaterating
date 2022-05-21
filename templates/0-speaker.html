@@ -142,99 +142,98 @@
         <div class="row">
             <div class="col-4">
                 <canvas id="speaksByPositionChart"></canvas>
-            </div>
-            <script>
-                const labels_speaks_by_position = ["ПМ", "ЛО", "ЗПМ", "ЗЛО", "ЧП", "ЧО", "СП", "СО"];
+                <script>
+                    const labels_speaks_by_position = ["ПМ", "ЛО", "ЗПМ", "ЗЛО", "ЧП", "ЧО", "СП", "СО"];
 
-                const data_speaks_by_position = {
-                  labels: labels_speaks_by_position,
-                  datasets: [{
-                    label: 'Рейтинг',
-                    fill: true,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    pointBackgroundColor: 'rgb(255, 99, 132)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgb(255, 99, 132)',
-                    data: {{ speaks_by_position }},
-                  }]
-                };
+                    const data_speaks_by_position = {
+                      labels: labels_speaks_by_position,
+                      datasets: [{
+                        label: 'Рейтинг',
+                        fill: true,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        pointBackgroundColor: 'rgb(255, 99, 132)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(255, 99, 132)',
+                        data: {{ speaks_by_position }},
+                      }]
+                    };
 
-                const config_speaks_by_position = {
-                    type: 'radar',
-                    data: data_speaks_by_position,
-                    options: {
-                        scales: {
-                            r: {
-                                min: 65,
-                                max: 85,
+                    const config_speaks_by_position = {
+                        type: 'radar',
+                        data: data_speaks_by_position,
+                        options: {
+                            scales: {
+                                r: {
+                                    min: 65,
+                                    max: 85,
+                                },
                             },
-                        },
-                        plugins: {
-                            legend: {
-                                display: false,
-                                labels: {
-                                    color: 'rgb(255, 99, 132)'
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        color: 'rgb(255, 99, 132)'
+                                    }
                                 }
                             }
                         }
-                    }
-                };
+                    };
 
-                const speaksByPositionChart = new Chart(
-                  document.getElementById('speaksByPositionChart'),
-                  config_speaks_by_position
-                );
-            </script>
-        </div>
-        <div class="col-4">
-            <canvas id="pointsBySideChart"></canvas>
-        </div>
-        <script>
-            const labels_points_by_side = ["ПМ", "ЛО", "ЗПМ", "ЗЛО", "ЧП", "ЧО", "СП", "СО"];
+                    const speaksByPositionChart = new Chart(
+                      document.getElementById('speaksByPositionChart'),
+                      config_speaks_by_position
+                    );
+                </script>
+            </div>
+            <div class="col-4">
+                <canvas id="pointsBySideChart"></canvas>
+                <script>
+                    const labels_points_by_side = ["1ПР", "1ОП", "2ПР", "2ОП"];
 
-            const data_points_by_side = {
-              labels: labels_points_by_side,
-              datasets: [{
-                label: 'Рейтинг',
-                fill: true,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgb(255, 99, 132)',
-                pointBackgroundColor: 'rgb(255, 99, 132)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(255, 99, 132)',
-                data: {{ speaks_by_position }},
-              }]
-            };
+                    const data_points_by_side = {
+                    labels: labels_points_by_side,
+                    datasets: [{
+                        label: 'Рейтинг',
+                        fill: true,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        pointBackgroundColor: 'rgb(255, 99, 132)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(255, 99, 132)',
+                        data: {{ points_by_side }},
+                    }]
+                    };
 
-            const config_points_by_side = {
-                type: 'radar',
-                data: data_points_by_side,
-                options: {
-                    scales: {
-                        r: {
-                            min: 65,
-                            max: 85,
-                        },
-                    },
-                    plugins: {
-                        legend: {
-                            display: false,
-                            labels: {
-                                color: 'rgb(255, 99, 132)'
+                    const config_points_by_side = {
+                        type: 'radar',
+                        data: data_points_by_side,
+                        options: {
+                            scales: {
+                                r: {
+                                    min: 0,
+                                    max: 4,
+                                },
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        color: 'rgb(255, 99, 132)'
+                                    }
+                                }
                             }
                         }
-                    }
-                }
-            };
+                    };
 
-            const pointsBySideChart = new Chart(
-              document.getElementById('pointsBySideChart'),
-              config_points_by_side
-            );
-        </script>
-    </div>
+                    const pointsBySideChart = new Chart(
+                    document.getElementById('pointsBySideChart'),
+                    config_points_by_side
+                    );
+                </script>
+            </div>
+        </div>
     </div>
 {% endblock %}
