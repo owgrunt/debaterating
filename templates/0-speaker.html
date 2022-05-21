@@ -8,20 +8,20 @@
     <h2 class="mb-5 mt-2">{{ speaker["last_name"] }} {{ speaker["first_name"] }}</h2>
     <div class="container">
         <div class="row">
-            <div class="column">
+            <div class="col">
                 Рейтинг: {{ speaker["rating"] }}
             </div>
-            <div class="column">
+            <div class="col">
                 Средний спикерский: {{ speaker["speaker_score"] }}
             </div>
         </div>
         <div class="row">
-            <div class="column">
+            <div class="col">
                 {{ speeches }}
             </div>
         </div>
-        <div class="section">
-            <div>
+        <div class="row">
+            <div class="col">
                 <canvas id="myChart"></canvas>
             </div>
             <script>
@@ -71,6 +71,10 @@
                   config
                 );
             </script>
+
+            <div class="col">
+                <canvas id="myChart"></canvas>
+            </div>
             <!-- <table>
                 <thead>
                     <tr>
