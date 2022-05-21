@@ -44,10 +44,10 @@
                         {% set i = namespace(value=1) %}
                         {% for speech in speeches %}
                             {% if i.value < count %}
-                                {{ speech["name"] }},
+                                {{ speech["score"] }},
                                 {% set i.value = i.value + 1 %}
                             {% else %}
-                                {{ speech["name"] }}
+                                {{ speech["score"] }}
                             {% endif %}
                         {% endfor %}],
                   }]
