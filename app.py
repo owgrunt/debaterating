@@ -768,7 +768,9 @@ def calculate_elo():
                 if speaker["debate"] == debate:
                     total_rating = total_rating + speaker["initial_rating"]
                     speakers_in_debate = speakers_in_debate + 1
-            average_rating = total_rating / speakers_in_debate
+            average_rating = round(total_rating/speakers_in_debate)
+            # Update the debate entry with the average rating
+            db.execute(f"UPDATE debates SET average_rating = {average_rating} WHERE id = {debate}")
 
         # Update ratings for the round
         for i in range(len(team_performances)):
