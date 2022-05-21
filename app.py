@@ -869,7 +869,8 @@ def speaker_profile():
         speaks_by_position_calculation[position]["score"] = speaks_by_position_calculation[position]["score"] + speech["position"]
     speaks_by_position = []
     for i in range(len(speaks_by_position_calculation)):
-        speaks_by_position[i] = speaks_by_position_calculation[i]["score"] / speaks_by_position_calculation[i]["number"]
+        new_value = speaks_by_position_calculation[i]["score"] / speaks_by_position_calculation[i]["number"]
+        speaks_by_position = speaks_by_position + [new_value]
 
     return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count)
 
