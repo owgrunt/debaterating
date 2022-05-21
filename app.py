@@ -880,6 +880,8 @@ def speaker_profile():
             new_value = 65
         speaks_by_position = speaks_by_position + [new_value]
 
+    # Prepare data to show your average points by side
+
     return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position)
 
 
