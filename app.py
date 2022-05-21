@@ -760,12 +760,15 @@ def calculate_elo():
         debates_in_round = set()
         for performance in team_performances:
             debates_in_round.add(performance["debate_id"])
-        # Calculate the average speaker rating in the TODO debate
+        # Calculate the average speaker rating in the debate
         for debate in debates_in_round:
             total_rating = 0
-            for initial_rating in updated_ratings:
-                total_rating = total_rating + initial_rating["initial_rating"]
-            average_rating = total_rating / len(updated_ratings)
+            speakers_in_debate = 0
+            for speaker in updated_ratings:
+                if speaker["debate"] == debate:
+                    total_rating = total_rating + speaker["initial_rating"]
+                    speakers_in_debate = speakers_in_debate + 1
+            average_rating = total_rating / speakers_in_debate
 
         # Update ratings for the round
         for i in range(len(team_performances)):
