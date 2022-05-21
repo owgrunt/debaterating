@@ -138,40 +138,125 @@
                   config_rating
                 );
             </script>
-            <!-- <table>
-                <thead>
-                    <tr>
-                        <th style="width: 25%">Место</th>
-                        <th style="width: 25%">Спикер</th>
-                        <th style="width: 25%">Средний спикерский</th>
-                        <th style="width: 25%">Рейтинг</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% set i = namespace(value=0) %}
-                    {% set previous_score = namespace(value=101) %}
-                    {% for speaker in speakers %}
-                        <tr>
-                            <td>
-                                {% if speaker["speaker_score"] < previous_score.value %}
+        </div>
+        <div class="row">
+            <div class="col">
+                <canvas id="SpeaksByPositionChart"></canvas>
+            </div>
+            <script>
+                const labels_speaks = [
+                    {% set i = namespace(value=1) %}
+                    {% for speech in speeches %}
+                        {% if speech["score"] != None %}
+                            {% if i.value < count %}
+                                "{{ speech["position_name"] }}",
+                                {% set i.value = i.value + 1 %}
+                            {% else %}
+                                "{{ speech["position_name"] }}"
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}];
+
+                const data_speaks = {
+                  labels: labels_speaks,
+                  datasets: [{
+                    label: 'Спикерские',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [
+                        {% set i = namespace(value=1) %}
+                        {% for speech in speeches %}
+                            {% if speech["score"] != None %}
+                                {% if i.value < count %}
+                                    {{ speech["score"] }},
                                     {% set i.value = i.value + 1 %}
-                                    {% set previous_score.value = speaker["speaker_score"] %}
+                                {% else %}
+                                    {{ speech["score"] }}
                                 {% endif %}
-                                {{ i.value }}
-                            </td>
-                            <td>
-                                {{ speaker["last_name"] }} {{ speaker["first_name"] }}
-                            </td>
-                            <td>
-                                {{ speaker["speaker_score"] }}
-                            </td>
-                            <td>
-                                {{ speaker["rating"] }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table> -->
+                            {% endif %}
+                        {% endfor %}],
+                  }]
+                };
+
+                const config_speaks = {
+                  type: 'line',
+                  data: data_speaks,
+                  options: {
+                        plugins: {
+                            legend: {
+                                display: false,
+                                labels: {
+                                    color: 'rgb(255, 99, 132)'
+                                }
+                            }
+                        }
+                    }
+                };
+
+                const speaksChart = new Chart(
+                  document.getElementById('speaksChart'),
+                  config_speaks
+                );
+            </script>
+
+            <div class="col-2">
+                <canvas id="speaksByPositionChart"></canvas>
+            </div>
+            <script>
+                const labels_speaks_by_position = [
+                    {% set i = namespace(value=1) %}
+                    {% for speech in speeches %}
+                        {% if speech["rating"] != None %}
+                            {% if i.value < count %}
+                                "{{ speech["position_name"] }}",
+                                {% set i.value = i.value + 1 %}
+                            {% else %}
+                                "{{ speech["position_name"] }}"
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}];
+
+                const data_speaks_by_position = {
+                  labels: labels_speaks_by_position,
+                  datasets: [{
+                    label: 'Рейтинг',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [
+                        {% set i = namespace(value=1) %}
+                        {% for speech in speeches %}
+                            {% if speech["rating"] != None %}
+                                {% if i.value < count %}
+                                    {{ speech["rating"] }},
+                                    {% set i.value = i.value + 1 %}
+                                {% else %}
+                                    {{ speech["rating"] }}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}],
+                  }]
+                };
+
+                const config_speaks_by_position = {
+                  type: 'line',
+                  data: data_speaks_by_position,
+                  options: {
+                        plugins: {
+                            legend: {
+                                display: false,
+                                labels: {
+                                    color: 'rgb(255, 99, 132)'
+                                }
+                            }
+                        }
+                    }
+                };
+
+                const speaksByPositionChart = new Chart(
+                  document.getElementById('speaksByPositionChart'),
+                  config_speaks_by_position
+                );
+            </script>
         </div>
     </div>
 {% endblock %}
