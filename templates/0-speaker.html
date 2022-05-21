@@ -241,18 +241,18 @@
                 <canvas id="pointsByRoomStrengthChart"></canvas>
                 <script>
                     const data_points_by_room_strength = {
-                    datasets: [{
-                        label: 'Рейтинг',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        data: [
-                            {% for i in points_by_room_strength %}
-                                {
-                                    x: {{ i["x"] }}
-                                    y: {{ i["y"] }}
-                                }
-                            {% endfor %}
-                        ],
-                    }]
+                        datasets: [{
+                            label: 'Очки',
+                            data: [
+                                {% for i in points_by_room_strength %}
+                                    {
+                                        x: {{ i["x"] }},
+                                        y: {{ i["y"] }}
+                                    }
+                                {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)'
+                        }],
                     };
 
                     const config_points_by_room_strength = {
