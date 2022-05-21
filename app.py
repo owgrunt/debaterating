@@ -868,7 +868,7 @@ def speaker_profile():
     for speech in speeches:
         position = speech["position"] - 1
         speaks_by_position_calculation[position]["number"] = speaks_by_position_calculation[position]["number"] + 1
-        speaks_by_position_calculation[position]["score"] = speaks_by_position_calculation[position]["score"] + speech["position"]
+        speaks_by_position_calculation[position]["score"] = speaks_by_position_calculation[position]["score"] + speech["score"]
     speaks_by_position = []
     for i in range(len(speaks_by_position_calculation)):
         try:
