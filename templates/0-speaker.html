@@ -44,6 +44,7 @@
                     label: 'My First dataset',
                     backgroundColor: 'rgb(255, 99, 132)',
                     borderColor: 'rgb(255, 99, 132)',
+                    base: 60,
                     data: [
                         {% set i = namespace(value=1) %}
                         {% for speech in speeches %}
@@ -60,7 +61,7 @@
                 };
 
                 const config = {
-                  type: 'line',
+                  type: 'bar',
                   data: data,
                   options: {}
                 };
