@@ -229,6 +229,41 @@
                     );
                 </script>
             </div>
+            <div class="col-4">
+                <h3>Командные места</h3>
+                <canvas id="teamRankingsChart"></canvas>
+                <script>
+                    const data_team_rankings = {
+                        labels: [
+                          'Первых',
+                          'Вторых',
+                          'Третьих',
+                          'Четвёртых'
+                        ],
+                        datasets: [{
+                          label: 'My First Dataset',
+                          data: [300, 50, 100],
+                          backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 205, 86)',
+                            'rgb(255, 205, 70)'
+                          ],
+                          hoverOffset: 4
+                        }]
+                      };
+
+                      const config_team_rankings = {
+                        type: 'pie',
+                        data: data_team_rankings,
+                      };
+
+                      const teamRankingsChart = new Chart(
+                      document.getElementById('teamRankingsChart'),
+                      config_points_by_room_strength
+                      );
+                </script>
+            </div>
         </div>
         <div class="row">
             <div class="col-6">
