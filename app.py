@@ -756,7 +756,7 @@ def calculate_elo():
                                "rating_adjustment": 0}
                 updated_ratings.extend([speaker_one, speaker_two])
 
-        # Calculate the average speaker rating in the round
+        # Calculate the average speaker rating in the TODO debate
         total_rating = 0
         for initial_rating in updated_ratings:
             total_rating = total_rating + initial_rating["initial_rating"]
