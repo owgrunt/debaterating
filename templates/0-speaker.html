@@ -25,7 +25,7 @@
                 <canvas id="speaksChart"></canvas>
             </div>
             <script>
-                const labels = [
+                const labels_speaks = [
                     {% set i = namespace(value=1) %}
                     {% for speech in speeches %}
                         {% if speech["score"] != None %}
@@ -38,8 +38,8 @@
                         {% endif %}
                     {% endfor %}];
 
-                const data = {
-                  labels: labels,
+                const data_speaks = {
+                  labels: labels_speaks,
                   datasets: [{
                     label: 'Спикерские',
                     backgroundColor: 'rgb(255, 99, 132)',
@@ -59,9 +59,9 @@
                   }]
                 };
 
-                const config = {
+                const config_speaks = {
                   type: 'line',
-                  data: data,
+                  data: data_speaks,
                   options: {
                         plugins: {
                             legend: {
@@ -73,11 +73,10 @@
                         }
                     }
                 };
-            </script>
-            <script>
+
                 const speaksChart = new Chart(
                   document.getElementById('speaksChart'),
-                  config
+                  config_speaks
                 );
             </script>
 
@@ -133,8 +132,7 @@
                         }
                     }
                 };
-            </script>
-            <script>
+
                 const ratingChart = new Chart(
                   document.getElementById('ratingChart'),
                   config_rating
