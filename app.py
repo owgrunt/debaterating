@@ -850,8 +850,8 @@ def speaker_profile():
     speeches = db.execute(f"SELECT * FROM speeches WHERE speaker_id = {id} ORDER BY id DESC")
 
     positions = ["ПМ", "ЛО", "ЗПМ", "ЗЛО", "ЧП", "ЧО", "СП", "СО"]
-    for speech in speeches:
-        speech["position_name"] = positions[speech["position"]]
+    for i in range(len(speeches)):
+        speeches[i]["position_name"] = positions[speeches[i]["position"]]
 
     speeches = sorted(speeches, key=itemgetter("id"))
 
