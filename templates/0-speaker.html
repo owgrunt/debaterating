@@ -204,36 +204,20 @@
             </div>
             <script>
                 const labels_speaks_by_position = [
-                    {% set i = namespace(value=1) %}
-                    {% for speech in speeches %}
-                        {% if speech["rating"] != None %}
-                            {% if i.value < count %}
-                                "{{ speech["position_name"] }}",
-                                {% set i.value = i.value + 1 %}
-                            {% else %}
-                                "{{ speech["position_name"] }}"
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}];
+                ];
 
                 const data_speaks_by_position = {
                   labels: labels_speaks_by_position,
                   datasets: [{
                     label: 'Рейтинг',
-                    backgroundColor: 'rgb(255, 99, 132)',
+                    fill: true,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgb(255, 99, 132)',
-                    data: [
-                        {% set i = namespace(value=1) %}
-                        {% for speech in speeches %}
-                            {% if speech["rating"] != None %}
-                                {% if i.value < count %}
-                                    {{ speech["rating"] }},
-                                    {% set i.value = i.value + 1 %}
-                                {% else %}
-                                    {{ speech["rating"] }}
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}],
+                    pointBackgroundColor: 'rgb(255, 99, 132)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(255, 99, 132)',
+                    data: [{{ speaks_by_position }}],
                   }]
                 };
 

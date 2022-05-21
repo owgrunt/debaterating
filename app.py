@@ -875,7 +875,7 @@ def speaker_profile():
             new_value = 0
         speaks_by_position = speaks_by_position + [new_value]
 
-    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count)
+    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position)
 
 
 @app.route("/register", methods=["GET", "POST"])
