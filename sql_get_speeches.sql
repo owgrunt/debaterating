@@ -5,7 +5,8 @@ SELECT
     speeches.score,
     speeches.rating_change,
     speeches.position,
-    team_performances.score AS team_score
+    team_performances.score AS team_score,
+    team_performances.side
 FROM
    speeches
 INNER JOIN team_performances

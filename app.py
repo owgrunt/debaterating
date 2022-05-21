@@ -878,11 +878,26 @@ def speaker_profile():
             new_value = 0
         if new_value < 65:
             new_value = 65
+        new_value = round(new_value, 2)
         speaks_by_position = speaks_by_position + [new_value]
 
     # Prepare data to show your average points by side
+    points_by_side_calculation = [{"side": "og", "number": 0, "score": 0}, {"side": "oo", "number": 0, "score": 0}, {"side": "cg", "number": 0, "score": 0}, {"side": "co", "number": 0, "score": 0}]
+    for speech in speeches:
+        for side in points_by_side_calculation:
+            if speech["side"] == side["side"]:
+                side["number"] = side["number"] + 1
+                side["score"] = side["score"] + speech["team_score"]
+    points_by_side = []
+    for i in range(len(points_by_side_calculation)):
+        try:
+            new_value = points_by_side_calculation[i]["score"] / points_by_side_calculation[i]["number"]
+        except (ZeroDivisionError):
+            new_value = 0
+        new_value = round(new_value, 2)
+        points_by_side = points_by_side + [new_value]
 
-    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position)
+    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side)
 
 
 @app.route("/register", methods=["GET", "POST"])
