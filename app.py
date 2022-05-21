@@ -852,6 +852,8 @@ def speaker_profile():
     for speech in speeches:
         speech["position_name"] = positions[speech["position"]]
 
+    speeches = sorted(speeches, key=itemgetter("id"))
+
     count = len(speeches)
 
     return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count)
