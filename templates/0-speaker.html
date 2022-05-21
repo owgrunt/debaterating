@@ -244,7 +244,14 @@
                     datasets: [{
                         label: 'Рейтинг',
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        data: {{ points_by_room_strength }},
+                        data: [
+                            {% for i in points_by_room_strength %}
+                                {
+                                    x: {{ i["x"] }}
+                                    y: {{ i["y"] }}
+                                }
+                            {% endfor %}
+                        ],
                     }]
                     };
 
