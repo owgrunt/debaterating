@@ -515,13 +515,6 @@ def import_rounds():
         # Remove unnecessary vars
         del round["id"], round["url"], round["completed"], round["draw_type"], round["draw_status"], round["silent"], round["motions_released"], round["starts_at"], round["weight"]
 
-        # Import round data into the db
-        db_name = "rounds"
-        search_keys = ["internal_id", "tournament_id"]
-        update_keys = ["name", "short_name", "seq", "break_category", "stage", "motion", "info_slide"]
-        round["tournament_id"] = tournament["id"]
-        round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
-
     # TODO edit round and break category names
 
     if len(rounds) > 0:
@@ -535,6 +528,13 @@ def import_rounds():
 def import_debates():
     """Import debates"""
     global rounds
+
+    # Import round data into the db
+    db_name = "rounds"
+    search_keys = ["internal_id", "tournament_id"]
+    update_keys = ["name", "short_name", "seq", "break_category", "stage", "motion", "info_slide"]
+    round["tournament_id"] = tournament["id"]
+    round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
 
     # Prepare for link cleanup in the future
     domain = tournament["domain"]
