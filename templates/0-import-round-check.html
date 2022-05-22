@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Проверьте правильность определения названий раундов</h2>
+    <div class="container">
+        <div class="section">
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker/format" role="button">Назад</a>
+        </div>
+        <div class="section">
+            <form action="/import/debates" method="post">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Название</th>
+                            <th>Краткое название</th>
+                            <th>Тема</th>
+                            <th>Инфослайд</th>
+                            <th>Категория брейка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for round in rounds %}
+                            <tr>
+                                <td>
+                                    {{ rounds["seq"] }}
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-last-name" name="{{ speaker["internal_id"] }}-last-name" value="{{ speaker["last_name"] }}" type="text" required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ speaker["internal_id"] }}-first-name" name="{{ speaker["internal_id"] }}-first-name" value="{{ speaker["first_name"] }}" type="text" required>
+                                    </div>
+
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ speaker["internal_id"] }}-middle-name" name="{{ speaker["internal_id"] }}-middle-name" value="{{ speaker["middle_name"] }}" type="text">
+                                    </div>
+                                </td>
+                                <td>
+                                    {{ speaker["team_name"] }}
+                                </td>
+                                <td>
+                                    <div class="form-check-inline text-center">
+                                        <input class="form-check-input" type="checkbox" id="{{ speaker["internal_id"] }}-swing" name="{{ speaker["internal_id"] }}-swing" value="True">
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker/format" role="button">Назад</a>
+                <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit">Продолжить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
