@@ -523,13 +523,13 @@ def import_debates():
 
     if request.method == "POST":
         for round in rounds:
-            round["name"] = request.form.get(str(round["name"])+"-name")
-            round["short_name"] = request.form.get(str(round["short_name"])+"-short-name")
-            round["motion"] = request.form.get(str(round["motion"])+"-motion")
-            round["info_slide"] = request.form.get(str(round["info_slide"])+"-info-slide")
-            round["break_category"] = request.form.get(str(round["break_category"])+"-break-category")
+            round["name"] = request.form.get(str(round["internal_id"])+"-name")
+            round["short_name"] = request.form.get(str(round["internal_id"])+"-short-name")
+            round["motion"] = request.form.get(str(round["internal_id"])+"-motion")
+            round["info_slide"] = request.form.get(str(round["internal_id"])+"-info-slide")
+            round["break_category"] = request.form.get(str(round["internal_id"])+"-break-category")
 
-            return render_template("0-import-round-check.html", rounds=rounds)
+        return render_template("0-import-round-check.html", rounds=rounds)
 
             # Import round data into the db
             db_name = "rounds"
