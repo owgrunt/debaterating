@@ -518,7 +518,7 @@ def import_rounds():
     # TODO edit round and break category names
 
     if len(rounds) > 0:
-        return render_template("0-import-speaker-check.html", rounds=rounds)
+        return render_template("0-import-round-check.html", rounds=rounds)
     else:
         return apology("something went wrong", 400)
 
