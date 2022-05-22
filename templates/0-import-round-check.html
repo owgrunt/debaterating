@@ -42,15 +42,17 @@
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ speaker["internal_id"] }}-middle-name" name="{{ speaker["internal_id"] }}-middle-name" value="{{ speaker["middle_name"] }}" type="text">
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-motion" name="{{ round["internal_id"] }}-motion" value="{{ round["motion"] }}" type="text">
                                     </div>
                                 </td>
                                 <td>
-                                    {{ speaker["team_name"] }}
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-info-slide" name="{{ round["internal_id"] }}-info-slide" value="{{ round["info_slide"] }}" type="text">-
+                                    </div>
                                 </td>
                                 <td>
-                                    <div class="form-check-inline text-center">
-                                        <input class="form-check-input" type="checkbox" id="{{ speaker["internal_id"] }}-swing" name="{{ speaker["internal_id"] }}-swing" value="True">
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-break-category" name="{{ round["internal_id"] }}-break_category" value="{{ round["break-category"] }}" type="text">
                                     </div>
                                 </td>
                             </tr>
