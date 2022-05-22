@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <h2 class="mb-5 mt-2">Проверьте правильность определения названий раундов</h2>
+    <h2 class="mb-5 mt-2">Проверьте раунды</h2>
     <div class="container">
         <div class="section">
             <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
@@ -27,7 +27,7 @@
                         {% for round in rounds %}
                             <tr>
                                 <td>
-                                    {{ rounds["seq"] }}
+                                    {{ round["seq"] }}
                                 </td>
                                 <td>
                                     <div>
@@ -52,7 +52,7 @@
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-break-category" name="{{ round["internal_id"] }}-break_category" value="{{ round["break-category"] }}" type="text">
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-break-category" name="{{ round["internal_id"] }}-break_category" value="{{ round["break_category"] }}" type="text">
                                     </div>
                                 </td>
                             </tr>
