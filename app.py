@@ -533,11 +533,11 @@ def import_debates():
             db_name = "rounds"
             search_keys = ["internal_id", "tournament_id"]
             update_keys = ["name", "short_name", "seq", "stage"]
-            if round["motion"]:
+            if round["motion"] != None:
                 update_keys.append("motion")
-            if round["info_slide"]:
+            if round["info_slide"] != None:
                 update_keys.append("info_slide")
-            if round["break_category"]:
+            if round["break_category"] != None:
                 update_keys.append("break_category")
             round["tournament_id"] = tournament["id"]
             round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
