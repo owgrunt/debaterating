@@ -529,12 +529,12 @@ def import_debates():
             round["info_slide"] = request.form.get(str(round["info_slide"])+"-info-slide")
             round["break_category"] = request.form.get(str(round["nambreak_categorye"])+"-break-category")
 
-    # Import round data into the db
-    db_name = "rounds"
-    search_keys = ["internal_id", "tournament_id"]
-    update_keys = ["name", "short_name", "seq", "break_category", "stage", "motion", "info_slide"]
-    round["tournament_id"] = tournament["id"]
-    round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
+        # Import round data into the db
+        db_name = "rounds"
+        search_keys = ["internal_id", "tournament_id"]
+        update_keys = ["name", "short_name", "seq", "break_category", "stage", "motion", "info_slide"]
+        round["tournament_id"] = tournament["id"]
+        round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
 
     # Prepare for link cleanup in the future
     domain = tournament["domain"]
