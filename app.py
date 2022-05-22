@@ -523,14 +523,11 @@ def import_debates():
 
     if request.method == "POST":
         for round in rounds:
-            speaker["last_name"] = request.form.get(str(speaker["internal_id"])+"-last-name")
-            # If speaker is in the db, connect general speaker id with tournament speaker id
-            if request.form.get(str(speaker["internal_id"])+"-id"):
-                speaker["id"] = request.form.get(str(speaker["internal_id"])+"-id")
-                forego_search = False
-            else:
-                # Don't search the db, just update it
-                forego_search = True
+            round["name"] = request.form.get(str(round["name"])+"-name")
+            round["short_name"] = request.form.get(str(round["short_name"])+"-short-name")
+            round["motion"] = request.form.get(str(round["motion"])+"-motion")
+            round["info_slide"] = request.form.get(str(round["info_slide"])+"-info-slide")
+            round["break_category"] = request.form.get(str(round["nambreak_categorye"])+"-break-category")
 
     # Import round data into the db
     db_name = "rounds"
