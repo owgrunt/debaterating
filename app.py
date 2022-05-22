@@ -525,9 +525,12 @@ def import_debates():
         for round in rounds:
             round["name"] = request.form.get(str(round["name"])+"-name")
             round["short_name"] = request.form.get(str(round["short_name"])+"-short-name")
-            round["motion"] = request.form.get(str(round["motion"])+"-motion")
-            round["info_slide"] = request.form.get(str(round["info_slide"])+"-info-slide")
-            round["break_category"] = request.form.get(str(round["break_category"])+"-break-category")
+            if request.form.get(str(round["motion"])+"-motion") != None:
+                round["motion"] = request.form.get(str(round["motion"])+"-motion")
+            if request.form.get(str(round["info_slide"])+"-info-slide") != None:
+                round["info_slide"] = request.form.get(str(round["info_slide"])+"-info-slide")
+            if request.form.get(str(round["break_category"])+"-break-category") != None:
+                round["break_category"] = request.form.get(str(round["break_category"])+"-break-category")
 
             # Import round data into the db
             db_name = "rounds"
