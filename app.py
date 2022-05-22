@@ -521,7 +521,11 @@ def import_rounds():
         round["tournament_id"] = tournament["id"]
         round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
 
-    return redirect("/import/debates")
+
+    if len(rounds) > 0:
+        return render_template("0-import-speaker-check.html", rounds=rounds)
+    else:
+        return apology("something went wrong", 400)
 
 
 @app.route("/import/debates", methods=["GET", "POST"])
