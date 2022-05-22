@@ -522,7 +522,8 @@ def import_debates():
     global rounds
 
     if request.method == "POST":
-        for speaker in speakers:
+        for round in rounds:
+            speaker["last_name"] = request.form.get(str(speaker["internal_id"])+"-last-name")
             # If speaker is in the db, connect general speaker id with tournament speaker id
             if request.form.get(str(speaker["internal_id"])+"-id"):
                 speaker["id"] = request.form.get(str(speaker["internal_id"])+"-id")
