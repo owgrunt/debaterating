@@ -525,6 +525,13 @@ def import_rounds():
         domain = tournament["domain"]
         slug = tournament["slug"]
 
+
+@app.route("/import/round", methods=["GET", "POST"])
+@login_required
+def import_rounds():
+    """Import debates"""
+    global rounds
+    for round in rounds:
         # Get debates (pairings)
         debates = lookup_link(round["_links"]["pairing"])
         for debate in debates:
