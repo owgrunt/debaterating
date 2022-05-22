@@ -521,16 +521,19 @@ def import_rounds():
         round["tournament_id"] = tournament["id"]
         round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
 
-        # Prepare for link cleanup in the future
-        domain = tournament["domain"]
-        slug = tournament["slug"]
+    return redirect("/import/debates")
 
 
-@app.route("/import/round", methods=["GET", "POST"])
+@app.route("/import/debates", methods=["GET", "POST"])
 @login_required
-def import_rounds():
+def import_debates():
     """Import debates"""
     global rounds
+
+    # Prepare for link cleanup in the future
+    domain = tournament["domain"]
+    slug = tournament["slug"]
+
     for round in rounds:
         # Get debates (pairings)
         debates = lookup_link(round["_links"]["pairing"])
