@@ -529,7 +529,7 @@ def import_debates():
             round["info_slide"] = request.form.get(str(round["internal_id"])+"-info-slide")
             round["break_category"] = request.form.get(str(round["internal_id"])+"-break-category")
 
-        return render_template("0-import-round-check.html", rounds=rounds)
+            return render_template("0-import-round-check.html", rounds=rounds)
 
             # Import round data into the db
             db_name = "rounds"
