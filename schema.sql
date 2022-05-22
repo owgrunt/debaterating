@@ -78,6 +78,7 @@ CREATE TABLE debates (
     tournament_id INTEGER NOT NULL,
     round_id INTEGER NOT NULL,
     internal_id INTEGER NOT NULL,
+    average_rating INTEGER,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
     FOREIGN KEY(round_id) REFERENCES rounds(id)
 );
@@ -89,7 +90,7 @@ CREATE TABLE speeches (
     tournament_id INTEGER NOT NULL,
     speaker_id INTEGER NOT NULL,
     debate_id INTEGER NOT NULL,
-    score INTEGER NOT NULL,
+    score INTEGER,
     rating_change INTEGER,
     position INTEGER NOT NULL,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id),

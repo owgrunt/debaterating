@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Средние спикерские обновлены</h2>
+    <div class="container">
+        <div class="section">
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
+            <a class="btn btn-primary mt-2 mb-2 mx-1" href="/" role="button">Завершить</a>
+        </div>
+        <div class="section">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">ID спикера</th>
+                        <th style="width: 25%">Внутренний ID спикера</th>
+                        <th style="width: 25%">Спикер</th>
+                        <th style="width: 25%">Новый средний спикерский</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for speaker in speakers %}
+                        <tr>
+                            <td>
+                                {{ speaker["id"] }}
+                            </td>
+                            <td>
+                                {{ speaker["internal_id"] }}
+                            </td>
+                            <td>
+                                {{ speaker["last_name"] }} {{ speaker["first_name"] }}
+                            </td>
+                            <td>
+                                {{ speaker["new_average"] }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 from helpers import apology, login_required, lookup_data, lookup_tournament, lookup_link, add_database_entry, split_name_by_format, has_yo
 
 from datetime import datetime
+from operator import itemgetter
 
 # Configure application
 app = Flask(__name__)
@@ -216,10 +217,19 @@ def import_speakers():
     global speakers
     speakers = lookup_data(domain, slug, "speakers")
 
+    # Import team data to show team name in the next screen. The same list will be used further in team import
+    global teams
+    teams = []
+    teams = lookup_data(domain, slug, "teams")
+
     if speakers != None:
         for speaker in speakers:
             speaker["adjudicator"] = 0
             speaker["ca"] = 0
+            for team in teams:
+                for member in team["speakers"]:
+                    if speaker["id"] == member["id"]:
+                        speaker["team_name"] = team["short_name"]
         count = len(speakers)
         return render_template("0-import-speaker-format.html", speakers=speakers, count=count, tournament=tournament)
     else:
@@ -276,7 +286,7 @@ def check_speakers():
         adjudicator_name_format = request.form.get("format")
 
         global speaker_name_format
-        # Assign first, middle and last name to the speakers and adjudicators
+        # Assign first, middle and last name to the speakers and adjudicators and clean up ids
         global speakers
         for speaker in speakers:
             speaker = split_name_by_format(speaker, speaker_name_format)
@@ -405,13 +415,13 @@ def import_teams():
 
     # Clean teams just in case
     global teams
-    teams = []
+    # teams = []
 
-    # Import team data
-    global tournament
-    domain = tournament["domain"]
-    slug = tournament["slug"]
-    teams = lookup_data(domain, slug, "teams")
+    # # Import team data
+    # global tournament
+    # domain = tournament["domain"]
+    # slug = tournament["slug"]
+    # teams = lookup_data(domain, slug, "teams")
 
     # Ensure the teams are imported
     if teams == None:
@@ -511,10 +521,20 @@ def import_rounds():
         round["tournament_id"] = tournament["id"]
         round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
 
-        # Prepare for link cleanup in the future
-        domain = tournament["domain"]
-        slug = tournament["slug"]
+    return redirect("/import/debates")
 
+
+@app.route("/import/debates", methods=["GET", "POST"])
+@login_required
+def import_debates():
+    """Import debates"""
+    global rounds
+
+    # Prepare for link cleanup in the future
+    domain = tournament["domain"]
+    slug = tournament["slug"]
+
+    for round in rounds:
         # Get debates (pairings)
         debates = lookup_link(round["_links"]["pairing"])
         for debate in debates:
@@ -599,7 +619,7 @@ def import_rounds():
                     # Assign points
                     if not result["points"]:
                         if result["win"] == True:
-                            result["score"] = 4
+                            result["score"] = 3
                         else:
                             result["score"] = 0
                     else:
@@ -668,7 +688,7 @@ def import_rounds():
                             speech["tournament_id"] = tournament["id"]
                             speech["debate_id"] = debate["id"]
                             speech["speaker_id"] = team_speakers[i]
-                            speech["score"] = 0
+                            # TODO delete speech["score"] = 0
                             # Assign position
                             if i == 0:
                                 if result["side"] == "og":
@@ -698,7 +718,8 @@ def import_rounds():
                             db_name = "speeches"
                             entry = speech
                             search_keys = ["debate_id", "tournament_id", "speaker_id"]
-                            update_keys = ["position", "score"]
+                            # TODO delete update_keys = ["position", "score"]
+                            update_keys = ["position"]
                             result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
     return redirect("/import/debate/success")
@@ -724,37 +745,54 @@ def calculate_elo():
     # Make ELO calculation for all the rounds in a sequence
     for round_instance in rounds:
         round_id = round_instance["id"]
-        debates = db.execute(open("sql_get_team_performances.sql").read().replace("xxxxxx", str(tournament_id)).replace("yyyyyy", str(round_id)))
+        team_performances = db.execute(open("sql_get_team_performances.sql").read().replace("xxxxxx", str(tournament_id)).replace("yyyyyy", str(round_id)))
 
         # Set the k-factor constant
         k_factor = 32
 
         # Set up a list of dict with all the speakers to have their ratings adjusted
         updated_ratings = []
-        for i in range(len(debates)):
-            if debates[i]["swing"] != 1:
-                speaker_one = {"speaker": debates[i]["speaker_one"],
+        for i in range(len(team_performances)):
+            if team_performances[i]["swing"] != 1:
+                speaker_one = {"speaker": team_performances[i]["speaker_one"],
                                "round": round_id,
-                               "debate": debates[i]["debate_id"],
-                               "initial_rating": debates[i]["speaker_one_rating"],
+                               "debate": team_performances[i]["debate_id"],
+                               "initial_rating": team_performances[i]["speaker_one_rating"],
                                "rating_adjustment": 0}
-                speaker_two = {"speaker": debates[i]["speaker_two"],
+                speaker_two = {"speaker": team_performances[i]["speaker_two"],
                                "round": round_id,
-                               "debate": debates[i]["debate_id"],
-                               "initial_rating": debates[i]["speaker_two_rating"],
+                               "debate": team_performances[i]["debate_id"],
+                               "initial_rating": team_performances[i]["speaker_two_rating"],
                                "rating_adjustment": 0}
                 updated_ratings.extend([speaker_one, speaker_two])
 
+        # Create a set of unique debates in this round
+        debates_in_round = set()
+        for performance in team_performances:
+            debates_in_round.add(performance["debate_id"])
+        # Calculate the average speaker rating in the debate
+        for debate in debates_in_round:
+            total_rating = 0
+            speakers_in_debate = 0
+            for speaker in updated_ratings:
+                if speaker["debate"] == debate:
+                    total_rating = total_rating + speaker["initial_rating"]
+                    speakers_in_debate = speakers_in_debate + 1
+            average_rating = round(total_rating/speakers_in_debate)
+            # Update the debate entry with the average rating
+            db.execute(f"UPDATE debates SET average_rating = {average_rating} WHERE id = {debate}")
+
         # Update ratings for the round
-        for i in range(len(debates)):
-            for j in range(len(debates)):
+        for i in range(len(team_performances)):
+            # Iterate through all the other team_performances in the round
+            for j in range(len(team_performances)):
                 # Check for teams in the same debate and not swings
-                if debates[i]["debate_id"] == debates[j]["debate_id"] and debates[i]["swing"] != 1 and debates[j]["swing"] != 1 and debates[i]["speaker_one"] != debates[i]["speaker_two"] and debates[j]["speaker_one"] != debates[j]["speaker_two"]:
+                if team_performances[i]["debate_id"] == team_performances[j]["debate_id"] and team_performances[i]["swing"] != 1 and team_performances[j]["swing"] != 1 and team_performances[i]["speaker_one"] != team_performances[i]["speaker_two"] and team_performances[j]["speaker_one"] != team_performances[j]["speaker_two"]:
                     # Only change score if team i won
-                    if debates[i]["score"] > debates[j]["score"]:
+                    if team_performances[i]["score"] > team_performances[j]["score"]:
                         # Calculate initial team ratings
-                        victor_rating = ( debates[i]["speaker_one_rating"] + debates[i]["speaker_two_rating"] ) / 2
-                        loser_rating = ( debates[j]["speaker_one_rating"] + debates[j]["speaker_two_rating"] ) / 2
+                        victor_rating = ( team_performances[i]["speaker_one_rating"] + team_performances[i]["speaker_two_rating"] ) / 2
+                        loser_rating = ( team_performances[j]["speaker_one_rating"] + team_performances[j]["speaker_two_rating"] ) / 2
                         # Calculate victor's expected score
                         modified_difference = (loser_rating - victor_rating) / 400
                         denominator = 1 + pow(10, modified_difference)
@@ -766,16 +804,16 @@ def calculate_elo():
                         # Adjust the ratings
                         k = 0
                         for update in updated_ratings:
-                            if update["speaker"] == debates[i]["speaker_one"]:
+                            if update["speaker"] == team_performances[i]["speaker_one"]:
                                 update["rating_adjustment"] = update["rating_adjustment"] + rating_adjustment
                                 k = k + 1
-                            if update["speaker"] == debates[i]["speaker_two"]:
+                            if update["speaker"] == team_performances[i]["speaker_two"]:
                                 update["rating_adjustment"] = update["rating_adjustment"] + rating_adjustment
                                 k = k + 1
-                            if update["speaker"] == debates[j]["speaker_one"]:
+                            if update["speaker"] == team_performances[j]["speaker_one"]:
                                 update["rating_adjustment"] = update["rating_adjustment"] - rating_adjustment
                                 k = k + 1
-                            if update["speaker"] == debates[j]["speaker_two"]:
+                            if update["speaker"] == team_performances[j]["speaker_two"]:
                                 update["rating_adjustment"] = update["rating_adjustment"] - rating_adjustment
                                 k = k + 1
                         if k != 4:
@@ -786,18 +824,144 @@ def calculate_elo():
             if update["rating_adjustment"] != 0:
                 # Add rating change to the speech database
                 db.execute("UPDATE speeches SET rating_change = ? WHERE speaker_id = ? AND debate_id = ?",
-                        update["rating_adjustment"], update["speaker"], update["debate"])
+                           update["rating_adjustment"], update["speaker"], update["debate"])
 
                 # Change the rating in the speaker database
                 new_rating = update["initial_rating"] + update["rating_adjustment"]
                 db.execute("UPDATE speakers SET rating = ? WHERE id = ? AND rating = ?",
-                        new_rating, update["speaker"], update["initial_rating"])
+                           new_rating, update["speaker"], update["initial_rating"])
 
         all_updated_ratings = all_updated_ratings + updated_ratings
 
     updated_count = len(all_updated_ratings)
 
     return render_template("0-import-elo.html", all_updated_ratings=all_updated_ratings, updated_count=updated_count)
+
+
+@app.route("/import/speaker-scores", methods=["GET", "POST"])
+@login_required
+def calculate_speaker_scores():
+    """Calculate and update new average speaker scores"""
+    global speakers
+    for speaker in speakers:
+        if speaker["adjudicator"] == 0:
+            new_average = db.execute("SELECT avg(score) FROM speeches WHERE speaker_id = ?",
+                                     speaker["id"])[0]["avg(score)"]
+            speaker["new_average"] = round(new_average, 2)
+            db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
+                       speaker["new_average"], speaker["id"])
+
+    return render_template("0-import-speaker-scores.html", speakers=speakers)
+
+
+@app.route("/ranking/speaker-score", methods=["GET", "POST"])
+def ranking_speaker_score():
+    """Show speaker ranking by speaker scores"""
+
+    speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
+
+    return render_template("0-ranking-speaker-score.html", speakers=speakers)
+
+
+@app.route("/speaker", methods=["GET", "POST"])
+def speaker_profile():
+    """Show speaker profile"""
+
+    if not request.args.get("id"):
+            return apology("must provide speaker id", 400)
+
+    id = request.args.get("id")
+
+    speaker = db.execute(f"SELECT * FROM speakers WHERE id = {id}")[0]
+
+    speeches = db.execute(open("sql_get_speeches.sql").read().replace("xxxxxx", str(id)))
+
+    # Add additional data to the speech entries
+    positions = ["ПМ", "ЛО", "ЗПМ", "ЗЛО", "ЧП", "ЧО", "СП", "СО"]
+    for i in range(len(speeches)):
+        # Add position name to the speech entry
+        speeches[i]["position_name"] = positions[speeches[i]["position"]-1]
+        # Add rating after the debate to the speech entry
+        if i == 0:
+            speeches[i]["rating"] = speaker["rating"]
+        else:
+            speeches[i]["rating"] = speeches[i-1]["rating"] - speeches[i]["rating_change"]
+
+    speeches = sorted(speeches, key=itemgetter("id"))
+
+    count = len(speeches)
+
+    # Prepare data to show your average speaker score by position
+    speaks_by_position_calculation = [{"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}, {"number": 0, "score": 0}]
+    for speech in speeches:
+        if speech["score"] is not None:
+            position = speech["position"] - 1
+            speaks_by_position_calculation[position]["number"] = speaks_by_position_calculation[position]["number"] + 1
+            speaks_by_position_calculation[position]["score"] = speaks_by_position_calculation[position]["score"] + speech["score"]
+    speaks_by_position = []
+    for i in range(len(speaks_by_position_calculation)):
+        try:
+            new_value = speaks_by_position_calculation[i]["score"] / speaks_by_position_calculation[i]["number"]
+        except (ZeroDivisionError):
+            new_value = 0
+        if new_value < 65:
+            new_value = 65
+        new_value = round(new_value, 2)
+        speaks_by_position = speaks_by_position + [new_value]
+
+    # Prepare data to show your average points by side
+    points_by_side_calculation = [{"side": "og", "number": 0, "score": 0}, {"side": "oo", "number": 0, "score": 0}, {"side": "cg", "number": 0, "score": 0}, {"side": "co", "number": 0, "score": 0}]
+    for speech in speeches:
+        for side in points_by_side_calculation:
+            if speech["side"] == side["side"]:
+                side["number"] = side["number"] + 1
+                side["score"] = side["score"] + speech["team_score"]
+    points_by_side = []
+    for i in range(len(points_by_side_calculation)):
+        try:
+            new_value = points_by_side_calculation[i]["score"] / points_by_side_calculation[i]["number"]
+        except (ZeroDivisionError):
+            new_value = 0
+        new_value = round(new_value, 2)
+        points_by_side = points_by_side + [new_value]
+
+    # Prepare data to show a pie chart of your team rankings
+    team_rankings = [0, 0, 0, 0]
+    for speech in speeches:
+        if speech["team_score"] == 3:
+            team_rankings[0] = team_rankings[0] + 1
+        elif speech["team_score"] == 2:
+            team_rankings[1] = team_rankings[1] + 1
+        elif speech["team_score"] == 1:
+            team_rankings[2] = team_rankings[2] + 1
+        elif speech["team_score"] == 0:
+            team_rankings[3] = team_rankings[3] + 1
+
+    # Prepare data to show your points depending on room strength
+    points_by_room_strength = []
+    for speech in speeches:
+        entry = {}
+        entry["y"] = speech["team_score"]
+        entry["x"] = speech["average_rating"]
+        points_by_room_strength = points_by_room_strength + [entry]
+
+    # Prepare data to show a chart of your team rankings by round sequence number
+    round_seq = []
+    rankings_by_round_seq = []
+    for speech in speeches:
+        if speech["seq"] not in round_seq:
+            round_seq = round_seq + [speech["seq"]]
+            round_instance = {"seq": speech["seq"], "score": speech["team_score"], "number": 1}
+            rankings_by_round_seq = rankings_by_round_seq + [round_instance]
+        else:
+            for ranking in rankings_by_round_seq:
+                if ranking["seq"] == speech["seq"]:
+                    ranking["score"] = speech["team_score"]
+                    ranking["number"] = ranking["number"] + 1
+    for ranking in rankings_by_round_seq:
+        ranking["average_score"] = ranking["score"] / ranking["number"]
+
+    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq, round_seq=round_seq)
 
 
 @app.route("/register", methods=["GET", "POST"])
