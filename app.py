@@ -521,6 +521,16 @@ def import_debates():
     """Import debates"""
     global rounds
 
+    if request.method == "POST":
+        for speaker in speakers:
+            # If speaker is in the db, connect general speaker id with tournament speaker id
+            if request.form.get(str(speaker["internal_id"])+"-id"):
+                speaker["id"] = request.form.get(str(speaker["internal_id"])+"-id")
+                forego_search = False
+            else:
+                # Don't search the db, just update it
+                forego_search = True
+
     # Import round data into the db
     db_name = "rounds"
     search_keys = ["internal_id", "tournament_id"]
