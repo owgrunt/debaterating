@@ -525,17 +525,20 @@ def import_debates():
         for round in rounds:
             round["name"] = request.form.get(str(round["name"])+"-name")
             round["short_name"] = request.form.get(str(round["short_name"])+"-short-name")
-            if request.form.get(str(round["motion"])+"-motion") != None:
-                round["motion"] = request.form.get(str(round["motion"])+"-motion")
-            if request.form.get(str(round["info_slide"])+"-info-slide") != None:
-                round["info_slide"] = request.form.get(str(round["info_slide"])+"-info-slide")
-            if request.form.get(str(round["break_category"])+"-break-category") != None:
-                round["break_category"] = request.form.get(str(round["break_category"])+"-break-category")
+            round["motion"] = request.form.get(str(round["motion"])+"-motion")
+            round["info_slide"] = request.form.get(str(round["info_slide"])+"-info-slide")
+            round["break_category"] = request.form.get(str(round["break_category"])+"-break-category")
 
             # Import round data into the db
             db_name = "rounds"
             search_keys = ["internal_id", "tournament_id"]
-            update_keys = ["name", "short_name", "seq", "break_category", "stage", "motion", "info_slide"]
+            update_keys = ["name", "short_name", "seq", "stage"]
+            if round["motion"]:
+                update_keys.append("motion")
+            if round["info_slide"]:
+                update_keys.append("info_slide")
+            if round["break_category"]:
+                update_keys.append("break_category")
             round["tournament_id"] = tournament["id"]
             round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
 
