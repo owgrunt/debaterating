@@ -413,15 +413,7 @@ def speakers_success():
 def import_teams():
     """Get teams"""
 
-    # Clean teams just in case
     global teams
-    # teams = []
-
-    # # Import team data
-    # global tournament
-    # domain = tournament["domain"]
-    # slug = tournament["slug"]
-    # teams = lookup_data(domain, slug, "teams")
 
     # Ensure the teams are imported
     if teams == None:
