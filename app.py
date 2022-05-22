@@ -510,6 +510,7 @@ def import_rounds():
         if not round["break_category"]:
             round["break_category"] = ""
         else:
+            # Connect the break category in the db
             round["break_category"] = lookup_link(round["break_category"])["name"]
         # Remove unnecessary vars
         del round["id"], round["url"], round["completed"], round["draw_type"], round["draw_status"], round["silent"], round["motions_released"], round["starts_at"], round["weight"]
