@@ -521,6 +521,7 @@ def import_rounds():
         round["tournament_id"] = tournament["id"]
         round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
 
+    # TODO edit round and break category names
 
     if len(rounds) > 0:
         return render_template("0-import-speaker-check.html", rounds=rounds)
