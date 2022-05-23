@@ -98,6 +98,7 @@ swings = []
 teams = []
 rounds = []
 break_categories = []
+speaker_categories = []
 
 @app.route("/import", methods=["GET", "POST"])
 @login_required
@@ -204,6 +205,22 @@ def add_tournament():
 
     else:
         return apology("something went wrong", 400)
+
+
+@app.route("/import/speaker/categories", methods=["GET", "POST"])
+@login_required
+def import_speaker_categories():
+    """Import speakers and get input on speaker name format"""
+
+    # Import speaker data
+    global tournament
+    domain = tournament["domain"]
+    slug = tournament["slug"]
+    global speaker_categories
+    speaker_categories = lookup_data(domain, slug, "speaker-categories")
+
+    if len(speaker_categories) > 0:
+        
 
 
 @app.route("/import/speaker/format", methods=["GET", "POST"])
