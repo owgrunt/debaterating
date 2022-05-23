@@ -509,6 +509,8 @@ def import_rounds():
 
     # Get break categories
     break_categories = lookup_data(domain, slug, "break-categories")
+    for break_category in break_categories:
+        break_category["internal_id"] = break_category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
 
     if len(rounds) > 0:
         return render_template("0-import-round-check.html", rounds=rounds)
