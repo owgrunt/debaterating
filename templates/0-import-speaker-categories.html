@@ -16,9 +16,10 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 25%">#</th>
-                            <th style="width: 25%">Название в системе</th>
-                            <th colspan="2" style="width: 50%">Название</th>
+                            <th style="width: 2%">#</th>
+                            <th style="width: 18%">Название в системе</th>
+                            <th style="width: 40%">Название достижения (лучший спикер)</th>
+                            <th colspan="2" style="width: 40%">Название</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,24 +32,24 @@
                                     {{ category["name"] }}
                                 </td>
                                 <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ category["internal_id"] }}-achievement" name="{{ category["internal_id"] }}-achievement" value="" type="text" required>
+                                    </div>
+                                </td>
+                                <td>
                                     <select class="form-select" id="{{ category["internal_id"] }}-name" name="{{ category["internal_id"] }}-name">
                                         <option value="novice">новички</option>
                                         <option value="other">другой</option>
                                     </select>
                                 </td>
                                 <td style="display: none;" id="{{ category["internal_id"] }}-hide">
-                                    <input autocomplete="off" class="form-control mx-auto" id="{{ category["internal_id"] }}-name-other" name="{{ category["internal_id"] }}-name-other" value="{{ break_category["name"] }}" type="text">
+                                    <input autocomplete="off" class="form-control mx-auto" id="{{ category["internal_id"] }}-name-other" name="{{ category["internal_id"] }}-name-other" value="{{ category["name"] }}" type="text">
                                     <script>
                                         document.getElementById('{{ category["internal_id"] }}-name').addEventListener('change', function () {
                                             var style = this.value == "other" ? 'block' : 'none';
                                             document.getElementById('{{ category["internal_id"] }}-hide').style.display = style;
                                         });
                                     </script>
-                                </td>
-                                <td>
-                                    <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ category["internal_id"] }}-achievement" name="{{ category["internal_id"] }}-achievement" value="" type="text" required>
-                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}
