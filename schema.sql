@@ -141,3 +141,17 @@ CREATE TABLE adjudications (
 CREATE UNIQUE INDEX adjudication_id ON adjudications (id);
 CREATE INDEX adjudication_by_adjudicator ON adjudications (speaker_id);
 CREATE INDEX adjudication_by_debate ON adjudications (debate_id);
+
+CREATE TABLE achievements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    tournament_id INTEGER NOT NULL,
+    speaker_id INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    name TEXT,
+    break_category TEXT,
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
+    FOREIGN KEY(speaker_id) REFERENCES speakers(id)
+);
+CREATE UNIQUE INDEX achievement_id ON achievements (id);
+CREATE INDEX achievement_by_speaker ON achievements (speaker_id);
+CREATE INDEX achievement_by_tournament ON achievements (tournament_id);
