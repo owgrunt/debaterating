@@ -13,6 +13,46 @@
         </div>
         <div class="section">
             {{ teams }}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Внутреннее ID</th>
+                        <th>Название</th>
+                        <th>Спикер 1</th>
+                        <th>Спикер 2</th>
+                        <th>Свинг</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for team in teams %}
+                        <tr>
+                            <td>
+                                {{ team["id"] }}
+                            </td>
+                            <td>
+                                {{ team["internal_id"] }}
+                            </td>
+                            <td>
+                                {{ team["name"] }}
+                            </td>
+                            <td>
+                                {{ team["speaker_one_id"] }}
+                            </td>
+                            <td>
+                                {{ team["speaker_two_id"] }}
+                            </td>
+                            <td>
+                                {% if team["swing"] == 1 %}
+                                    Да
+                                {% else %}
+                                    Нет
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}
