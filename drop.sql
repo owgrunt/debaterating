@@ -10,3 +10,5 @@ DROP TABLE tournament_participants;
 DROP TABLE adjudications;
 DROP TABLE break_categories;
 DROP TABLE achievements;
+DROP TABLE speaker_categories;
+DROP TABLE speakers_in_categories;
