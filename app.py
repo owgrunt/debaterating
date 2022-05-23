@@ -527,7 +527,34 @@ def import_debates():
     global rounds
 
     if request.method == "POST":
+        for break_category in break_categories:
+            # Get data from the form
+            if request.form.get(str(break_category["internal_id"])+"-break-category") = "другой":
+                break_category["name"] = request.form.get(str(break_category["internal_id"])+"-break-category-other")
+            else:
+                break_category["name"] = request.form.get(str(break_category["internal_id"])+"-break-category")
+            round["short_name"] = request.form.get(str(round["internal_id"])+"-short-name")
+            round["motion"] = request.form.get(str(round["internal_id"])+"-motion")
+            round["info_slide"] = request.form.get(str(round["internal_id"])+"-info-slide")
+            round["break_category"] = request.form.get(str(round["internal_id"])+"-break-category")
+
+            #return render_template("0-import-round-check.html", rounds=rounds)
+
+            # Import round data into the db
+            db_name = "rounds"
+            search_keys = ["internal_id", "tournament_id"]
+            update_keys = ["name", "short_name", "seq", "stage"]
+            if round["motion"] != None:
+                update_keys.append("motion")
+            if round["info_slide"] != None:
+                update_keys.append("info_slide")
+            if round["break_category"] != None:
+                update_keys.append("break_category")
+            round["tournament_id"] = tournament["id"]
+            round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
+
         for round in rounds:
+            # Get data from the form
             round["name"] = request.form.get(str(round["internal_id"])+"-name")
             round["short_name"] = request.form.get(str(round["internal_id"])+"-short-name")
             round["motion"] = request.form.get(str(round["internal_id"])+"-motion")
