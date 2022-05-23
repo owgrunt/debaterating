@@ -991,7 +991,7 @@ def calculate_elo():
 @app.route("/import/speaker-scores", methods=["GET", "POST"])
 @login_required
 def calculate_speaker_scores():
-    """Calculate and update new average speaker scores"""
+    """Calculate new average speaker scores, record best speakers"""
     global speakers
     for speaker in speakers:
         if speaker["adjudicator"] == 0:
@@ -1001,6 +1001,7 @@ def calculate_speaker_scores():
             db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
                        speaker["new_average"], speaker["id"])
 
+    
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
 
