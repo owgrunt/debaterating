@@ -1034,7 +1034,7 @@ def calculate_speaker_scores():
             # Import achievement data into the db
             db_name = "achievements"
             entry = achivement
-            search_keys = ["tournament_id", "speaker_id", "type"]
+            search_keys = ["tournament_id", "speaker_id", "type", "speaker_category"]
             update_keys = ["name"]
             achivement["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
