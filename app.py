@@ -457,6 +457,7 @@ def add_speakers():
             if len(speaker["categories"]) > 0:
                 for instance in speaker["categories"]:
                     category = {}
+                    db_name = "speakers_in_categories"
                     category["speaker_id"] = speaker["id"]
                     category["tournament_id"] = tournament["id"]
                     category["internal_id"] = instance.replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
@@ -464,7 +465,7 @@ def add_speakers():
                         if category["internal_id"] == global_category["internal_id"]:
                             entry = category
                             category["category_id"] = global_category["id"]
-                            search_keys = ["speaker_id", "tournament_id"]
+                            search_keys = ["speaker_id", "tournament_id", "internal_id"]
                             update_keys = ["category_id"]
                             category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
