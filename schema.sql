@@ -35,6 +35,8 @@ CREATE TABLE tournaments (
     internal_id INTEGER,
     slug TEXT,
     domain TEXT,
+    average_rating INTEGER,
+    page TEXT,
     date TEXT NOT NULL,
     type TEXT NOT NULL
 );
