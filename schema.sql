@@ -181,3 +181,16 @@ CREATE TABLE speaker_categories (
 );
 CREATE UNIQUE INDEX speaker_category_id ON speaker_categories (id);
 CREATE INDEX speaker_categories_by_tournament ON speaker_categories (tournament_id);
+
+CREATE TABLE speakers_in_categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    tournament_id INTEGER NOT NULL,
+    internal_id INTEGER NOT NULL,
+    speaker_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
+    FOREIGN KEY(speaker_id) REFERENCES speakers(id),
+    FOREIGN KEY(category_id) REFERENCES speaker_categories(id)
+);
+CREATE UNIQUE INDEX speaker_category_id ON speaker_categories (id);
+CREATE INDEX speaker_categories_by_tournament ON speaker_categories (tournament_id);
