@@ -779,12 +779,12 @@ def import_debates():
                                 # Use the speech dict because I'm lazy
                                 speech["type"] = "team"
                                 speech["name"] = round["name"]
-                                speech["break_category"] = round["name"]
+                                speech["break_category"] = round["break_category"]
                                 # Import achievement data into the db
                                 db_name = "achievements"
                                 entry = speech
                                 search_keys = ["tournament_id", "speaker_id"]
-                                update_keys = ["position"]
+                                update_keys = ["type", "name", "break_category"]
                                 result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
 
