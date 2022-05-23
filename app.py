@@ -476,7 +476,7 @@ def add_speakers():
 
         # Record average speaker rating at the tournament
         tournament_id = tournament["id"]
-        average_rating = db.execute(f"SELECT avg(rating) FROM speakers INNER JOIN tournament_participants ON speakers.id = tournament_participants.speaker_id WHERE tournament_participants.tournament_id = {tournament_id}")
+        average_rating = db.execute(f"SELECT avg(rating) as av FROM speakers INNER JOIN tournament_participants ON speakers.id = tournament_participants.speaker_id WHERE tournament_participants.tournament_id = {tournament_id}")[0]["av"]
         db.execute(f"UPDATE tournaments SET average_rating = {average_rating} WHERE id = {tournament_id}")
 
         return redirect("/import/speaker/success")
