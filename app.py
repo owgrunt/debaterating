@@ -230,7 +230,7 @@ def import_speaker_categories():
 
 @app.route("/import/speaker/categories/add", methods=["GET", "POST"])
 @login_required
-def import_debates():
+def import_speaker_categories_add():
     """Add speaker categories to the db"""
     global speaker_categories
     global tournament
