@@ -501,12 +501,12 @@ def import_rounds():
         round["internal_id"] = round["id"]
         round["short_name"] = round["abbreviation"]
         if not round["break_category"]:
-            round["break_category"] = ""
+            round["break_category_internal_id"] = ""
         else:
             # Connect the break category in the db
-            round["break_category"] = round["break_category"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
+            round["break_category_internal_id"] = round["break_category"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
         # Remove unnecessary vars
-        del round["id"], round["url"], round["completed"], round["draw_type"], round["draw_status"], round["silent"], round["motions_released"], round["starts_at"], round["weight"]
+        del round["id"], round["url"], round["completed"], round["draw_type"], round["draw_status"], round["silent"], round["motions_released"], round["starts_at"], round["weight"], round["break_category"]
 
     # Get break categories
     global break_categories
@@ -554,6 +554,8 @@ def import_debates():
             round["short_name"] = request.form.get(str(round["internal_id"])+"-short-name")
             round["motion"] = request.form.get(str(round["internal_id"])+"-motion")
             round["info_slide"] = request.form.get(str(round["internal_id"])+"-info-slide")
+            for break_category in break_categories:
+                if break_category["internal_id"]
             round["break_category"] = request.form.get(str(round["internal_id"])+"-break-category")
 
             #return render_template("0-import-round-check.html", rounds=rounds)
