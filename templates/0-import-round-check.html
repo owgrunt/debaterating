@@ -55,7 +55,12 @@
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-break-category" name="{{ round["internal_id"] }}-break-category" value="{{ round["break_category"] }}" type="text">
+                                        <select class="form-select" id="{{ round["internal_id"] }}-break-category" name="{{ round["internal_id"] }}-break-category">
+                                            <option value="open" selected>open</option>
+                                            <option value="novice">novice</option>
+                                            <option value="other">Другое</option>
+                                          </select>
+                                          <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-break-category-other" name="{{ round["internal_id"] }}-break-category-other" value="{{ round["break_category"] }}" type="text">
                                     </div>
                                 </td>
                             </tr>
