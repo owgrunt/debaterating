@@ -444,18 +444,25 @@ def add_speakers():
             participant["ca"] = speaker["ca"]
             participant["internal_name"] = speaker["name"]
             participant["speaker_internal_id"] = speaker["internal_id"]
+
+            entry = participant
             search_keys = ["speaker_internal_id", "tournament_id", "adjudicator"]
             update_keys = ["speaker_id", "internal_name"]
-            trash_variable = add_database_entry(db_name, participant, search_keys, update_keys)
+            trash_variable = add_database_entry(db_name, entry, search_keys, update_keys)
 
             # Add speaker categories
             global speaker_categories
             if len(speaker["categories"]) > 0:
                 for category in speaker["categories"]:
+                    category
                     category["internal_id"] = category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
                     for global_category in speaker_categories:
                         if category["internal_id"] == global_category["internal_id"]:
-                            
+                            entry = category
+                            search_keys = ["speaker_internal_id", "tournament_id", "adjudicator"]
+                            update_keys = ["speaker_id", "internal_name"]
+                            category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+
 
         return redirect("/import/speaker/success")
 
