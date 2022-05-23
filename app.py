@@ -868,8 +868,8 @@ def import_debates():
                                     # Import achievement data into the db
                                     db_name = "achievements"
                                     entry = speech
-                                    search_keys = ["tournament_id", "speaker_id"]
-                                    update_keys = ["type", "name", "break_category"]
+                                    search_keys = ["tournament_id", "type", "speaker_id"]
+                                    update_keys = ["name", "break_category"]
                                     speech["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
     return redirect("/import/debate/success")
@@ -1016,9 +1016,14 @@ def calculate_speaker_scores():
         # Import achievement data into the db
         db_name = "achievements"
         entry = achivement
-        search_keys = ["tournament_id", "speaker_id"]
-        update_keys = ["type", "name"]
+        search_keys = ["tournament_id", "speaker_id", "type"]
+        update_keys = ["name"]
         achivement["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+
+    # Get best speakers for all of the categories
+    global speaker_categories
+    for category in speaker_categories:
+        best_speakers = db.execute(open("sql_get_best_speaker.sql").read().replace("xxxxxx", str(tournament_id)))
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
