@@ -555,8 +555,8 @@ def import_debates():
             round["motion"] = request.form.get(str(round["internal_id"])+"-motion")
             round["info_slide"] = request.form.get(str(round["internal_id"])+"-info-slide")
             for break_category in break_categories:
-                if break_category["internal_id"]
-            round["break_category"] = request.form.get(str(round["internal_id"])+"-break-category")
+                if break_category["internal_id"] == round["break_category_internal_id"]:
+                    round["break_category"] = break_category["id"]
 
             #return render_template("0-import-round-check.html", rounds=rounds)
 
