@@ -220,7 +220,8 @@ def import_speaker_categories():
     speaker_categories = lookup_data(domain, slug, "speaker-categories")
 
     if len(speaker_categories) > 0:
-        
+        for category in speaker_categories:
+            category["internal_id"]
 
 
 @app.route("/import/speaker/format", methods=["GET", "POST"])
