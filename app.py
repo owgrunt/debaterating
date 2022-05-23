@@ -475,7 +475,10 @@ def add_speakers():
                             category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
         # Record average speaker elo at the tournament
-        average_rating = db.execute(f"SELECT ")
+        global tournament
+        tournament_id = tournament["id"]
+        average_rating = db.execute(f"SELECT avg(rating) FROM speakers INNER JOIN tournament_participants ON speakers.id = tournament_participants.speaker_id WHERE tournament_participants.tournament_id = {tournament_id}")
+        db.execute(f"UPDATE tournaments SET average_rating = {average_rating} WHERE id = {tournament_id}")
 
         return redirect("/import/speaker/success")
 
