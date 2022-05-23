@@ -94,6 +94,19 @@
                                         <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-info-slide" name="{{ round["internal_id"] }}-info-slide" value="{{ round["info_slide"] }}" type="text">
                                     </div>
                                 </td>
+                                <td>
+                                    {% if round["stage"] == "E" %}
+                                        <div>
+                                            <select class="form-select" id="{{ break_category["internal_id"] }}-achievement" name="{{ break_category["internal_id"] }}-achievement" required>
+                                                <option selected disabled>Название достижения</option>
+                                                <option value="f">финалист</option>
+                                                <option value="sf">полуфиналист</option>
+                                                <option value="qf">четвертьфиналист</option>
+                                                <option value="of">октофиналист</option>
+                                            </select>
+                                        </div>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
