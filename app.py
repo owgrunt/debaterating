@@ -515,7 +515,7 @@ def import_rounds():
         break_category["internal_id"] = break_category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
 
     if len(rounds) > 0:
-        return render_template("0-import-round-check.html", rounds=rounds)
+        return render_template("0-import-round-check.html", rounds=rounds, break_categories=break_categories)
     else:
         return apology("something went wrong", 400)
 
