@@ -11,9 +11,6 @@
             <div class="section">
                 <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
             </div>
-            <div>
-                {{ rounds }}
-            </div>
             <div class="section">
                 <h3>Виды брейка</h3>
                 <table>
@@ -73,6 +70,9 @@
                             <tr>
                                 <td>
                                     {{ round["seq"] }}
+                                </td>
+                                <td>
+                                    {{ round["break_category_internal_id"] }}
                                 </td>
                                 <td>
                                     <div>
