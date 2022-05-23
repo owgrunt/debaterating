@@ -6,14 +6,6 @@
 
 SELECT speaker_id, avg(score)
 FROM speeches
-WHERE
-    score =
-        (
-            SELECT avg(score)
-            FROM speeches
-            GROUP BY speaker_id
-            ORDER BY avg(score) DESC
-            LIMIT 1
-        )
+WHERE speaker_id = 28
 GROUP BY speaker_id
 ORDER BY avg(score) DESC;
