@@ -18,12 +18,12 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Название</th>
-                            <th>Краткое название</th>
-                            <th>Тема</th>
-                            <th>Инфослайд</th>
-                            <th>Категория брейка</th>
+                            <th style="width: 2%">#</th>
+                            <th style="width: 3%">Краткое название</th>
+                            <th style="width: 15%">Название</th>
+                            <th style="width: 30%">Тема</th>
+                            <th style="width: 30%">Инфослайд</th>
+                            <th style="width: 20%">Категория брейка</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,14 +34,14 @@
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-name" name="{{ round["internal_id"] }}-name" value="{{ round["name"] }}" type="text" required>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
                                         <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-short-name" name="{{ round["internal_id"] }}-short-name" value="{{ round["short_name"] }}" type="text" required>
                                     </div>
 
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-name" name="{{ round["internal_id"] }}-name" value="{{ round["name"] }}" type="text" required>
+                                    </div>
                                 </td>
                                 <td>
                                     <div>
