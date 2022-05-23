@@ -1001,11 +1001,11 @@ def calculate_speaker_scores():
             db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
                        speaker["new_average"], speaker["id"])
 
-    # Get best speaker(s)
-    global tournament
-    tournament_id = tournament["id"]
-    best_speakers = db.execute(f"SELECT speaker_id FROM speeches WHERE tournament_id = {tournament_id} AND ")
-    return render_template("0-import-speaker-scores.html", speakers=speakers)
+    # # Get best speaker(s)
+    # global tournament
+    # tournament_id = tournament["id"]
+    # best_speakers = db.execute(f"SELECT speaker_id FROM speeches WHERE tournament_id = {tournament_id} AND ")
+    # return render_template("0-import-speaker-scores.html", speakers=speakers)
 
 
 @app.route("/ranking/speaker-score", methods=["GET", "POST"])
