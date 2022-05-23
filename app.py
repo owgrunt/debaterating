@@ -1023,7 +1023,7 @@ def calculate_speaker_scores():
     # Get best speakers for all of the categories
     global speaker_categories
     for category in speaker_categories:
-        best_speakers = db.execute(open("sql_get_best_speaker.sql").read().replace("xxxxxx", str(tournament_id)))
+        best_speakers = db.execute(open("sql_get_best_speaker_in_category.sql").read().replace("xxxxxx", str(tournament_id)).replace("xxxxxx", str(tournament_id)))
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
