@@ -765,6 +765,8 @@ def import_debates():
                             update_keys = ["position"]
                             result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
+                            # Add achievement to the database
+
     return redirect("/import/debate/success")
 
 
