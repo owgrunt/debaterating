@@ -529,7 +529,7 @@ def import_debates():
     if request.method == "POST":
         for break_category in break_categories:
             # Get data from the form
-            if request.form.get(str(break_category["internal_id"])+"-break-category") == "другой":
+            if request.form.get(str(break_category["internal_id"])+"-break-category") == "other":
                 break_category["name"] = request.form.get(str(break_category["internal_id"])+"-break-category-other")
             else:
                 break_category["name"] = request.form.get(str(break_category["internal_id"])+"-break-category")
