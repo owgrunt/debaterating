@@ -252,6 +252,8 @@ def import_speaker_categories_add():
             update_keys = ["name", "achievement"]
             category["id"] = add_database_entry(db_name, break_category, search_keys, update_keys)
 
+        return redirect("/import/speaker/format")
+
     else:
         return redirect("/import/speaker/format")
 
