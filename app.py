@@ -1008,7 +1008,11 @@ def calculate_speaker_scores():
     if len(best_speakers) > 1:
         return apology("no best speaker found", 400)
     for speaker in best_speakers:
-
+        achivement = {}
+        achivement["tournament_id"] = tournament["id"]
+        achivement["speaker_id"] = speaker["speaker_id"]
+        achivement["type"] = "speaker"
+        achivement["name"] = "лучший спикер"
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
