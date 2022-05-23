@@ -459,8 +459,6 @@ def add_speakers():
 
             # Add speaker categories
             global speaker_categories
-            domain = tournament["domain"]
-            slug = tournament["slug"]
             if "categories" in speaker:
                 for instance in speaker["categories"]:
                     category = {}
@@ -477,7 +475,7 @@ def add_speakers():
                             category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
         # Record average speaker elo at the tournament
-        average_rating = db.execute(f")
+        average_rating = db.execute(f"SELECT ")
 
         return redirect("/import/speaker/success")
 
