@@ -476,6 +476,9 @@ def add_speakers():
                             update_keys = ["category_id"]
                             category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
+        # Record average speaker elo at the tournament
+        average_rating = db.execute(f")
+
         return redirect("/import/speaker/success")
 
     # Can only get here with post
