@@ -453,10 +453,11 @@ def add_speakers():
             # Add speaker categories
             global speaker_categories
             if len(speaker["categories"]) > 0:
-                for category in speaker["categories"]:
+                for instance in speaker["categories"]:
+                    category = {}
                     category["speaker_id"] = speaker["id"]
                     category["tournament_id"] = tournament["id"]
-                    category["internal_id"] = category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
+                    category["internal_id"] = instance.replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
                     for global_category in speaker_categories:
                         if category["internal_id"] == global_category["internal_id"]:
                             entry = category
