@@ -1001,7 +1001,7 @@ def calculate_speaker_scores():
             db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
                        speaker["new_average"], speaker["id"])
 
-    
+    # Get best speaker(s)
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
 
