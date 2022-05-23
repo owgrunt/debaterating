@@ -525,6 +525,7 @@ def import_rounds():
 def import_debates():
     """Import debates"""
     global rounds
+    global break_categories
 
     if request.method == "POST":
         for break_category in break_categories:
