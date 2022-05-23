@@ -55,6 +55,7 @@
                                 </td>
                                 <td>
                                     <div>
+                                        {{ round["break_category"] }}
                                         <select class="form-select" id="{{ round["internal_id"] }}-break-category" name="{{ round["internal_id"] }}-break-category">
                                             <option value="open" selected>open</option>
                                             <option value="novice">novice</option>
@@ -64,7 +65,7 @@
                                         <script>
                                             document.getElementById('{{ round["internal_id"] }}-break-category').addEventListener('change', function () {
                                                 var style = this.value == "other" ? 'block' : 'none';
-                                                document.getElementById('hidden_div').style.display = style;
+                                                document.getElementById('{{ round["internal_id"] }}-break-category-other').style.display = style;
                                             });
                                         </script>
                                     </div>
