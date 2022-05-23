@@ -8,6 +8,7 @@ WHERE
 AND
     speakers_in_categories.category_id = 1
 GROUP BY speeches.speaker_id
+ORDER BY speeches.speaker_id
 -- HAVING average_score IN
 --     (
 --         SELECT avg(score) AS average_score
