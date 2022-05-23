@@ -20,7 +20,7 @@
                         <tr>
                             <th style="width: 25%">#</th>
                             <th style="width: 25%">Название в системе</th>
-                            <th style="width: 50%">Название</th>
+                            <th colspan="2" style="width: 50%">Название</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,24 +33,20 @@
                                     {{ break_category["name"] }}
                                 </td>
                                 <td>
-                                    <div>
-                                        <div class="col">
-                                            <select class="form-select" id="{{ break_category["internal_id"] }}-break-category" name="{{ break_category["internal_id"] }}-break-category">
-                                                <option value="open" selected>open</option>
-                                                <option value="novice">novice</option>
-                                                <option value="other">Другое</option>
-                                            </select>
-                                        </div>
-                                        <div class="col">
-                                            <input autocomplete="off" style="display: none;" class="form-control mx-auto" id="{{ break_category["internal_id"] }}-break-category-other" name="{{ break_category["internal_id"] }}-break-category-other" value="{{ break_category["name"] }}" type="text">
-                                            <script>
-                                                document.getElementById('{{ break_category["internal_id"] }}-break-category').addEventListener('change', function () {
-                                                    var style = this.value == "other" ? 'block' : 'none';
-                                                    document.getElementById('{{ break_category["internal_id"] }}-break-category-other').style.display = style;
-                                                });
-                                            </script>
-                                        </div>
-                                    </div>
+                                    <select class="form-select" id="{{ break_category["internal_id"] }}-break-category" name="{{ break_category["internal_id"] }}-break-category">
+                                        <option value="open" selected>open</option>
+                                        <option value="novice">novice</option>
+                                        <option value="other">Другое</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input autocomplete="off" style="display: none;" class="form-control mx-auto" id="{{ break_category["internal_id"] }}-break-category-other" name="{{ break_category["internal_id"] }}-break-category-other" value="{{ break_category["name"] }}" type="text">
+                                    <script>
+                                        document.getElementById('{{ break_category["internal_id"] }}-break-category').addEventListener('change', function () {
+                                            var style = this.value == "other" ? 'block' : 'none';
+                                            document.getElementById('{{ break_category["internal_id"] }}-break-category-other').style.display = style;
+                                        });
+                                    </script>
                                 </td>
                             </tr>
                         {% endfor %}
