@@ -5,16 +5,14 @@
 {% endblock %}
 
 {% block main %}
-    <h2 class="mb-5 mt-2">Проверьте раунды</h2>
+    <h2 class="mb-5 mt-2">Брейки и раунды</h2>
     <form action="/import/debates" method="post">
         <div class="container">
             <div class="section">
                 <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
             </div>
-            <div>
-                {{ break_categories }}
-            </div>
             <div class="section">
+                <h3>Виды брейка</h3>
                 <table>
                     <thead>
                         <tr>
@@ -34,9 +32,9 @@
                                 </td>
                                 <td>
                                     <select class="form-select" id="{{ break_category["internal_id"] }}-break-category" name="{{ break_category["internal_id"] }}-break-category">
-                                        <option value="open" selected>open</option>
-                                        <option value="novice">novice</option>
-                                        <option value="other">Другое</option>
+                                        <option value="open" selected>открытый</option>
+                                        <option value="novice">новичковый</option>
+                                        <option value="other">другой</option>
                                     </select>
                                 </td>
                                 <td style="display: none;" id="{{ break_category["internal_id"] }}-hide">
@@ -54,6 +52,7 @@
                 </table>
             </div>
             <div class="section">
+                <h3>Раунды</h3>
                 <table>
                     <thead>
                         <tr>
