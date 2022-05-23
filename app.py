@@ -507,7 +507,7 @@ def import_rounds():
         # Remove unnecessary vars
         del round["id"], round["url"], round["completed"], round["draw_type"], round["draw_status"], round["silent"], round["motions_released"], round["starts_at"], round["weight"]
 
-    # TODO edit round and break category names
+    # Get break categories
 
     if len(rounds) > 0:
         return render_template("0-import-round-check.html", rounds=rounds)
