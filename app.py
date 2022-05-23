@@ -508,6 +508,7 @@ def import_rounds():
         del round["id"], round["url"], round["completed"], round["draw_type"], round["draw_status"], round["silent"], round["motions_released"], round["starts_at"], round["weight"]
 
     # Get break categories
+    rounds = lookup_data(domain, slug, "break-categories")
 
     if len(rounds) > 0:
         return render_template("0-import-round-check.html", rounds=rounds)
