@@ -1030,6 +1030,7 @@ def calculate_speaker_scores():
             achivement["speaker_id"] = speaker["speaker_id"]
             achivement["type"] = "speaker"
             achivement["name"] = category["achievement"]
+            achivement["speaker_category"] = category["id"]
             # Import achievement data into the db
             db_name = "achievements"
             entry = achivement
