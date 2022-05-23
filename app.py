@@ -1013,6 +1013,12 @@ def calculate_speaker_scores():
         achivement["speaker_id"] = speaker["speaker_id"]
         achivement["type"] = "speaker"
         achivement["name"] = "лучший спикер"
+        # Import achievement data into the db
+        db_name = "achievements"
+        entry = achivement
+        search_keys = ["tournament_id", "speaker_id"]
+        update_keys = ["type", "name"]
+        achivement["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
