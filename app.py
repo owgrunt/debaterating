@@ -645,6 +645,7 @@ def import_debates():
                 return apology(f"tabmaster needs to publish ballots", 400)
             elif not results == []:
                 results = results[0]["result"]["sheets"][0]["teams"]
+                # Check if this is a final
                 for result in results:
                     # Prepare data for import
                     result["tournament_id"] = tournament["id"]
