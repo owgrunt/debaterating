@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Брейки и раунды</h2>
+    <form action="/import/debates" method="post" class="needs-validation" novalidate>
+        <div class="container">
+            <div class="section">
+                <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
+            </div>
+            <div class="section">
+                <h3>Виды брейка</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 25%">#</th>
+                            <th style="width: 25%">Название в системе</th>
+                            <th colspan="2" style="width: 50%">Название</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in speaker_categories %}
+                            <tr>
+                                <td>
+                                    {{ category["internal_id"] }}
+                                </td>
+                                <td>
+                                    {{ category["name"] }}
+                                </td>
+                                <td>
+                                    <select class="form-select" id="{{ category["internal_id"] }}-name" name="{{ category["internal_id"] }}-name">
+                                        <option value="novice">новички</option>
+                                        <option value="other">другой</option>
+                                    </select>
+                                </td>
+                                <td style="display: none;" id="{{ category["internal_id"] }}-hide">
+                                    <input autocomplete="off" class="form-control mx-auto" id="{{ category["internal_id"] }}-name-other" name="{{ category["internal_id"] }}-name-other" value="{{ break_category["name"] }}" type="text">
+                                    <script>
+                                        document.getElementById('{{ category["internal_id"] }}-name').addEventListener('change', function () {
+                                            var style = this.value == "other" ? 'block' : 'none';
+                                            document.getElementById('{{ category["internal_id"] }}-hide').style.display = style;
+                                        });
+                                    </script>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ category["internal_id"] }}-achievement" name="{{ category["internal_id"] }}-achievement" value="" type="text" required>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
+        <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit">Продолжить</button>
+        <script>
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            (() => {
+                'use strict'
+
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                const forms = document.querySelectorAll('.needs-validation')
+
+                // Loop over them and prevent submission
+                Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+                })
+            })()
+        </script>
+    </form>
+{% endblock %}
