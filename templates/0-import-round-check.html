@@ -6,15 +6,13 @@
 
 {% block main %}
     <h2 class="mb-5 mt-2">Проверьте раунды</h2>
-    <div class="container">
-        <div class="section">
-            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
-        </div>
-        <div class="section">
-            {{ rounds }}
-        </div>
-        <div class="section">
-            <form action="/import/debates" method="post">
+    <form action="/import/debates" method="post">
+        <div class="container">
+            <div class="section">
+                <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
+                <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit">Продолжить</button>
+            </div>
+            <div class="section">
                 <table>
                     <thead>
                         <tr>
@@ -78,7 +76,7 @@
                 </table>
                 <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
                 <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit">Продолжить</button>
-            </form>
+            </div>
         </div>
-    </div>
+    </form>
 {% endblock %}
