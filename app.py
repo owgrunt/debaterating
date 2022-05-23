@@ -1023,7 +1023,20 @@ def calculate_speaker_scores():
     # Get best speakers for all of the categories
     global speaker_categories
     for category in speaker_categories:
-        best_speakers = db.execute(open("sql_get_best_speaker_in_category.sql").read().replace("xxxxxx", str(tournament_id)).replace("xxxxxx", str(tournament_id)))
+        best_speakers = db.execute(open("sql_get_best_speaker_in_category.sql").read().replace("xxxxxx", str(tournament_id)).replace("yyyyyy", str(category["id"])))
+        for speaker in best_speakers:
+            achivement = {}
+            achivement["tournament_id"] = tournament["id"]
+            achivement["speaker_id"] = speaker["speaker_id"]
+            achivement["type"] = "speaker"
+            achivement["name"] = category["achievement"]
+            # Import achievement data into the db
+            db_name = "achievements"
+            entry = achivement
+            search_keys = ["tournament_id", "speaker_id", "type"]
+            update_keys = ["name"]
+            achivement["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
