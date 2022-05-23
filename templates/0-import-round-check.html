@@ -39,12 +39,12 @@
                                         <option value="other">Другое</option>
                                     </select>
                                 </td>
-                                <td>
-                                    <input autocomplete="off" style="display: none;" class="form-control mx-auto" id="{{ break_category["internal_id"] }}-break-category-other" name="{{ break_category["internal_id"] }}-break-category-other" value="{{ break_category["name"] }}" type="text">
+                                <td style="display: none;" id="{{ break_category["internal_id"] }}-hide">
+                                    <input autocomplete="off" class="form-control mx-auto" id="{{ break_category["internal_id"] }}-break-category-other" name="{{ break_category["internal_id"] }}-break-category-other" value="{{ break_category["name"] }}" type="text">
                                     <script>
                                         document.getElementById('{{ break_category["internal_id"] }}-break-category').addEventListener('change', function () {
                                             var style = this.value == "other" ? 'block' : 'none';
-                                            document.getElementById('{{ break_category["internal_id"] }}-break-category-other').style.display = style;
+                                            document.getElementById('{{ break_category["internal_id"] }}-hide').style.display = style;
                                         });
                                     </script>
                                 </td>
