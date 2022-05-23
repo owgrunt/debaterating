@@ -785,11 +785,11 @@ def import_debates():
                                 db_name = "achievements"
                                 entry = speech
                                 search_keys = ["tournament_id", "speaker_id"]
-                                update_keys = ["type", "name", "break_category"]
+                                update_keys = ["type", "name", "break_category", "debate_id"]
                                 speech["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
                                 if round["final"] and result["win"]:
-                                    speech["name"] = "winner"
+                                    speech["name"] = "Победитель"
                                     # Import achievement data into the db
                                     db_name = "achievements"
                                     entry = speech

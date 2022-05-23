@@ -161,12 +161,10 @@ CREATE TABLE achievements (
     type TEXT NOT NULL,
     name TEXT,
     break_category INTEGER,
-    team_id INTEGER,
     debate_id INTEGER,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
     FOREIGN KEY(speaker_id) REFERENCES speakers(id),
     FOREIGN KEY(break_category) REFERENCES break_categories(id),
-    FOREIGN KEY(team_id) REFERENCES teams(id),
     FOREIGN KEY(debate_id) REFERENCES debates(id)
 );
 CREATE UNIQUE INDEX achievement_id ON achievements (id);
