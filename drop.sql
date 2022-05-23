@@ -8,3 +8,5 @@ DROP TABLE speeches;
 DROP TABLE team_performances;
 DROP TABLE tournament_participants;
 DROP TABLE adjudications;
+DROP TABLE break_categories;
+DROP TABLE achievements;
