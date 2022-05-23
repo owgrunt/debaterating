@@ -554,6 +554,7 @@ def import_debates():
             round["short_name"] = request.form.get(str(round["internal_id"])+"-short-name")
             round["motion"] = request.form.get(str(round["internal_id"])+"-motion")
             round["info_slide"] = request.form.get(str(round["internal_id"])+"-info-slide")
+            round["achievement"] = request.form.get(str(round["internal_id"])+"-achievement")
             for break_category in break_categories:
                 if break_category["internal_id"] == round["break_category_internal_id"]:
                     round["break_category"] = break_category["id"]
@@ -778,7 +779,7 @@ def import_debates():
                             if round["stage"] == "E":
                                 # Use the speech dict because I'm lazy
                                 speech["type"] = "team"
-                                speech["name"] = round["name"]
+                                speech["name"] = round["achievement"]
                                 speech["break_category"] = round["break_category"]
 
                                 # Import achievement data into the db
@@ -789,7 +790,7 @@ def import_debates():
                                 speech["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
                                 if round["final"] and result["win"]:
-                                    speech["name"] = "Победитель"
+                                    speech["name"] = "победитель"
                                     # Import achievement data into the db
                                     db_name = "achievements"
                                     entry = speech
