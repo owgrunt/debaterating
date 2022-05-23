@@ -761,7 +761,6 @@ def import_debates():
                             db_name = "speeches"
                             entry = speech
                             search_keys = ["debate_id", "tournament_id", "speaker_id"]
-                            # TODO delete update_keys = ["position", "score"]
                             update_keys = ["position"]
                             result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
