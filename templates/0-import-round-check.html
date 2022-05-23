@@ -59,8 +59,14 @@
                                             <option value="open" selected>open</option>
                                             <option value="novice">novice</option>
                                             <option value="other">Другое</option>
-                                          </select>
-                                          <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-break-category-other" name="{{ round["internal_id"] }}-break-category-other" value="{{ round["break_category"] }}" type="text">
+                                        </select>
+                                        <input autocomplete="off" style="display: none;" class="form-control mx-auto" id="{{ round["internal_id"] }}-break-category-other" name="{{ round["internal_id"] }}-break-category-other" value="{{ round["break_category"] }}" type="text">
+                                        <script>
+                                            document.getElementById('{{ round["internal_id"] }}-break-category').addEventListener('change', function () {
+                                                var style = this.value == "other" ? 'block' : 'none';
+                                                document.getElementById('hidden_div').style.display = style;
+                                            });
+                                        </script>
                                     </div>
                                 </td>
                             </tr>
