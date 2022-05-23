@@ -280,6 +280,9 @@ def import_speakers():
         for speaker in speakers:
             speaker["adjudicator"] = 0
             speaker["ca"] = 0
+            if "categories" in speaker:
+                for category in categories:
+                    category["internal_id"] = category.replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
             for team in teams:
                 for member in team["speakers"]:
                     if speaker["id"] == member["id"]:
@@ -460,7 +463,6 @@ def add_speakers():
                     db_name = "speakers_in_categories"
                     category["speaker_id"] = speaker["id"]
                     category["tournament_id"] = tournament["id"]
-                    category["internal_id"] = instance.replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
                     for global_category in speaker_categories:
                         if category["internal_id"] == global_category["internal_id"]:
                             entry = category
