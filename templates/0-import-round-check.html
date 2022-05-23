@@ -18,9 +18,9 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 30%">#</th>
-                            <th style="width: 30%">Название в системе</th>
-                            <th style="width: 30%">Название</th>
+                            <th style="width: 25%">#</th>
+                            <th style="width: 25%">Название в системе</th>
+                            <th style="width: 50%">Название</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,9 +44,9 @@
                                         <div class="col">
                                             <input autocomplete="off" style="display: none;" class="form-control mx-auto" id="{{ break_category["internal_id"] }}-break-category-other" name="{{ break_category["internal_id"] }}-break-category-other" value="{{ break_category["name"] }}" type="text">
                                             <script>
-                                                document.getElementById('{{ round["internal_id"] }}-break-category').addEventListener('change', function () {
+                                                document.getElementById('{{ break_category["internal_id"] }}-break-category').addEventListener('change', function () {
                                                     var style = this.value == "other" ? 'block' : 'none';
-                                                    document.getElementById('{{ round["internal_id"] }}-break-category-other').style.display = style;
+                                                    document.getElementById('{{ break_category["internal_id"] }}-break-category-other').style.display = style;
                                                 });
                                             </script>
                                         </div>
