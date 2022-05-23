@@ -419,6 +419,7 @@ def confirm_speakers():
 def add_speakers():
     """Add speakers to the database"""
     if request.method == "POST":
+        global tournament
         global speakers
         for speaker in speakers:
             # If speaker is in the db, connect general speaker id with tournament speaker id
@@ -444,7 +445,6 @@ def add_speakers():
             # Add speaker as tournament participant
             db_name = "tournament_participants"
             participant = {}
-            global tournament
             participant["tournament_id"] = tournament["id"]
             participant["speaker_id"] = speaker["id"]
             participant["adjudicator"] = speaker["adjudicator"]
@@ -474,8 +474,7 @@ def add_speakers():
                             update_keys = ["category_id"]
                             category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
-        # Record average speaker elo at the tournament
-        global tournament
+        # Record average speaker rating at the tournament
         tournament_id = tournament["id"]
         average_rating = db.execute(f"SELECT avg(rating) FROM speakers INNER JOIN tournament_participants ON speakers.id = tournament_participants.speaker_id WHERE tournament_participants.tournament_id = {tournament_id}")
         db.execute(f"UPDATE tournaments SET average_rating = {average_rating} WHERE id = {tournament_id}")
