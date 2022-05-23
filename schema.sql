@@ -73,6 +73,22 @@ CREATE TABLE rounds (
 CREATE UNIQUE INDEX round_id ON rounds (id);
 CREATE INDEX round_by_tournament ON rounds (tournament_id);
 
+CREATE TABLE break_categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    tournament_id INTEGER NOT NULL,
+    internal_id INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    short_name TEXT NOT NULL,
+    seq INTEGER NOT NULL,
+    break_category TEXT,
+    stage TEXT NOT NULL,
+    motion TEXT,
+    info_slide TEXT,
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id)
+);
+CREATE UNIQUE INDEX round_id ON rounds (id);
+CREATE INDEX round_by_tournament ON rounds (tournament_id);
+
 CREATE TABLE debates (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     tournament_id INTEGER NOT NULL,
