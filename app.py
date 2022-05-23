@@ -504,7 +504,7 @@ def import_rounds():
             round["break_category"] = ""
         else:
             # Connect the break category in the db
-            round["break_category"] = break_category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
+            round["break_category"] = round["break_category"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
         # Remove unnecessary vars
         del round["id"], round["url"], round["completed"], round["draw_type"], round["draw_status"], round["silent"], round["motions_released"], round["starts_at"], round["weight"]
 

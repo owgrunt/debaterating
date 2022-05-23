@@ -57,11 +57,11 @@
                     <thead>
                         <tr>
                             <th style="width: 2%">#</th>
-                            <th style="width: 3%">Краткое название</th>
-                            <th style="width: 15%">Название</th>
-                            <th style="width: 30%">Тема</th>
-                            <th style="width: 30%">Инфослайд</th>
-                            <th style="width: 20%">Категория брейка</th>
+                            <th style="width: 4%">Категория брейка</th>
+                            <th style="width: 4%">Краткое название</th>
+                            <th style="width: 20%">Название</th>
+                            <th style="width: 35%">Тема</th>
+                            <th style="width: 35%">Инфослайд</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,6 +69,9 @@
                             <tr>
                                 <td>
                                     {{ round["seq"] }}
+                                </td>
+                                <td>
+                                    {{ round["break_category"] }}
                                 </td>
                                 <td>
                                     <div>
@@ -90,9 +93,6 @@
                                     <div>
                                         <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-info-slide" name="{{ round["internal_id"] }}-info-slide" value="{{ round["info_slide"] }}" type="text">
                                     </div>
-                                </td>
-                                <td>
-                                    {{ round["break_category"] }}
                                 </td>
                             </tr>
                         {% endfor %}
