@@ -64,11 +64,12 @@ CREATE TABLE rounds (
     name TEXT NOT NULL,
     short_name TEXT NOT NULL,
     seq INTEGER NOT NULL,
-    break_category TEXT,
+    break_category INTEGER,
     stage TEXT NOT NULL,
     motion TEXT,
     info_slide TEXT,
-    FOREIGN KEY(tournament_id) REFERENCES tournaments(id)
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
+    FOREIGN KEY(break_category) REFERENCES break_categories(id)
 );
 CREATE UNIQUE INDEX round_id ON rounds (id);
 CREATE INDEX round_by_tournament ON rounds (tournament_id);
@@ -161,7 +162,8 @@ CREATE TABLE achievements (
     name TEXT,
     break_category INTEGER,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
-    FOREIGN KEY(speaker_id) REFERENCES speakers(id)
+    FOREIGN KEY(speaker_id) REFERENCES speakers(id),
+    FOREIGN KEY(break_category) REFERENCES break_categories(id)
 );
 CREATE UNIQUE INDEX achievement_id ON achievements (id);
 CREATE INDEX achievement_by_speaker ON achievements (speaker_id);

@@ -778,6 +778,8 @@ def import_debates():
                             if round["stage"] == "E":
                                 # Use the speech dict because I'm lazy
                                 speech["type"] = "team"
+                                speech["name"] = round["name"]
+                                speech["break_category"] = round["name"]
                                 # Import achievement data into the db
                                 db_name = "achievements"
                                 entry = speech
