@@ -192,5 +192,5 @@ CREATE TABLE speakers_in_categories (
     FOREIGN KEY(speaker_id) REFERENCES speakers(id),
     FOREIGN KEY(category_id) REFERENCES speaker_categories(id)
 );
-CREATE UNIQUE INDEX speaker_category_id ON speaker_categories (id);
-CREATE INDEX speaker_categories_by_tournament ON speaker_categories (tournament_id);
+CREATE UNIQUE INDEX speakers_in_categories_by_category_id ON speakers_in_categories (category_id);
+CREATE INDEX speakers_in_categories_by_tournament ON speakers_in_categories (tournament_id);
