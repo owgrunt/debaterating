@@ -4,8 +4,7 @@
 -- DROP TABLE team_performances;
 -- DELETE FROM speakers;
 
-SELECT speaker_id, avg(score)
+SELECT speaker_id, avg(score) AS average_score
 FROM speeches
-WHERE speaker_id = 28
 GROUP BY speaker_id
 ORDER BY avg(score) DESC;
