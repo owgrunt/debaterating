@@ -452,6 +452,8 @@ def add_speakers():
 
             # Add speaker categories
             global speaker_categories
+            domain = tournament["domain"]
+            slug = tournament["slug"]
             if len(speaker["categories"]) > 0:
                 for instance in speaker["categories"]:
                     category = {}
