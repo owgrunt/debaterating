@@ -17,12 +17,14 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Внутреннее ID</th>
                         <th>Фамилия</th>
                         <th>Имя</th>
                         <th>Отчество</th>
                         <th>Команда</th>
+                        <th>Категории</th>
                         <th>Судья</th>
-                        <th>ГС</th>
+                        <th>Клуб</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,6 +32,9 @@
                         <tr>
                             <td>
                                 {{ speaker["id"] }}
+                            </td>
+                            <td>
+                                {{ speaker["internal_id"] }}
                             </td>
                             <td>
                                 {{ speaker["last_name"] }}
@@ -44,6 +49,9 @@
                                 {{ speaker["team_name"] }}
                             </td>
                             <td>
+                                {{ speaker["categories"] }}
+                            </td>
+                            <td>
                                 {% if speaker["adjudicator"] == 1 %}
                                     Да
                                 {% else %}
@@ -56,6 +64,9 @@
                                 {% else %}
                                     Нет
                                 {% endif %}
+                            </td>
+                            <td>
+                                {{ speaker["society"] }}
                             </td>
                         </tr>
                     {% endfor %}
