@@ -1004,7 +1004,12 @@ def calculate_speaker_scores():
     # Get best speaker(s)
     global tournament
     tournament_id = tournament["id"]
-    best_speakers = db.execute(f"SELECT speaker_id FROM speeches WHERE tournament_id = {tournament_id} AND ")
+    best_speakers = db.execute(open("sql_get_best_speaker.sql").read().replace("xxxxxx", str(tournament_id)))
+    if len(best_speakers) > 1:
+        return apology("no best speaker found", 400)
+    for speaker in best_speakers:
+
+
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
 
