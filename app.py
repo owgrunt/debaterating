@@ -97,6 +97,7 @@ adjudicator_name_format = ""
 swings = []
 teams = []
 rounds = []
+break_categories = []
 
 @app.route("/import", methods=["GET", "POST"])
 @login_required
@@ -508,6 +509,7 @@ def import_rounds():
         del round["id"], round["url"], round["completed"], round["draw_type"], round["draw_status"], round["silent"], round["motions_released"], round["starts_at"], round["weight"]
 
     # Get break categories
+    global break_categories
     break_categories = lookup_data(domain, slug, "break-categories")
     for break_category in break_categories:
         break_category["internal_id"] = break_category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
