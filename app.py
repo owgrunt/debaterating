@@ -239,18 +239,19 @@ def import_speaker_categories_add():
         for category in speaker_categories:
             # Get data from the form
             if request.form.get(str(category["internal_id"])+"-name") == "other":
-                category["name"] = request.form.get(str(break_category["internal_id"])+"-name-other")
+                category["name"] = request.form.get(str(category["internal_id"])+"-name-other")
             else:
-                category["name"] = request.form.get(str(break_category["internal_id"])+"-name")
+                category["name"] = request.form.get(str(category["internal_id"])+"-name")
 
-            category["achievement"] = request.form.get(str(break_category["internal_id"])+"-achievement")
+            category["achievement"] = request.form.get(str(category["internal_id"])+"-achievement")
             category["tournament_id"] = tournament["id"]
 
             # Import data into the db
             db_name = "speaker_categories"
+            entry = category
             search_keys = ["internal_id", "tournament_id"]
             update_keys = ["name", "achievement"]
-            category["id"] = add_database_entry(db_name, break_category, search_keys, update_keys)
+            category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
         return redirect("/import/speaker/format")
 
