@@ -281,8 +281,12 @@ def import_speakers():
             speaker["adjudicator"] = 0
             speaker["ca"] = 0
             if "categories" in speaker:
-                for category in speaker["categories"]:
-                    category = category.replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
+                if len(speaker["categories"]) > 0:
+                    new_categories = []
+                    for category in speaker["categories"]:
+                        new_category = category.replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
+                        new_categories = new_categories + [new_category]
+                    speaker["categories"] = new_categories
             for team in teams:
                 for member in team["speakers"]:
                     if speaker["id"] == member["id"]:
