@@ -448,6 +448,11 @@ def add_speakers():
             update_keys = ["speaker_id", "internal_name"]
             trash_variable = add_database_entry(db_name, participant, search_keys, update_keys)
 
+            # Add speaker categories
+            if len(speaker["categories"]) > 0:
+                for category in speaker["categories"]:
+                    category["internal_id"] = 
+
         return redirect("/import/speaker/success")
 
     # Can only get here with post
