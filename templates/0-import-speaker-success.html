@@ -16,11 +16,13 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 20%">ID</th>
-                        <th style="width: 20%">Фамилия</th>
-                        <th style="width: 20%">Имя</th>
-                        <th style="width: 20%">Отчество</th>
-                        <th style="width: 20%">Команда</th>
+                        <th>ID</th>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Команда</th>
+                        <th>Судья</th>
+                        <th>ГС</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,6 +42,20 @@
                             </td>
                             <td>
                                 {{ speaker["team_name"] }}
+                            </td>
+                            <td>
+                                {% if speaker["adjudicator"] == 1 %}
+                                    Да
+                                {% else %}
+                                    Нет
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if speaker["ca"] == 1 %}
+                                    Да
+                                {% else %}
+                                    Нет
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
