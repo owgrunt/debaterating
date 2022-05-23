@@ -464,7 +464,7 @@ def add_speakers():
                         if category["internal_id"] == global_category["internal_id"]:
                             entry = category
                             category["category_id"] = global_category["id"]
-                            search_keys = ["speaker_id", "tournament_id", "internal_id"]
+                            search_keys = ["speaker_id", "tournament_id"]
                             update_keys = ["category_id"]
                             category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
