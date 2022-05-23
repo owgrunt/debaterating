@@ -247,7 +247,7 @@ def import_speaker_categories_add():
             category["tournament_id"] = tournament["id"]
 
             # Import data into the db
-            db_name = "break_categories"
+            db_name = "speaker_categories"
             search_keys = ["internal_id", "tournament_id"]
             update_keys = ["name", "achievement"]
             category["id"] = add_database_entry(db_name, break_category, search_keys, update_keys)
