@@ -170,3 +170,14 @@ CREATE TABLE achievements (
 CREATE UNIQUE INDEX achievement_id ON achievements (id);
 CREATE INDEX achievement_by_speaker ON achievements (speaker_id);
 CREATE INDEX achievement_by_tournament ON achievements (tournament_id);
+
+CREATE TABLE speaker_categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    tournament_id INTEGER NOT NULL,
+    internal_id INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    achievement TEXT NOT NULL,
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id)
+);
+CREATE UNIQUE INDEX speaker_category_id ON speaker_categories (id);
+CREATE INDEX speaker_categories_by_tournament ON speaker_categories (tournament_id);
