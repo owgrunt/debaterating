@@ -281,7 +281,7 @@ def import_speakers():
             speaker["adjudicator"] = 0
             speaker["ca"] = 0
             if "categories" in speaker:
-                for category in categories:
+                for category in speaker["categories"]:
                     category["internal_id"] = category.replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
             for team in teams:
                 for member in team["speakers"]:
