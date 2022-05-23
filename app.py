@@ -221,7 +221,7 @@ def import_speaker_categories():
 
     if len(speaker_categories) > 0:
         for category in speaker_categories:
-            category["internal_id"]
+            category["internal_id"] = category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
 
 
 @app.route("/import/speaker/format", methods=["GET", "POST"])
