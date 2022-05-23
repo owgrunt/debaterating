@@ -159,7 +159,7 @@ CREATE TABLE achievements (
     speaker_id INTEGER NOT NULL,
     type TEXT NOT NULL,
     name TEXT,
-    break_category TEXT,
+    break_category INTEGER,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
     FOREIGN KEY(speaker_id) REFERENCES speakers(id)
 );

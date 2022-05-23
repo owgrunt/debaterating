@@ -776,10 +776,11 @@ def import_debates():
 
                             # Add achievement to the database
                             if round["stage"] == "E":
+                                # Use the speech dict because I'm lazy
+                                speech["type"] = "team"
                                 # Import achievement data into the db
                                 db_name = "achievements"
                                 entry = speech
-                                speech
                                 search_keys = ["tournament_id", "speaker_id"]
                                 update_keys = ["position"]
                                 result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
