@@ -646,6 +646,13 @@ def import_debates():
             elif not results == []:
                 results = results[0]["result"]["sheets"][0]["teams"]
                 # Check if this is a final
+                if round["stage"] == "E":
+                    winners = 0
+                    for result in results:
+                        if result["win"] == True:
+                            winners = winners + 1
+                    if winners == 1:
+                        
                 for result in results:
                     # Prepare data for import
                     result["tournament_id"] = tournament["id"]
