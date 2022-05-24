@@ -181,7 +181,7 @@ def add_tournament():
         update_keys = ["name", "short_name", "date", "type"]
         if "page" in tournament:
             update_keys.append("page")
-        category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+        tournament["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
 
 
