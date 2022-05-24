@@ -190,7 +190,7 @@ def add_tournament():
                 conveners.append(request.form.get(f"convener-{i}"))
 
         for convener in conveners:
-            
+
 
         return redirect("/import/speaker/categories")
 
@@ -269,8 +269,7 @@ def import_speakers():
 
     if speakers != None:
         for speaker in speakers:
-            speaker["adjudicator"] = 0
-            speaker["ca"] = 0
+            speaker["role"] = "speaker"
             if "categories" in speaker:
                 if len(speaker["categories"]) > 0:
                     new_categories = []
@@ -313,11 +312,9 @@ def import_adjudicators():
     # Ensure the adjudicators are imported
     if adjudicators != None:
         for speaker in adjudicators:
-            speaker["adjudicator"] = 1
+            speaker["role"] = "adjudicator"
             if speaker["adj_core"] == True:
-                speaker["ca"] = 1
-            else:
-                speaker["ca"] = 0
+                speaker["role"] = "ca"
         count = len(adjudicators)
         return render_template("0-import-adjudicator-format.html", speakers=adjudicators, count=count, tournament=tournament)
     else:
@@ -438,14 +435,13 @@ def add_speakers():
             participant = {}
             participant["tournament_id"] = tournament["id"]
             participant["speaker_id"] = speaker["id"]
-            participant["adjudicator"] = speaker["adjudicator"]
-            participant["ca"] = speaker["ca"]
+            participant["role"] = speaker["role"]
             participant["internal_name"] = speaker["name"]
             participant["speaker_internal_id"] = speaker["internal_id"]
 
             entry = participant
-            search_keys = ["speaker_internal_id", "tournament_id", "adjudicator"]
-            update_keys = ["speaker_id", "internal_name"]
+            search_keys = ["speaker_id", "tournament_id"]
+            update_keys = ["speaker_internal_id", "internal_name", "role"]
             trash_variable = add_database_entry(db_name, entry, search_keys, update_keys)
 
             # Add speaker categories
