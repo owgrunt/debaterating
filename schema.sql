@@ -130,11 +130,10 @@ CREATE INDEX team_performance_debate ON team_performances (debate_id);
 CREATE TABLE tournament_participants (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     tournament_id INTEGER NOT NULL,
-    speaker_id INTEGER,
-    speaker_internal_id INTEGER NOT NULL,
-    internal_name TEXT NOT NULL,
-    adjudicator INTEGER NOT NULL DEFAULT 0,
-    ca INTEGER NOT NULL DEFAULT 0,
+    speaker_id INTEGER NOT NULL,
+    speaker_internal_id INTEGER,
+    internal_name TEXT,
+    role TEXT NOT NULL,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
     FOREIGN KEY(speaker_id) REFERENCES speakers(id)
 );

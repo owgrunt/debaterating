@@ -190,6 +190,17 @@ def add_tournament():
                 conveners.append(request.form.get(f"convener-{i}"))
 
         for convener in conveners:
+            # Add convener as tournament participant
+            db_name = "tournament_participants"
+            participant = {}
+            participant["tournament_id"] = tournament["id"]
+            participant["speaker_id"] = convener
+            participant["role"] = "convener"
+
+            entry = participant
+            search_keys = ["speaker_id", "tournament_id"]
+            update_keys = ["role"]
+            participant["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
 
         return redirect("/import/speaker/categories")
