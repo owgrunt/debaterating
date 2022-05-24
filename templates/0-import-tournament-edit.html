@@ -24,11 +24,11 @@
                     </div>
                 </div>
                 <div class="row mb-5">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="date" class="form-label">Дата окончания</label>
                         <input autocomplete="off" autofocus class="form-control mx-auto" id="date" name="date" type="date" value="2022-01-01" required>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="type" class="form-label">Тип</label>
                         <select class="form-select mx-auto" id="type" name="type" required>
                             <option disabled>Тип турнира</option>
@@ -36,6 +36,10 @@
                             <option value="proam">Джедайский</option>
                             <option value="am">Новичковый</option>
                         </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="short_name" class="form-label">Организаторы (ID через запятую без пробелов)</label>
+                        <input autocomplete="off" autofocus class="form-control mx-auto" id="link" name="link" placeholder="1,2,3" type="text">
                     </div>
                 </div>
                 <div class="row">
