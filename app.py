@@ -175,31 +175,35 @@ def add_tournament():
         # Add date and type from form
         tournament["date"] = request.form.get("date")
         tournament["type"] = request.form.get("type")
+        if request.form.get("link"):
+            tournament["link"] = request.form.get("link")
+
+
 
         # TODO change to use the add_entry()
         # Add the tournament to the db
         # Check that it is not in there already
-        candidates = db.execute("SELECT * FROM tournaments WHERE (internal_id = ? OR internal_id IS NULL) AND slug = ? AND domain = ?",
-                                tournament["internal_id"], tournament["slug"], tournament["domain"])
-        if len(candidates) == 1:
-            # Update tournament data
-            db.execute("UPDATE tournaments SET name = ?, short_name = ?, date = ?, type = ? WHERE (internal_id = ? OR internal_id IS NULL) AND slug = ? AND domain = ?",
-                       tournament["name"], tournament["short_name"], tournament["date"], tournament["type"], tournament["internal_id"], tournament["slug"], tournament["domain"])
-        elif len(candidates) == 0:
-            # Add a new tournament
-            db.execute("INSERT INTO tournaments (name, short_name, date, type, internal_id, slug, domain) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                       tournament["name"], tournament["short_name"], tournament["date"], tournament["type"], tournament["internal_id"], tournament["slug"], tournament["domain"])
-        else:
-            return apology("something went wrong", 400)
+        # candidates = db.execute("SELECT * FROM tournaments WHERE (internal_id = ? OR internal_id IS NULL) AND slug = ? AND domain = ?",
+        #                         tournament["internal_id"], tournament["slug"], tournament["domain"])
+        # if len(candidates) == 1:
+        #     # Update tournament data
+        #     db.execute("UPDATE tournaments SET name = ?, short_name = ?, date = ?, type = ? WHERE (internal_id = ? OR internal_id IS NULL) AND slug = ? AND domain = ?",
+        #                tournament["name"], tournament["short_name"], tournament["date"], tournament["type"], tournament["internal_id"], tournament["slug"], tournament["domain"])
+        # elif len(candidates) == 0:
+        #     # Add a new tournament
+        #     db.execute("INSERT INTO tournaments (name, short_name, date, type, internal_id, slug, domain) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        #                tournament["name"], tournament["short_name"], tournament["date"], tournament["type"], tournament["internal_id"], tournament["slug"], tournament["domain"])
+        # else:
+        #     return apology("something went wrong", 400)
 
-        # Add the tournament db ID to the tournament dict
-        candidates = db.execute("SELECT * FROM tournaments WHERE name = ? AND (internal_id = ? OR internal_id IS NULL) AND slug = ? AND domain = ?",
-                                tournament["name"], tournament["internal_id"], tournament["slug"], tournament["domain"])
-        if len(candidates) == 1:
-            # Update the id
-            tournament["id"] = candidates[0]["id"]
-        else:
-            return apology("something went wrong", 400)
+        # # Add the tournament db ID to the tournament dict
+        # candidates = db.execute("SELECT * FROM tournaments WHERE name = ? AND (internal_id = ? OR internal_id IS NULL) AND slug = ? AND domain = ?",
+        #                         tournament["name"], tournament["internal_id"], tournament["slug"], tournament["domain"])
+        # if len(candidates) == 1:
+        #     # Update the id
+        #     tournament["id"] = candidates[0]["id"]
+        # else:
+        #     return apology("something went wrong", 400)
 
         return redirect("/import/speaker/categories")
 
