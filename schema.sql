@@ -32,7 +32,6 @@ CREATE TABLE tournaments (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name TEXT NOT NULL,
     short_name TEXT NOT NULL,
-    internal_id INTEGER,
     slug TEXT,
     domain TEXT,
     average_rating INTEGER,

@@ -172,13 +172,15 @@ def add_tournament():
         tournament["date"] = request.form.get("date")
         tournament["type"] = request.form.get("type")
         if request.form.get("link"):
-            tournament["link"] = request.form.get("link")
+            tournament["page"] = request.form.get("link")
 
         # Import data into the db
         db_name = "tournaments"
         entry = tournament
-        search_keys = ["internal_id", "tournament_id"]
-        update_keys = ["name", "achievement"]
+        search_keys = ["slug", "domain"]
+        update_keys = ["name", "short_name", "date", "type"]
+        if "page" in tournament:
+            update_keys.append("page")
         category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
 
