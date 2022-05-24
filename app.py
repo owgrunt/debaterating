@@ -184,6 +184,13 @@ def add_tournament():
         tournament["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
         # Create organiser entries
+        conveners = []
+        for i in range(4):
+            if request.form.get(f"convener-{i}"):
+                conveners.append(request.form.get(f"convener-{i}"))
+
+        for convener in conveners:
+            
 
         return redirect("/import/speaker/categories")
 
