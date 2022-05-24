@@ -174,6 +174,13 @@ def add_tournament():
         if request.form.get("link"):
             tournament["link"] = request.form.get("link")
 
+        # Import data into the db
+        db_name = "tournaments"
+        entry = tournament
+        search_keys = ["internal_id", "tournament_id"]
+        update_keys = ["name", "achievement"]
+        category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+
 
 
         # TODO change to use the add_entry()
