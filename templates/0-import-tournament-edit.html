@@ -9,35 +9,41 @@
     <div class="container">
         <div class="section">
             <form action="/import/tournament/add" method="post" class="row g-3">
-                <div class="col-md-4">
-                    <label for="name" class="form-label">Название</label>
-                    <input autocomplete="off" autofocus class="form-control mx-auto" id="name" name="name" value="{{ tournament["name"] }}" type="text" required>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="name" class="form-label">Название</label>
+                        <input autocomplete="off" autofocus class="form-control mx-auto" id="name" name="name" value="{{ tournament["name"] }}" type="text" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="short_name" class="form-label">Краткое название</label>
+                        <input autocomplete="off" autofocus class="form-control mx-auto" id="short_name" name="short_name" value="{{ tournament["short_name"] }}" type="text" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="short_name" class="form-label">Ссылка</label>
+                        <input autocomplete="off" autofocus class="form-control mx-auto" id="link" name="link" placeholder="t.me/tournament_page" type="text">
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <label for="short_name" class="form-label">Краткое название</label>
-                    <input autocomplete="off" autofocus class="form-control mx-auto" id="short_name" name="short_name" value="{{ tournament["short_name"] }}" type="text" required>
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        <label for="date" class="form-label">Дата окончания</label>
+                        <input autocomplete="off" autofocus class="form-control mx-auto" id="date" name="date" type="date" value="2022-01-01" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="type" class="form-label">Тип</label>
+                        <select class="form-select mx-auto" id="type" name="type" required>
+                            <option disabled>Тип турнира</option>
+                            <option value="open" selected>Открытый</option>
+                            <option value="proam">Джедайский</option>
+                            <option value="am">Новичковый</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <label for="short_name" class="form-label">Ссылка</label>
-                    <input autocomplete="off" autofocus class="form-control mx-auto" id="short_name" name="short_name" value="" type="text">
-                </div>
-                <div class="col-md-6">
-                    <label for="date" class="form-label">Дата окончания</label>
-                    <input autocomplete="off" autofocus class="form-control mx-auto" id="date" name="date" type="date" value="2022-01-01" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="type" class="form-label">Тип</label>
-                    <select class="form-select mx-auto" id="type" name="type" required>
-                        <option disabled>Тип турнира</option>
-                        <option value="open" selected>Открытый</option>
-                        <option value="proam">Джедайский</option>
-                        <option value="am">Новичковый</option>
-                    </select>
-                </div>
-                <div class="col-3"></div>
-                <div class="col-6">
-                    <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import" role="button">Назад</a>
-                    <button class="btn btn-primary" type="submit">Продолжить</button>
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-6">
+                        <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import" role="button">Назад</a>
+                        <button class="btn btn-primary" type="submit">Продолжить</button>
+                    </div>
                 </div>
             </form>
         </div>
