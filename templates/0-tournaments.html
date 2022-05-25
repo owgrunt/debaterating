@@ -35,7 +35,7 @@
                                     <a href="{{ tournament["page"] }}">ссылка</a>
                                 {% else %}
                                     нет
-                                {% endif% }
+                                {% endif %}
                             </td>
                             <td>
                                 {{ tournament["average_rating"] }}
@@ -50,8 +50,8 @@
                         columnDefs: [
                             { orderable: false, targets: 0 },
                             { orderable: false, targets: 1 },
-                            { orderable: false, targets: 1 },
-                            { orderable: false, targets: 1 }
+                            { orderable: false, targets: 3 },
+                            { orderable: false, targets: 4 }
                         ],
                         order: [[2, 'desc']],
                         language: {
