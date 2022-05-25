@@ -1199,16 +1199,16 @@ def team_tab():
 
     if not request.args.get("category"):
         # Get all tournament teams
-        teams = db.execute(open("sql_get_team_tab.sql").read().replace("xxxxxx", str(id)))
+        teams = db.execute(open("sql_get_team_tab.sql").read().replace("xxxxxx", str(id)).replace("yyyyy", ""))
         # No category needed
         category_text = ""
-    # else:
+    else:
         # Get teams in this category
-        # TODO
-        # category_id = request.args.get("category")
-        # speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id INNER JOIN speakers_in_categories sic ON speeches.speaker_id = sic.speaker_id WHERE speeches.tournament_id = {id} AND sic.category_id = {category_id} GROUP BY speeches.speaker_id")
-        # category = db.execute(f"SELECT name FROM speaker_categories WHERE id = {category_id} AND tournament_id = {id}")[0]
-        # category_text = " (" + category["name"] + ")"
+        category_id = request.args.get("category")
+        new_condition = "
+        teams = db.execute(open("sql_get_team_tab.sql").read().replace("xxxxxx", str(id)).replace("yyyyy", new_condition))
+        category = db.execute(f"SELECT name FROM speaker_categories WHERE id = {category_id} AND tournament_id = {id}")[0]
+        category_text = " (" + category["name"] + ")"
 
     # Sort speakers by speaker points
     i = 1
