@@ -769,7 +769,6 @@ def import_debates():
 
                     # Get speeches
                     global speakers
-                    # Check if this is a preliminary round
                     if "speeches" in result:
                         i = 0
                         for speech in result["speeches"]:
@@ -806,6 +805,13 @@ def import_debates():
                                     speech["position"] = "8"
                                 else:
                                     return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
+                            
+                            # Import speech data into the db
+                            db_name = "speeches"
+                            entry = speech
+                            search_keys = ["debate_id", "tournament_id", "speaker_id"]
+                            update_keys = ["position", "score"]
+                            result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
                     # For elimination rounds
                     else:
                         team_entry = db.execute("SELECT * FROM teams WHERE tournament_id = ? AND id = ?",
@@ -842,7 +848,6 @@ def import_debates():
                                     speech["position"] = "8"
                                 else:
                                     return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
-                        
 
                             # Import speech data into the db
                             db_name = "speeches"
