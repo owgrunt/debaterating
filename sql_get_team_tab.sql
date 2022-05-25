@@ -6,7 +6,8 @@ SELECT
    s1.last_name AS s1_last_name,
    s2.last_name AS s2_last_name,
    s1.id AS s1_id,
-   s2.id AS s2_id
+   s2.id AS s2_id,
+   s1c.category_id
 FROM
    team_performances tp
 INNER JOIN teams t ON
@@ -19,12 +20,18 @@ INNER JOIN speakers AS s1 ON
     t.speaker_one_id = s1.id
 INNER JOIN speakers AS s2 ON
     t.speaker_two_id = s2.id
-INNER JOIN speakers AS s1 ON
-    t.speaker_one_id = s1.id
+INNER JOIN speakers_in_categories AS s1c ON
+    t.speaker_one_id = s1c.id
+INNER JOIN speakers_in_categories AS s2c ON
+    t.speaker_two_id = s2c.id
 WHERE
     tp.tournament_id = 1
 AND
     r.stage != "E"
+AND
+    s1c.category_id = 1
+AND
+    s2c.category_id = 1
 GROUP BY
     tp.team_id
 ORDER BY
