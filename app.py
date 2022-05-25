@@ -1097,6 +1097,20 @@ def tournament_list():
     return render_template("0-tournaments.html", tournaments=tournaments)
 
 
+@app.route("/tournament", methods=["GET", "POST"])
+def speaker_profile():
+    """Show tournament profile"""
+
+    if not request.args.get("id"):
+            return apology("must provide tournament id", 400)
+
+    id = request.args.get("id")
+
+    tournament = db.execute(f"SELECT * FROM tournaments WHERE id = {id}")[0]
+
+    speeches = db.execute(open("sql_get_speeches.sql").read().replace("xxxxxx", str(id)))
+
+
 @app.route("/speaker", methods=["GET", "POST"])
 def speaker_profile():
     """Show speaker profile"""
