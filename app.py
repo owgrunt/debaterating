@@ -805,7 +805,7 @@ def import_debates():
                                     speech["position"] = "8"
                                 else:
                                     return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
-                            
+
                             # Import speech data into the db
                             db_name = "speeches"
                             entry = speech
