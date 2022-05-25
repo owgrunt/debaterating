@@ -44,26 +44,11 @@
             </table>
             <script>
                 $(document).ready(function () {
-                    var t = $('#speakers').DataTable( {
-                        columnDefs: [
-                            {
-                                searchable: false,
-                                orderable: false,
-                                targets: 0,
-                            },
-                        ],
-                        order: [[1, 'asc']],
+                    $('#speakers').DataTable( {
                         language: {
                             url: '//cdn.datatables.net/plug-ins/1.12.0/i18n/ru.json'
                         }
                     } );
-                    t.on('order.dt search.dt', function () {
-                        let i = 1;
-
-                        t.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
-                            this.data(i++);
-                        });
-                    }).draw();
                 });
             </script>
         </div>
