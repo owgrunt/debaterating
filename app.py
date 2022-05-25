@@ -1098,7 +1098,7 @@ def tournament_list():
 
 
 @app.route("/tournament", methods=["GET", "POST"])
-def speaker_profile():
+def tournament():
     """Show tournament profile"""
 
     if not request.args.get("id"):
@@ -1110,9 +1110,11 @@ def speaker_profile():
 
     speeches = db.execute(open("sql_get_speeches.sql").read().replace("xxxxxx", str(id)))
 
+    return render_template("0-tournament.html", tournament=tournament)
+
 
 @app.route("/speaker", methods=["GET", "POST"])
-def speaker_profile():
+def speaker():
     """Show speaker profile"""
 
     if not request.args.get("id"):
