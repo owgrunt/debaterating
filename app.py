@@ -1051,8 +1051,11 @@ def calculate_speaker_scores():
     previous_score = 101
     current_ranking = 0
     for speaker in db_speakers:
-        if speaker["speaker_score"] == previous_score:
-            speaker["ranking"] = i
+        if speaker["speaker_score"] < previous_score:
+            current_ranking = i
+            previous_score = speaker["speaker_score"]
+        speaker["ranking"] = current_ranking
+        i = i + 1
 
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
