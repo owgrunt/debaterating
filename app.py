@@ -1113,7 +1113,7 @@ def tournament():
 
     rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = {id}")
 
-    participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = {id}")
+    participants = db.execute(f"SELECT s.first_name, s.last_name, p.role, s.id FROM tournament_participants p INNER JOIN speakers s ON p.speaker_id = s.id WHERE tournament_id = {id}")
 
     speeches = db.execute(open("sql_get_speeches.sql").read().replace("xxxxxx", str(id)))
 
