@@ -8,11 +8,6 @@
     <h2 class="mb-5 mt-2">Рейтинг по спикерским баллам</h2>
     <div class="container">
         <div class="section">
-            <script>
-                $(document).ready(function () {
-                    $('#speakers').DataTable();
-                });
-            </script>
             <table id="speakers" class="display" style="width:100%">
                 <thead>
                     <tr>
@@ -47,6 +42,11 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <script>
+                $(document).ready(function () {
+                    $('#speakers').DataTable();
+                });
+            </script>
         </div>
     </div>
 {% endblock %}
