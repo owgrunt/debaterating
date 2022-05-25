@@ -1201,7 +1201,18 @@ def round_debates():
     for debate in debates:
         debate_id = debate["id"]
         debate["speeches"] = db.execute(f"SELECT * FROM speeches WHERE debate_id = {debate_id}")
+        debate["speeches"] = sorted(debate["speeches"], key=itemgetter("position"))
         debate["team_performances"] = db.execute(f"SELECT * FROM team_performances WHERE debate_id = {debate_id}")
+        for team in debate["team_performances"]:
+            if team["side"] == "og":
+                team["position"] = 1
+            elif team["side"] == "oo":
+                team["position"] = 2
+            elif team["side"] == "cg":
+                team["position"] = 3
+            elif team["side"] == "co":
+                team["position"] = 4
+        debate["team_performances"] = sorted(debate["team_performances"], key=itemgetter("position"))
 
     return render_template("0-round.html", round=round, debates=debates)
 

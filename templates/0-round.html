@@ -7,7 +7,7 @@
 {% block main %}
     <h2 class="mb-5 mt-2">Раунд</h2>
     <div>{{ debates[0] }}</div>
-    <div class="container" style="text-align: left">
+    <div class="container">
         <div class="row mt-3">
             <table>
                 <thead>
@@ -30,16 +30,16 @@
                     {% for debate in debates %}
                         <tr>
                             <td>
-                                {{ speaker["ranking_by_speaks"] }}
+                                {{ debate["speeches"]
                             </td>
                             <td>
-                                
+
                             </td>
                             <td>
-                                {{ speaker["average_score"] }}
+
                             </td>
                             <td>
-                                {{ speaker["rating"] }}
+
                             </td>
                         </tr>
                     {% endfor %}
