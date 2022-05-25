@@ -1186,7 +1186,7 @@ def speaker_tab():
     return render_template("0-speaker-tab.html", tournament=tournament, speakers=speakers, category_text=category_text)
 
 
-@app.route("/debate", methods=["GET", "POST"])
+@app.route("/round", methods=["GET", "POST"])
 def round_debates():
     """Show speaker tab for a tournament"""
 
