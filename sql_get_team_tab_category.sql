@@ -25,13 +25,13 @@ INNER JOIN speakers_in_categories AS s1c ON
 INNER JOIN speakers_in_categories AS s2c ON
     t.speaker_two_id = s2c.speaker_id
 WHERE
-    tp.tournament_id = 1
+    tp.tournament_id = xxxxxx
 AND
     r.stage != "E"
 AND
-    s1c.category_id = 1
+    s1c.category_id = yyyyyy
 AND
-    s2c.category_id = 1
+    s2c.category_id = yyyyyy
 GROUP BY
     tp.team_id
 ORDER BY
