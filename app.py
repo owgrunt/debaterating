@@ -1195,7 +1195,7 @@ def round_debates():
 
     round_id = request.args.get("id")
 
-    round = db.execute(f"SELECT * FROM rounds WHERE id = {round_id}")[0]
+    round = db.execute(f"SELECT r.*, t.short_name AS tournament_name FROM rounds r INNER JOIN tournaments t ON r.tournament_id = t.id WHERE r.id = {round_id}")[0]
 
     debates = db.execute(f"SELECT * FROM debates WHERE round_id = {round_id}")
     for debate in debates:
@@ -1213,6 +1213,7 @@ def round_debates():
             elif team["side"] == "co":
                 team["position"] = 4
         debate["team_performances"] = sorted(debate["team_performances"], key=itemgetter("position"))
+    debates = sorted(debates, key=itemgetter("average_rating"), reverse=True)
 
     return render_template("0-round.html", round=round, debates=debates)
 
