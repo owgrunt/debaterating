@@ -19,15 +19,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% set i = namespace(value=0) %}
-                    {% set previous_score = namespace(value=101) %}
-                    {% for speaker in speakers %}
+                    {% for tournament in tournaments %}
                         <tr>
                             <td>
-                                {{ speaker["ranking_by_rating"] }}
+                                <a href="/tournament?id={{ tournament["id"] }}">{{ tournament["name"] }}</a>
                             </td>
                             <td>
-                                {{ speaker["ranking_by_speaks"] }}
+                                {{ tournament["ranking_by_speaks"] }}
                             </td>
                             <td>
                                 <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["last_name"] }} {{ speaker["first_name"] }}</a>
