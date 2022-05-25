@@ -1055,6 +1055,7 @@ def ranking_speaker_score():
 
     speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
 
+    # Add r
     i = 1
     for speaker in speakers:
 
