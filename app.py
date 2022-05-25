@@ -1199,14 +1199,13 @@ def team_tab():
 
     if not request.args.get("category"):
         # Get all tournament teams
-        teams = db.execute(open("sql_get_team_tab.sql").read().replace("xxxxxx", str(id)).replace("yyyyy", ""))
+        teams = db.execute(open("sql_get_team_tab.sql").read().replace("xxxxxx", str(id)))
         # No category needed
         category_text = ""
     else:
         # Get teams in this category
         category_id = request.args.get("category")
-        new_condition = "
-        teams = db.execute(open("sql_get_team_tab.sql").read().replace("xxxxxx", str(id)).replace("yyyyy", new_condition))
+        teams = db.execute(open("sql_get_team_tab_category.sql").read().replace("xxxxxx", str(id)).replace("yyyyy", category_id))
         category = db.execute(f"SELECT name FROM speaker_categories WHERE id = {category_id} AND tournament_id = {id}")[0]
         category_text = " (" + category["name"] + ")"
 
