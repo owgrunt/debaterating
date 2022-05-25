@@ -1,6 +1,6 @@
 SELECT
    tp.team_id,
-   tp.score as team_score,
+   sum(tp.score) as team_score,
    sp.rating_change as elo,
    s1.first_name AS s1_first_name,
    s2.first_name AS s2_first_name,
