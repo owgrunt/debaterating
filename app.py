@@ -1186,6 +1186,17 @@ def speaker_tab():
     return render_template("0-speaker-tab.html", tournament=tournament, speakers=speakers, category_text=category_text)
 
 
+@app.route("/round", methods=["GET", "POST"])
+def round_debates():
+    """Show speaker tab for a tournament"""
+
+    if not request.args.get("id"):
+            return apology("must provide round id", 400)
+
+    id = request.args.get("id")
+
+    round = db.execute(f"SELECT * FROM rounds WHERE id = {id}")[0]
+
 @app.route("/speaker", methods=["GET", "POST"])
 def speaker():
     """Show speaker profile"""
