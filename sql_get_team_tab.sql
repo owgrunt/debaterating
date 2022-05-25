@@ -1,6 +1,7 @@
 SELECT
    tp.team_id,
    sum(tp.score) as team_score,
+   sum(sp.rating_change) as elo,
    s1.first_name AS s1_first_name,
    s2.first_name AS s2_first_name,
    s1.last_name AS s1_last_name,
@@ -21,7 +22,7 @@ INNER JOIN speakers AS s2 ON
     t.speaker_two_id = s2.id
 INNER JOIN speeches AS sp ON
     t.speaker_one_id = sp.speaker_id
-    AND 
+    AND tp.tournament_id = 1
 WHERE
     tp.tournament_id = 1
 AND
