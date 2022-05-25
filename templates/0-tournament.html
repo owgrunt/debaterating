@@ -81,7 +81,7 @@
                         {% for achievement in achievements %}
                             <tr>
                                 <td>
-                                    {{ achievement["first_name"] }} {{ achievement["last_name"] }}
+                                    <a href="/speaker?id={{ achievement["id"] }}">{{ achievement["first_name"] }} {{ achievement["last_name"] }}</a>
                                 </td>
                                 <td>
                                     {{ achievement["name"] }}
