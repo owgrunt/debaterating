@@ -1186,7 +1186,7 @@ def speaker_tab():
     return render_template("0-speaker-tab.html", tournament=tournament, speakers=speakers, category_text=category_text)
 
 
-@app.route("/round", methods=["GET", "POST"])
+@app.route("/debate", methods=["GET", "POST"])
 def round_debates():
     """Show speaker tab for a tournament"""
 
@@ -1202,6 +1202,8 @@ def round_debates():
         debate_id = debate["id"]
         debate["speeches"] = db.execute(f"SELECT * FROM speeches WHERE debate_id = {debate_id}")
         debate["team_performances"] = db.execute(f"SELECT * FROM team_performances WHERE debate_id = {debate_id}")
+
+    return render_template("0-speaker-tab.html", tournament=tournament, speakers=speakers, category_text=category_text)
 
 @app.route("/speaker", methods=["GET", "POST"])
 def speaker():
