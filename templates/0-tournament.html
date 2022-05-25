@@ -55,6 +55,18 @@
                                 <a href="{{ tournament["page"] }}">{{ tournament["page"] }}</a>
                             </td>
                         </tr>
+                        {% for participant in participants %}
+                            {% if participant["role"] == "convener" %}
+                                <tr>
+                                    <td>
+                                        Организатор:
+                                    </td>
+                                    <td>
+                                        <a href="/speaker?id={{ participant["id"] }}">{{ participant["first_name"] }} {{ participant["last_name"] }}</a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -89,9 +101,13 @@
                                 </td>
                             </tr>
                         {% endfor %}
+                        <tr>
+                            <td colspan="3">
+                                Все достижения
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-                Все достижения
                 <table id="achievements">
                     <thead>
                         <tr>
