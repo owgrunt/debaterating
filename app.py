@@ -1186,6 +1186,45 @@ def speaker_tab():
     return render_template("0-speaker-tab.html", tournament=tournament, speakers=speakers, category_text=category_text)
 
 
+@app.route("/team-tab", methods=["GET", "POST"])
+def team_tab():
+    """Show speaker tab for a tournament"""
+
+    if not request.args.get("id"):
+            return apology("must provide tournament id", 400)
+
+    id = request.args.get("id")
+
+    tournament = db.execute(f"SELECT * FROM tournaments WHERE id = {id}")[0]
+
+    if not request.args.get("category"):
+        # Get all tournament teams
+        teams = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id WHERE tournament_id = {id} GROUP BY speaker_id")
+        # No category needed
+        category_text = ""
+    else:
+        # Get teams in this category
+        # TODO
+        # category_id = request.args.get("category")
+        # speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id INNER JOIN speakers_in_categories sic ON speeches.speaker_id = sic.speaker_id WHERE speeches.tournament_id = {id} AND sic.category_id = {category_id} GROUP BY speeches.speaker_id")
+        # category = db.execute(f"SELECT name FROM speaker_categories WHERE id = {category_id} AND tournament_id = {id}")[0]
+        # category_text = " (" + category["name"] + ")"
+
+    # Sort speakers by speaker points
+    speakers = sorted(speakers, key=itemgetter("average_score"), reverse=True)
+    i = 1
+    previous_score = 101
+    current_ranking = 0
+    for speaker in speakers:
+        if speaker["average_score"] < previous_score:
+            current_ranking = i
+            previous_score = speaker["average_score"]
+        speaker["ranking_by_speaks"] = current_ranking
+        i = i + 1
+
+    return render_template("0-speaker-tab.html", tournament=tournament, speakers=speakers, category_text=category_text)
+
+
 @app.route("/round", methods=["GET", "POST"])
 def round_debates():
     """Show speaker tab for a tournament"""
