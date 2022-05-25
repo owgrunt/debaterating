@@ -1154,6 +1154,8 @@ def speaker_tab():
     tournament = db.execute(f"SELECT * FROM tournaments WHERE id = {id}")[0]
 
     speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id WHERE tournament_id = {id} GROUP BY speaker_id")
+    for speaker in speakers:
+        
 
     return render_template("0-speaker-tab.html", tournament=tournament, speakers=speakers)
 
