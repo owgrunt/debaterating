@@ -40,6 +40,13 @@ table.dataTable th {
   padding: 0.75rem;
 }
 
+table.dataTable thead th,
+table.dataTable thead td,
+table.dataTable tfoot th,
+table.dataTable tfoot td {
+  text-align: center;
+}
+
 tbody tr:nth-of-type(odd) {
     background-color: rgb(179, 208, 255, 0.3)
 }
