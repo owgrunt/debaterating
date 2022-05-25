@@ -21,17 +21,17 @@ INNER JOIN speakers AS s1 ON
 INNER JOIN speakers AS s2 ON
     t.speaker_two_id = s2.id
 INNER JOIN speakers_in_categories AS s1c ON
-    t.speaker_one_id = s1c.id
+    t.speaker_one_id = s1c.speaker_id
 INNER JOIN speakers_in_categories AS s2c ON
-    t.speaker_two_id = s2c.id
+    t.speaker_two_id = s2c.speaker_id
 WHERE
     tp.tournament_id = 1
 AND
     r.stage != "E"
 AND
-    s1c.category_id = 0
+    s1c.category_id = 1
 AND
-    s2c.category_id = 0
+    s2c.category_id = 1
 GROUP BY
     tp.team_id
 ORDER BY
