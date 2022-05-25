@@ -61,6 +61,11 @@ table.dataTable.table-striped > tbody > tr.odd > * {
     box-shadow: inset 0 0 0 9999px rgba(179, 208, 255, 0.3);
 }
 
+table.table-bordered.dataTable th,
+table.table-bordered.dataTable td {
+  border-bottom-width: 0px;
+}
+
 .container {
     margin-left: auto;
     margin-right: auto;
