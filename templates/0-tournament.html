@@ -10,7 +10,38 @@
         <div class="row mt-3">{{ rounds }}</div>
         <div class="row mt-3">
             <div class="col-4">
-                <h4>Тип турнира: {{ tournament["type"] }}</h3>
+                <table id="tab">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Данные</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Тип
+                            </td>
+                            <td>
+                                {{ tournament["type"] }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Дата
+                            </td>
+                            <td>
+                                {{ tournament["date"] }}
+                            </td>
+                        </tr>
+                        {% for round in rounds %}
+                            <tr>
+                                <td>
+                                    {{ round["name"] }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
             <div class="col-4">
                 <table id="achievements">
