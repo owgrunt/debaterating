@@ -102,7 +102,7 @@
                         {% endfor %}
                         <tr>
                             <td colspan="3">
-                                Все достижения
+                                <a href="/achievements?id={{ tournament["id"] }}">Все достижения</a>
                             </td>
                         </tr>
                     </tbody>
@@ -123,9 +123,14 @@
                                 </tr>
                             {% endif %}
                         {% endfor %}
+                        <tr>
+                            <td>
+                                <a href="/adjudicators?id={{ tournament["id"] }}">Все судьи</a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-                Все судьи
+
             </div>
             <div class="col-4">
                 <table id="tab">
@@ -137,12 +142,12 @@
                     <tbody>
                         <tr>
                             <td>
-                                Командный тэб
+                                <a href="/team-tab?id={{ tournament["id"] }}">Командный тэб</a>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                Спикерский тэб
+                                <a href="/speaker-tab?id={{ tournament["id"] }}">Спикерский тэб</a>
                             </td>
                         </tr>
                         {% for round in rounds %}
