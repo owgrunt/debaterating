@@ -1045,8 +1045,8 @@ def calculate_speaker_scores():
             update_keys = ["name"]
             achivement["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
-
-    
+    # Set up the new global rating by speaker scores
+    speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
 
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
