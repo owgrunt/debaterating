@@ -13,9 +13,7 @@ INNER JOIN speakers AS s1 ON
     t.speaker_one_id = s1.id
 INNER JOIN speakers AS s2 ON
     t.speaker_two_id = s2.id
-INNER JOIN debates ON
-    team_performances.debate_id = debates.id
 WHERE
-    team_performances.tournament_id = 1
+    tp.tournament_id = 1
 ORDER BY
     team_score DESC;
