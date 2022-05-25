@@ -34,7 +34,11 @@
                                     {% if achievement["type"] == "team" %}
                                         {{ achievement["break_category_name"] }}
                                     {% elif achievement["type"] == "speaker" %}
-                                        {{ achievement["speaker_category_name"] }}
+                                        {% if achievement["speaker_category_name"] == None %}
+                                            open
+                                        {% else %}
+                                            {{ achievement["speaker_category_name"] }}
+                                        {% endif %}
                                     {% else %}
 
                                     {% endif %}
