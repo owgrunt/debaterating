@@ -1046,6 +1046,9 @@ def calculate_speaker_scores():
             achivement["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
 
+    
+
+
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
 
