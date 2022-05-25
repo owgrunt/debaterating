@@ -16,8 +16,9 @@
                 <table id="achievements">
                     <thead>
                         <tr>
-                            <th>Название</th>
-                            <th>Тип</th>
+                            <th>Имя</th>
+                            <th>Достижение</th>
+                            <th>Категория</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,7 +31,7 @@
                                     {{ achievement["name"] }}
                                 </td>
                                 <td>
-                                    {{ achievement["break_category"] }}
+                                    {{ achievement["break_category_name"] }}
                                 </td>
                             </tr>
                         {% endfor %}
