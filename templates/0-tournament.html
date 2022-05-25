@@ -7,7 +7,7 @@
 {% block main %}
     <h2 class="mb-5 mt-2">{{ tournament["name"] }}</h2>
     <div class="container">
-        <!-- <div class="row mt-3">{{ rounds }}</div> -->
+        <div class="row mt-3">{{ participants }}</div>
         <div class="row mt-3">
             <div class="col-4">
                 <table id="tab">
@@ -73,32 +73,18 @@
                 <table id="achievements">
                     <thead>
                         <tr>
-                            <th colspan="3">Главные судьи</th>
+                            <th>Главные судьи</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for achievement in achievements %}
-                            <tr>
-                                <td>
-                                    {{ achievement["first_name"] }} {{ achievement["last_name"] }}
-                                </td>
-                                <td>
-                                    {{ achievement["name"] }}
-                                </td>
-                                <td>
-                                    {% if achievement["type"] == "team" %}
-                                        {{ achievement["break_category_name"] }}
-                                    {% elif achievement["type"] == "speaker" %}
-                                        {% if achievement["speaker_category_name"] == None %}
-                                            open
-                                        {% else %}
-                                            {{ achievement["speaker_category_name"] }}
-                                        {% endif %}
-                                    {% else %}
-
-                                    {% endif %}
-                                </td>
-                            </tr>
+                        {% for participant in participants %}
+                            {% if participant["role"] == "ca" %}
+                                <tr>
+                                    <td>
+                                        {{ participant["first_name"] }} {{ participant["last_name"] }}
+                                    </td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>

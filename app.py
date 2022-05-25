@@ -1113,9 +1113,11 @@ def tournament():
 
     rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = {id}")
 
+    participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = {id}")
+
     speeches = db.execute(open("sql_get_speeches.sql").read().replace("xxxxxx", str(id)))
 
-    return render_template("0-tournament.html", tournament=tournament, achievements=achievements, rounds=rounds)
+    return render_template("0-tournament.html", tournament=tournament, achievements=achievements, rounds=rounds, participants=participants)
 
 
 @app.route("/speaker", methods=["GET", "POST"])
