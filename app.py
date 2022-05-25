@@ -1203,7 +1203,7 @@ def round_debates():
         debate["speeches"] = db.execute(f"SELECT * FROM speeches WHERE debate_id = {debate_id}")
         debate["team_performances"] = db.execute(f"SELECT * FROM team_performances WHERE debate_id = {debate_id}")
 
-    return render_template("0-speaker-tab.html", tournament=tournament, speakers=speakers, category_text=category_text)
+    return render_template("0-speaker-tab.html", round=round, debates=debates)
 
 @app.route("/speaker", methods=["GET", "POST"])
 def speaker():
