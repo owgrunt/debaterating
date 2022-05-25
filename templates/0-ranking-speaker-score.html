@@ -8,7 +8,12 @@
     <h2 class="mb-5 mt-2">Рейтинг по спикерским баллам</h2>
     <div class="container">
         <div class="section">
-            <table>
+            <script>
+                $(document).ready(function () {
+                    $('#speakers').DataTable();
+                });
+            </script>
+            <table id="speakers" class="display" style="width:100%">
                 <thead>
                     <tr>
                         <th style="width: 25%">Место</th>
