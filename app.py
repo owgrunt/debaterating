@@ -1054,8 +1054,13 @@ def calculate_speaker_scores():
         if speaker["speaker_score"] < previous_score:
             current_ranking = i
             previous_score = speaker["speaker_score"]
-        speaker["ranking"] = current_ranking
+        speaker["ranking_by_speaks"] = current_ranking
         i = i + 1
+
+    for speaker in db_speakers:
+        ranking = speaker["ranking_by_speaks"]
+        id = speaker["id"]
+        db.execute(f"UPDATE speakers SET ranking_by_speaks = {ranking} WHERE id = {id}")
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
@@ -1065,11 +1070,6 @@ def ranking_speaker_score():
     """Show speaker ranking"""
 
     speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
-
-    # Add r
-    i = 1
-    for speaker in speakers:
-
 
     return render_template("0-ranking-speaker-score.html", speakers=speakers)
 
