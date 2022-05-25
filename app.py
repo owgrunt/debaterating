@@ -1153,9 +1153,19 @@ def speaker_tab():
 
     tournament = db.execute(f"SELECT * FROM tournaments WHERE id = {id}")[0]
 
+    # Get tournament speakers
     speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id WHERE tournament_id = {id} GROUP BY speaker_id")
-    # for speaker in speakers:
-
+    # Sort speakers by speaker points
+    speakers = sorted(speakers, key=itemgetter("average_score"), reverse=True)
+    i = 1
+    previous_score = 101
+    current_ranking = 0
+    for speaker in speakers:
+        if speaker["average_score"] < previous_score:
+            current_ranking = i
+            previous_score = speaker["average_score"]
+        speaker["ranking_by_speaks"] = current_ranking
+        i = i + 1
 
     return render_template("0-speaker-tab.html", tournament=tournament, speakers=speakers)
 
