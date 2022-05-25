@@ -1116,13 +1116,13 @@ def tournament():
         if achievement["type"] == "team":
             if achievement["name"] == "победитель":
                 achievement["priority"] = achievement["break_category"]
-            if achievement["name"] == "финалист":
+            elif achievement["name"] == "финалист":
                 achievement["priority"] = break_categories + speaker_categories + 2 + achievement["break_category"]
-            if achievement["name"] == "полуфиналист":
+            elif achievement["name"] == "полуфиналист":
                 achievement["priority"] = ( break_categories * 2 ) + speaker_categories + 2 + achievement["break_category"]
-            if achievement["name"] == "четвертьфиналист":
+            elif achievement["name"] == "четвертьфиналист":
                 achievement["priority"] = ( break_categories * 3 ) + speaker_categories + 2 + achievement["break_category"]
-            if achievement["name"] == "октофиналист":
+            elif achievement["name"] == "октофиналист":
                 achievement["priority"] = ( break_categories * 4 ) + speaker_categories + 2 + achievement["break_category"]
             else:
                 achievement["priority"] = ( break_categories * 5 ) + speaker_categories + 3
