@@ -32,6 +32,9 @@
                 <tbody>
                     {% for debate in debates %}
                         <tr>
+                            <td>
+                                {{ debate["average_rating"] }}
+                            </th>
                             {% for i in range(4) %}
                                 {% if i == 0 %}
                                     {% set i1 = 0 %}
@@ -47,9 +50,6 @@
                                     {% set i2 = 7 %}
                                 {% endif %}
                                 <td>
-                                    {{ debate["average_rating"] }}
-                                </th>
-                                <td>
                                     {{ debate["speeches"][i1]["first_name"] }} {{ debate["speeches"][i1]["last_name"] }}
                                     <br>
                                     {{ debate["speeches"][i2]["first_name"] }} {{ debate["speeches"][i2]["last_name"] }}
@@ -60,7 +60,7 @@
                                     {{ debate["speeches"][i2]["score"] }}
                                 </td>
                                 <td>
-                                    {{ debate["team_performances"][i]["score"] }}
+                                    <!-- {{ debate["team_performances"][i]["score"] }} -->
                                 </td>
                                 {% endfor %}
                         </tr>
