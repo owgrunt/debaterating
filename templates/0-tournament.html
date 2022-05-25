@@ -66,6 +66,23 @@
                                 </tr>
                             {% endif %}
                         {% endfor %}
+                        {% for participant in participants %}
+                            {% if participant["role"] == "ca" %}
+                                <tr>
+                                    <td>
+                                        Главный Судья
+                                    </td>
+                                    <td>
+                                        <a href="/speaker?id={{ participant["id"] }}">{{ participant["first_name"] }} {{ participant["last_name"] }}</a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        <tr>
+                            <td colspan="2">
+                                <a href="/adjudicators?id={{ tournament["id"] }}">Все судьи</a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -95,7 +112,6 @@
                                             {{ achievement["speaker_category_name"] }}
                                         {% endif %}
                                     {% else %}
-
                                     {% endif %}
                                 </td>
                             </tr>
@@ -107,30 +123,6 @@
                         </tr>
                     </tbody>
                 </table>
-                <table id="achievements">
-                    <thead>
-                        <tr>
-                            <th>Главные судьи</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for participant in participants %}
-                            {% if participant["role"] == "ca" %}
-                                <tr>
-                                    <td>
-                                        <a href="/speaker?id={{ participant["id"] }}">{{ participant["first_name"] }} {{ participant["last_name"] }}</a>
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                        <tr>
-                            <td>
-                                <a href="/adjudicators?id={{ tournament["id"] }}">Все судьи</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
             </div>
             <div class="col-4">
                 <table id="tab">
