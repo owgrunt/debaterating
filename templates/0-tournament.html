@@ -1,0 +1,387 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">{{ speaker["last_name"] }} {{ speaker["first_name"] }}</h2>
+    <div class="container">
+        <!-- <div class="row mt-3">
+            {{ speeches }}<br><br>{{ rankings_by_round_seq }}<br><br>{{ round_seq }}
+        </div> -->
+        <div class="row mt-3">
+            <div class="col-6">
+                <h3>Средний спикерский: {{ speaker["speaker_score"] }}</h3>
+                <canvas id="speaksChart"></canvas>
+                <script>
+                    const labels_speaks = [
+                        {% set i = namespace(value=1) %}
+                        {% for speech in speeches %}
+                            {% if speech["score"] != None %}
+                                {% if i.value < count %}
+                                    "",
+                                    {% set i.value = i.value + 1 %}
+                                {% else %}
+                                    ""
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    ];
+
+                    const data_speaks = {
+                    labels: labels_speaks,
+                    datasets: [{
+                        label: '',
+                        backgroundColor: 'rgb(220, 53, 69)',
+                        borderColor: 'rgb(220, 53, 69)',
+                        data: [
+                            {% set i = namespace(value=1) %}
+                            {% for speech in speeches %}
+                                {% if speech["score"] != None %}
+                                    {% if i.value < count %}
+                                        {{ speech["score"] }},
+                                        {% set i.value = i.value + 1 %}
+                                    {% else %}
+                                        {{ speech["score"] }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}],
+                    }]
+                    };
+
+                    const config_speaks = {
+                    type: 'line',
+                    data: data_speaks,
+                    options: {
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        color: 'rgb(220, 53, 69)'
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    const speaksChart = new Chart(
+                    document.getElementById('speaksChart'),
+                    config_speaks
+                    );
+                </script>
+            </div>
+
+            <div class="col-6">
+                <h3>Рейтинг: {{ speaker["rating"] }}</h3>
+                <canvas id="ratingChart"></canvas>
+                <script>
+                    const labels_rating = [
+                        {% set i = namespace(value=1) %}
+                        {% for speech in speeches %}
+                            {% if speech["rating"] != None %}
+                                {% if i.value < count %}
+                                    "",
+                                    {% set i.value = i.value + 1 %}
+                                {% else %}
+                                    ""
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}];
+
+                    const data_rating = {
+                      labels: labels_rating,
+                      datasets: [{
+                        label: '',
+                        backgroundColor: 'rgb(220, 53, 69)',
+                        borderColor: 'rgb(220, 53, 69)',
+                        data: [
+                            {% set i = namespace(value=1) %}
+                            {% for speech in speeches %}
+                                {% if speech["rating"] != None %}
+                                    {% if i.value < count %}
+                                        {{ speech["rating"] }},
+                                        {% set i.value = i.value + 1 %}
+                                    {% else %}
+                                        {{ speech["rating"] }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}],
+                      }]
+                    };
+
+                    const config_rating = {
+                      type: 'line',
+                      data: data_rating,
+                      options: {
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        color: 'rgb(220, 53, 69)'
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    const ratingChart = new Chart(
+                      document.getElementById('ratingChart'),
+                      config_rating
+                    );
+                </script>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-4">
+                <h3>Спикерские по роли</h3>
+                <canvas id="speaksByPositionChart"></canvas>
+                <script>
+                    const labels_speaks_by_position = ["ПМ", "ЛО", "ЗПМ", "ЗЛО", "ЧП", "ЧО", "СП", "СО"];
+
+                    const data_speaks_by_position = {
+                      labels: labels_speaks_by_position,
+                      datasets: [{
+                        label: 'Баллы',
+                        fill: true,
+                        backgroundColor: 'rgba(220, 53, 69, 0.2)',
+                        borderColor: 'rgb(220, 53, 69)',
+                        pointBackgroundColor: 'rgb(220, 53, 69)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(220, 53, 69)',
+                        data: {{ speaks_by_position }},
+                      }]
+                    };
+
+                    const config_speaks_by_position = {
+                        type: 'radar',
+                        data: data_speaks_by_position,
+                        options: {
+                            scales: {
+                                r: {
+                                    min: 65,
+                                    max: 85,
+                                },
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        color: 'rgb(220, 53, 69)'
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    const speaksByPositionChart = new Chart(
+                      document.getElementById('speaksByPositionChart'),
+                      config_speaks_by_position
+                    );
+                </script>
+            </div>
+            <div class="col-4">
+                <h3>Очки по позиции</h3>
+                <canvas id="pointsBySideChart"></canvas>
+                <script>
+                    const labels_points_by_side = ["1ПР", "1ОП", "2ПР", "2ОП"];
+
+                    const data_points_by_side = {
+                    labels: labels_points_by_side,
+                    datasets: [{
+                        label: 'Очки',
+                        fill: true,
+                        backgroundColor: 'rgba(220, 53, 69, 0.2)',
+                        borderColor: 'rgb(220, 53, 69)',
+                        pointBackgroundColor: 'rgb(220, 53, 69)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(220, 53, 69)',
+                        data: {{ points_by_side }},
+                    }]
+                    };
+
+                    const config_points_by_side = {
+                        type: 'radar',
+                        data: data_points_by_side,
+                        options: {
+                            scales: {
+                                r: {
+                                    min: 0,
+                                    max: 3,
+                                },
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        color: 'rgb(220, 53, 69)'
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    const pointsBySideChart = new Chart(
+                    document.getElementById('pointsBySideChart'),
+                    config_points_by_side
+                    );
+                </script>
+            </div>
+            <div class="col-4">
+                <h3>Командные места</h3>
+                <canvas id="teamRankingsChart"></canvas>
+                <script>
+                    const data_team_rankings = {
+                        labels: [
+                          'Первых',
+                          'Вторых',
+                          'Третьих',
+                          'Четвёртых'
+                        ],
+                        datasets: [{
+                          label: 'My First Dataset',
+                          data: {{ team_rankings }},
+                          backgroundColor: [
+                            'rgb(25, 135, 84)',
+                            'rgb(13, 110, 253)',
+                            'rgb(255, 193, 7)',
+                            'rgb(220, 53, 69)'
+                          ],
+                          hoverOffset: 4
+                        }]
+                      };
+
+                      const config_team_rankings = {
+                        type: 'pie',
+                        data: data_team_rankings,
+                        options: {
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        color: 'rgb(220, 53, 69)'
+                                    }
+                                }
+                            }
+                        }
+                      };
+
+                      const teamRankingsChart = new Chart(
+                      document.getElementById('teamRankingsChart'),
+                      config_team_rankings
+                      );
+                </script>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-6">
+                <h3>Очки по силе комнаты</h3>
+                <canvas id="pointsByRoomStrengthChart"></canvas>
+                <script>
+                    const data_points_by_room_strength = {
+                        datasets: [{
+                            label: 'Очки',
+                            data: [
+                                {% for i in points_by_room_strength %}
+                                    {
+                                        x: {{ i["x"] }},
+                                        y: {{ i["y"] }}
+                                    },
+                                {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(220, 53, 69)'
+                        }],
+                    };
+
+                    const config_points_by_room_strength = {
+                        type: 'scatter',
+                        data: data_points_by_room_strength,
+                        options: {
+                            scales: {
+                                x: {
+                                  type: 'linear',
+                                  position: 'bottom'
+                                },
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        color: 'rgb(220, 53, 69)'
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    const pointsByRoomStrengthChart = new Chart(
+                    document.getElementById('pointsByRoomStrengthChart'),
+                    config_points_by_room_strength
+                    );
+                </script>
+            </div>
+            <div class="col-6">
+                <h3>Очки по раундам</h3>
+                <canvas id="scoreBySequenceChart"></canvas>
+                <script>
+                    const labels_score_by_sequence = [
+                        {% set i = namespace(value=1) %}
+                        {% for speech in rankings_by_round_seq %}
+                            {% if speech["score"] != None %}
+                                {% if i.value < count %}
+                                    {{ speech["seq"] }},
+                                    {% set i.value = i.value + 1 %}
+                                {% else %}
+                                    {{ speech["seq"] }}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    ];
+
+                    const data_score_by_sequence = {
+                    labels: labels_score_by_sequence,
+                    datasets: [{
+                        label: '',
+                        backgroundColor: 'rgb(220, 53, 69)',
+                        borderColor: 'rgb(220, 53, 69)',
+                        data: [
+                            {% set i = namespace(value=1) %}
+                            {% for speech in rankings_by_round_seq %}
+                                {% if speech["score"] != None %}
+                                    {% if i.value < count %}
+                                        {{ speech["average_score"] }},
+                                        {% set i.value = i.value + 1 %}
+                                    {% else %}
+                                        {{ speech["average_score"] }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}],
+                    }]
+                    };
+
+                    const config_score_by_sequence = {
+                    type: 'bar',
+                    data: data_score_by_sequence,
+                    options: {
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        color: 'rgb(220, 53, 69)'
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    const scoreBySequenceChart = new Chart(
+                    document.getElementById('scoreBySequenceChart'),
+                    config_score_by_sequence
+                    );
+                </script>
+            </div>
+        </div>
+    </div>
+{% endblock %}
