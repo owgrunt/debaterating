@@ -1217,6 +1217,14 @@ def round_debates():
         debate["team_performances"] = sorted(debate["team_performances"], key=itemgetter("position"))
         # Get adjudicators and sort by role
         debate["adjudicators"] = db.execute(f"SELECT a.speaker_id, a.role, s.first_name, s.last_name FROM adjudications a INNER JOIN speakers s ON a.speaker_id = s.id WHERE debate_id = {debate_id}")
+        for adjudicator in debate["adjudicators"]:
+            if adjudicator["role"] == "chair":
+                adjudicator["position"] = 1
+            elif adjudicator["role"] == "panellist":
+                adjudicator["position"] = 2
+            else:
+                adjudicator["position"] = 3
+        debate["adjudicators"] = sorted(debate["adjudicators"], key=itemgetter("position"))
     debates = sorted(debates, key=itemgetter("average_rating"), reverse=True)
 
     return render_template("0-round.html", round=round, debates=debates)
