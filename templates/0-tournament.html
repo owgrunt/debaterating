@@ -48,7 +48,22 @@
                 Все достижения
             </div>
             <div class="col-4">
-                <h4>Средний рейтинг: {{ tournament["average_rating"] }}</h3>
+                <table id="tab">
+                    <thead>
+                        <tr>
+                            <th>Победители</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for round in rounds %}
+                            <tr>
+                                <td>
+                                    {{ round["name"] }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
