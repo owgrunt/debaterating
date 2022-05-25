@@ -28,6 +28,10 @@ table {
     width: 100%;
 }
 
+table a {
+    color: #000000;
+}
+
 table th,
 table td {
     padding: 0.75rem;
