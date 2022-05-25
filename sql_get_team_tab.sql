@@ -27,5 +27,7 @@ WHERE
     tp.tournament_id = 1
 AND
     r.stage != "E"
+GROUP BY
+    tp.team_id
 ORDER BY
     team_score DESC;
