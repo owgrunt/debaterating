@@ -1202,7 +1202,7 @@ def team_tab():
         teams = db.execute(open("sql_get_team_tab.sql").read().replace("xxxxxx", str(id)))
         # No category needed
         category_text = ""
-    else:
+    # else:
         # Get teams in this category
         # TODO
         # category_id = request.args.get("category")
@@ -1217,7 +1217,7 @@ def team_tab():
     for team in teams:
         if team["team_score"] < previous_score:
             current_ranking = i
-            previous_score = speaker["team_score"]
+            previous_score = team["team_score"]
         team["ranking"] = current_ranking
         i = i + 1
 

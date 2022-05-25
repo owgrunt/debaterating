@@ -8,17 +8,17 @@
     <h2 class="mb-5 mt-2">{{ tournament["short_name"] }} — Командный тэб{{ category_text }}</h2>
     <div class="container" style="text-align: left">
         <div class="row mt-3">
-            <table id="speakers" class="table table-striped" style="width:100%">
+            <table id="teams" class="table table-striped" style="width:100%">
                 <thead>
                     <tr>
                         <th>
                             #
                         </th>
-                        <th>
+                        <th colspan="2">
                             Спикеры
                         </th>
                         <th>
-                            Средний спикерский
+                            Очки
                         </th>
                         <th>
                             Изменение ELO
@@ -26,19 +26,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for speaker in speakers %}
+                    {% for team in teams %}
                         <tr>
                             <td>
-                                {{ speaker["ranking_by_speaks"] }}
+                                {{ team["ranking"] }}
                             </td>
                             <td>
-                                <a href="/speaker?id={{ speaker["speaker_id"] }}">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</a>
+                                <a href="/speaker?id={{ team["s1_id"] }}">{{ team["s1_first_name"] }} {{ team["s1_last_name"] }}</a>
                             </td>
                             <td>
-                                {{ speaker["average_score"] }}
+                                <a href="/speaker?id={{ team["s2_id"] }}">{{ team["s2_first_name"] }} {{ team["s2_last_name"] }}</a>
                             </td>
                             <td>
-                                {{ speaker["rating"] }}
+                                {{ team["team_score"] }}
+                            </td>
+                            <td>
+
                             </td>
                         </tr>
                     {% endfor %}
@@ -46,7 +49,7 @@
             </table>
             <script>
                 $(document).ready(function () {
-                    $('#speakers').DataTable( {
+                    $('#teams').DataTable( {
                         columnDefs: [
                             { orderable: false, targets: 1 }
                         ],
