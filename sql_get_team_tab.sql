@@ -18,7 +18,7 @@ INNER JOIN speakers AS s1 ON
 INNER JOIN speakers AS s2 ON
     t.speaker_two_id = s2.id
 WHERE
-    tp.tournament_id = 1
+    tp.tournament_id = xxxxxx
 AND
     r.stage != "E"
 GROUP BY

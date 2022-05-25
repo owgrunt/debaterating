@@ -1211,18 +1211,17 @@ def team_tab():
         # category_text = " (" + category["name"] + ")"
 
     # Sort speakers by speaker points
-    speakers = sorted(speakers, key=itemgetter("average_score"), reverse=True)
     i = 1
     previous_score = 101
     current_ranking = 0
-    for speaker in speakers:
-        if speaker["average_score"] < previous_score:
+    for team in teams:
+        if team["team_score"] < previous_score:
             current_ranking = i
-            previous_score = speaker["average_score"]
-        speaker["ranking_by_speaks"] = current_ranking
+            previous_score = speaker["team_score"]
+        team["ranking"] = current_ranking
         i = i + 1
 
-    return render_template("0-speaker-tab.html", tournament=tournament, speakers=speakers, category_text=category_text)
+    return render_template("0-team-tab.html", tournament=tournament, teams=teams, category_text=category_text)
 
 
 @app.route("/round", methods=["GET", "POST"])
