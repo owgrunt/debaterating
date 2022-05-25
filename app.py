@@ -1197,7 +1197,7 @@ def round_debates():
 
     round = db.execute(f"SELECT * FROM rounds WHERE id = {id}")[0]
 
-    debates = 
+    debates = db.execute(f"SELECT * FROM debates WHERE debate_id = {id}")[0]
 
 @app.route("/speaker", methods=["GET", "POST"])
 def speaker():
