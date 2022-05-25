@@ -81,7 +81,7 @@
                             {% if participant["role"] == "ca" %}
                                 <tr>
                                     <td>
-                                        {{ participant["first_name"] }} {{ participant["last_name"] }}
+                                        <a href="/speaker?id={{ participant["id"] }}">{{ participant["first_name"] }} {{ participant["last_name"] }}</a>
                                     </td>
                                 </tr>
                             {% endif %}
