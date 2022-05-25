@@ -1108,7 +1108,7 @@ def tournament():
 
     tournament = db.execute(f"SELECT * FROM tournaments WHERE id = {id}")[0]
 
-    achievements = db.execute(f"SELECT * FROM achievements INNER JOIN break_categories ON achievements.break_category = break_categories.id WHERE achievements.tournament_id = {id}")
+    achievements = db.execute(f"SELECT achievements.*, break_categories.name AS break_category_name FROM achievements INNER JOIN break_categories ON achievements.break_category = break_categories.id WHERE achievements.tournament_id = {id}")
 
     speeches = db.execute(open("sql_get_speeches.sql").read().replace("xxxxxx", str(id)))
 
