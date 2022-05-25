@@ -1199,7 +1199,7 @@ def team_tab():
 
     if not request.args.get("category"):
         # Get all tournament teams
-        teams = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id WHERE tournament_id = {id} GROUP BY speaker_id")
+        teams = db.execute(f"SELECT s1.first_name, s1.last_name, s2.first_name, s2.last_name, sum(tp.score) WHERE tournament_id = {id} GROUP BY team_id")
         # No category needed
         category_text = ""
     else:
