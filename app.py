@@ -1193,11 +1193,15 @@ def round_debates():
     if not request.args.get("id"):
             return apology("must provide round id", 400)
 
-    id = request.args.get("id")
+    round_id = request.args.get("id")
 
-    round = db.execute(f"SELECT * FROM rounds WHERE id = {id}")[0]
+    round = db.execute(f"SELECT * FROM rounds WHERE id = {round_id}")[0]
 
-    debates = db.execute(f"SELECT * FROM debates WHERE debate_id = {id}")[0]
+    debates = db.execute(f"SELECT * FROM debates WHERE round_id = {round_id}")
+    for debate in debates:
+        debate_id = debate["id"]
+        debate["speeches"] = db.execute(f"SELECT * FROM speeches WHERE debate_id = {debate_id}")
+        debate["team_performances"] = db.execute(f"SELECT * FROM team_performances WHERE debate_id = {debate_id}")
 
 @app.route("/speaker", methods=["GET", "POST"])
 def speaker():
