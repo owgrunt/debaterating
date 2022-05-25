@@ -15,13 +15,13 @@
                         <th colspan="3">
                             Первое правительство
                         </th>
-                        <th>
+                        <th colspan="3">
                             Первая оппозиция
                         </th>
-                        <th>
+                        <th colspan="3">
                             Второе правительство
                         </th>
-                        <th>
+                        <th colspan="3">
                             Вторая оппозиция
                         </th>
                     </tr>
@@ -29,6 +29,7 @@
                 <tbody>
                     {% for debate in debates %}
                         <tr>
+                            <!-- OG -->
                             <td>
                                 {{ debate["speeches"][0]["first_name"] }} {{ debate["speeches"][0]["last_name"] }}
                                 <br>
@@ -42,8 +43,47 @@
                             <td>
                                 {{ debate["team_performances"][0]["score"] }}
                             </td>
+                            <!-- OO -->
                             <td>
-
+                                {{ debate["speeches"][1]["first_name"] }} {{ debate["speeches"][1]["last_name"] }}
+                                <br>
+                                {{ debate["speeches"][3]["first_name"] }} {{ debate["speeches"][3]["last_name"] }}
+                            </td>
+                            <td>
+                                {{ debate["speeches"][1]["score"] }}
+                                <br>
+                                {{ debate["speeches"][3]["score"] }}
+                            </td>
+                            <td>
+                                {{ debate["team_performances"][1]["score"] }}
+                            </td>
+                            <!-- CG -->
+                            <td>
+                                {{ debate["speeches"][4]["first_name"] }} {{ debate["speeches"][4]["last_name"] }}
+                                <br>
+                                {{ debate["speeches"][5]["first_name"] }} {{ debate["speeches"][5]["last_name"] }}
+                            </td>
+                            <td>
+                                {{ debate["speeches"][4]["score"] }}
+                                <br>
+                                {{ debate["speeches"][5]["score"] }}
+                            </td>
+                            <td>
+                                {{ debate["team_performances"][2]["score"] }}
+                            </td>
+                            <!-- CO -->
+                            <td>
+                                {{ debate["speeches"][5]["first_name"] }} {{ debate["speeches"][5]["last_name"] }}
+                                <br>
+                                {{ debate["speeches"][5]["first_name"] }} {{ debate["speeches"][5]["last_name"] }}
+                            </td>
+                            <td>
+                                {{ debate["speeches"][5]["score"] }}
+                                <br>
+                                {{ debate["speeches"][5]["score"] }}
+                            </td>
+                            <td>
+                                {{ debate["team_performances"][3]["score"] }}
                             </td>
                         </tr>
                     {% endfor %}
