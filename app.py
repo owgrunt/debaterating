@@ -1133,6 +1133,7 @@ def tournament():
                 achievement["priority"] = break_categories + achievement["speaker_category"] + 1
         if achievement["type"] == "adjudicator":
             achievement["priority"] = break_categories + speaker_categories + 2
+    achievements = sorted(achievements, key=itemgetter("priority"))
 
     rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = {id}")
 
