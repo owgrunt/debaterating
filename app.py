@@ -1109,11 +1109,15 @@ def tournament():
     tournament = db.execute(f"SELECT * FROM tournaments WHERE id = {id}")[0]
 
     achievements = db.execute(f"SELECT a.*, bc.name AS break_category_name, sc.name AS speaker_category_name, s.last_name, s.first_name, s.id AS speaker_id FROM achievements a LEFT JOIN break_categories bc ON a.break_category = bc.id LEFT JOIN speaker_categories sc ON a.speaker_category = sc.id INNER JOIN speakers s on a.speaker_id = s.id WHERE a.tournament_id = {id}")
+    break_categories = len(db.execute(f"SELECT id FROM break_categories WHERE tournament_id = {id}"))
+    speaker_categories = len(db.execute(f"SELECT id FROM speaker_categories WHERE tournament_id = {id}"))
     # Order achievements by importance
     for achievement in achievements:
         if achievement["type"] == "team":
             if achievement["name"] == "победитель":
-                achievement["priority"] = 1
+                achievement["priority"] = achievement["break_category"]
+        if achievement["type"] == "speaker":
+            achievement["priority"] = break_categories + achievement["speaker_category"]
 
     rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = {id}")
 
