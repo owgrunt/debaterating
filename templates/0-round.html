@@ -6,7 +6,7 @@
 
 {% block main %}
     <h2 class="mb-5 mt-2">Раунд</h2>
-    <div>{{ debates[0] }}</div>
+    <div>{{ debates[1] }}</div>
     <div class="container">
         <div class="row mt-3">
             <table>
@@ -30,7 +30,9 @@
                     {% for debate in debates %}
                         <tr>
                             <td>
-                                {{ debate["speeches"]
+                                {{ debate["speeches"][0]["first_name"] }} {{ debate["speeches"][0]["last_name"] }}
+                                <br>
+                                {{ debate["speeches"][3]["first_name"] }} {{ debate["speeches"][3]["last_name"] }}
                             </td>
                             <td>
 
