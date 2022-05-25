@@ -12,6 +12,9 @@
             <table>
                 <thead>
                     <tr>
+                        <th>
+                            Средний рейтинг
+                        </th>
                         <th colspan="3">
                             Первое правительство
                         </th>
@@ -30,6 +33,9 @@
                     {% for debate in debates %}
                         <tr>
                             <!-- OG -->
+                            <td>
+                                {{ debate["average_rating"] }}
+                            </th>
                             <td>
                                 {{ debate["speeches"][0]["first_name"] }} {{ debate["speeches"][0]["last_name"] }}
                                 <br>
