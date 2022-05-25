@@ -13,7 +13,42 @@
                 <h4>Тип турнира: {{ tournament["type"] }}</h3>
             </div>
             <div class="col-4">
-                <h4>Дата: {{ tournament["date"] }}</h3>
+                <table id="tournaments" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Тип</th>
+                            <th>Дата</th>
+                            <th>Страница</th>
+                            <th>Средний ELO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for achievement in achievements %}
+                            <tr>
+                                <td>
+                                    <a href="/tournament?id={{ tournament["id"] }}">{{ tournament["name"] }}</a>
+                                </td>
+                                <td>
+                                    {{ tournament["type"] }}
+                                </td>
+                                <td>
+                                    {{ tournament["date"] }}
+                                </td>
+                                <td>
+                                    {% if tournament["page"] != None %}
+                                        <a href="{{ tournament["page"] }}">ссылка</a>
+                                    {% else %}
+                                        нет
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ tournament["average_rating"] }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
             <div class="col-4">
                 <h4>Средний рейтинг: {{ tournament["average_rating"] }}</h3>
