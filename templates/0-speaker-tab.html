@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">{{ tournament["name"] }}</h2>
+    <div class="container">
+        <div class="row">{{speakers}}</div>
+        <div class="row mt-3">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Тип
+                        </th>
+                        <th>
+                            Дата
+                        </th>
+                        <th>
+                            Средний ELO
+                        </th>
+                        <th>
+                            Сообщество
+                        </th>
+                        <th>
+                            Организаторы
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

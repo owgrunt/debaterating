@@ -1139,9 +1139,23 @@ def tournament():
 
     participants = db.execute(f"SELECT s.first_name, s.last_name, p.role, s.id FROM tournament_participants p INNER JOIN speakers s ON p.speaker_id = s.id WHERE tournament_id = {id}")
 
-    speeches = db.execute(open("sql_get_speeches.sql").read().replace("xxxxxx", str(id)))
-
     return render_template("0-tournament.html", tournament=tournament, achievements=achievements, rounds=rounds, participants=participants)
+
+
+@app.route("/speaker-tab", methods=["GET", "POST"])
+def speaker_tab():
+    """Show speaker tab"""
+
+    if not request.args.get("id"):
+            return apology("must provide tournament id", 400)
+
+    id = request.args.get("id")
+
+    tournament = db.execute(f"SELECT * FROM tournaments WHERE id = {id}")[0]
+
+    speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id WHERE tournament_id = {id} GROUP BY speaker_id")
+
+    return render_template("0-speaker-tab.html", tournament=tournament, speakers=speakers)
 
 
 @app.route("/speaker", methods=["GET", "POST"])
