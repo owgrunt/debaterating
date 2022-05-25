@@ -1,12 +1,10 @@
 SELECT
-   team_performances.team_id,
+   tp.team_id,
    sum(tp.score) as team_score,
-   team_performances.debate_id,
-   teams.swing,
-   teams.speaker_one_id AS speaker_one,
-   teams.speaker_two_id AS speaker_two,
-   speaker_one.rating AS speaker_one_rating,
-   speaker_two.rating AS speaker_two_rating
+   s1.first_name AS s1_first_name,
+   s2.first_name AS s2_first_name,
+   s1.last_name AS s1_last_name,
+   s2.last_name AS s2_last_name
 FROM
    team_performances tp
 INNER JOIN teams t ON
