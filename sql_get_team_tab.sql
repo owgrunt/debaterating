@@ -29,9 +29,9 @@ WHERE
 AND
     r.stage != "E"
 AND
-    s1c.category_id = 1
+    s1c.category_id = 0
 AND
-    s2c.category_id = 1
+    s2c.category_id = 0
 GROUP BY
     tp.team_id
 ORDER BY
