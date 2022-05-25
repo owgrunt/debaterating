@@ -44,7 +44,11 @@
             </table>
             <script>
                 $(document).ready(function () {
-                    $('#speakers').DataTable();
+                    $('#speakers').DataTable( {
+                        "language": {
+                            "lengthMenu": "Показать _MENU_ спикеров"
+                        }
+                    } );
                 });
             </script>
         </div>
