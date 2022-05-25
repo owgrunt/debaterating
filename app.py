@@ -1110,6 +1110,8 @@ def tournament():
 
     achievements = db.execute(f"SELECT a.*, bc.name AS break_category_name, sc.name AS speaker_category_name, s.last_name, s.first_name, s.id AS speaker_id FROM achievements a LEFT JOIN break_categories bc ON a.break_category = bc.id LEFT JOIN speaker_categories sc ON a.speaker_category = sc.id INNER JOIN speakers s on a.speaker_id = s.id WHERE a.tournament_id = {id}")
     # Order achievements by importance
+    for achievement in achievements:
+        if achievement["type"] == "team"
 
     rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = {id}")
 
