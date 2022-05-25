@@ -47,7 +47,11 @@
                             {{ tournament["average_rating"] }}
                         </td>
                         <td>
-                            <a href="{{ tournament["page"] }}">{{ tournament["page"] }}</a>
+                            {% if tournament["page"] != None %}
+                                <a href="{{ tournament["page"] }}">{{ tournament["page"] }}</a>
+                            {% else %}
+                                нет
+                            {% endif %}
                         </td>
                         <td>
 

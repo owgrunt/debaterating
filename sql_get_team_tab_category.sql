@@ -1,6 +1,12 @@
 SELECT
    tp.team_id,
    sum(tp.score) as team_score,
+   (
+        SELECT sum(rating_change)
+        FROM speeches sp
+        WHERE t.speaker_one_id = sp.speaker_id
+        AND tp.tournament_id = xxxxxx
+   ) AS elo,
    s1.first_name AS s1_first_name,
    s2.first_name AS s2_first_name,
    s1.last_name AS s1_last_name,
