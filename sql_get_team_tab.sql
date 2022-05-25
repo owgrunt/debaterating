@@ -1,6 +1,6 @@
 SELECT
    tp.team_id,
-   sum(tp.score) as team_score,
+   tp.score as team_score,
    sp.rating_change as elo,
    s1.first_name AS s1_first_name,
    s2.first_name AS s2_first_name,
@@ -27,7 +27,5 @@ WHERE
     tp.tournament_id = 1
 AND
     r.stage != "E"
-GROUP BY
-    tp.team_id
 ORDER BY
     team_score DESC;
