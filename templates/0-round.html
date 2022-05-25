@@ -13,21 +13,21 @@
                 <thead>
                     <tr>
                         <th>
-                            #
+                            Первое правительство
                         </th>
                         <th>
-                            Спикер
+                            Первая оппозиция
                         </th>
                         <th>
-                            Средний спикерский
+                            Второе правительство
                         </th>
                         <th>
-                            Изменение ELO
+                            Вторая оппозиция
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for speaker in speakers %}
+                    {% for debate in debates %}
                         <tr>
                             <td>
                                 {{ speaker["ranking_by_speaks"] }}
