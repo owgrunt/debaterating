@@ -1057,7 +1057,6 @@ def calculate_speaker_scores():
         speaker["ranking"] = current_ranking
         i = i + 1
 
-
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
 
