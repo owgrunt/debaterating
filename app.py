@@ -202,8 +202,6 @@ def add_tournament():
             update_keys = ["role"]
             participant["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
-            # TODO page to see and confirm (?) data import
-
         return redirect("/import/speaker/categories")
 
     else:
