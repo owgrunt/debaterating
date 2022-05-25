@@ -12,6 +12,8 @@ CREATE TABLE speakers (
     society_id INTEGER,
     speaker_score NUMERIC NOT NULL DEFAULT 70,
     rating INTEGER NOT NULL DEFAULT 1500,
+    ranking_by_speaks INTEGER,
+    ranking_by_rating INTEGER,
     shown INTEGER NOT NULL DEFAULT 1,
     FOREIGN KEY (society_id) REFERENCES societies(id)
 );
