@@ -1070,26 +1070,31 @@ def calculate_speaker_scores():
         i = i + 1
 
     # Create a sql query
-    query = ""
     for speaker in db_speakers:
         ranking_by_speaks = speaker["ranking_by_speaks"]
         ranking_by_rating = speaker["ranking_by_rating"]
         id = speaker["id"]
         db.execute(f"UPDATE speakers SET ranking_by_speaks = {ranking_by_speaks}, ranking_by_rating = {ranking_by_rating} WHERE id = {id}")
-    #     query = query + f"UPDATE speakers SET ranking_by_speaks = {ranking_by_speaks}, ranking_by_rating = {ranking_by_rating} WHERE id = {id};\n"
-    # query = "BEGIN TRANSACTION;\n" + query + "COMMIT"
-    # db.execute(query)
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
 
 @app.route("/speakers", methods=["GET", "POST"])
-def ranking_speaker_score():
+def speaker_list():
     """Show speaker ranking"""
 
     speakers = db.execute("SELECT * FROM speakers ORDER BY speaker_score DESC")
 
     return render_template("0-speakers.html", speakers=speakers)
+
+
+@app.route("/tournaments", methods=["GET", "POST"])
+def tournament_list():
+    """Show speaker ranking"""
+
+    tournaments = db.execute("SELECT * FROM speakers ORDER BY speaker_score DESC")
+
+    return render_template("0-speakers.html", tournaments=tournaments)
 
 
 @app.route("/speaker", methods=["GET", "POST"])
