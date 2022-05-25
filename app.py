@@ -450,8 +450,8 @@ def add_speakers():
             participant["speaker_internal_id"] = speaker["internal_id"]
 
             entry = participant
-            search_keys = ["speaker_id", "tournament_id"]
-            update_keys = ["speaker_internal_id", "internal_name", "role"]
+            search_keys = ["speaker_id", "speaker_internal_id", "tournament_id"]
+            update_keys = ["internal_name", "role"]
             trash_variable = add_database_entry(db_name, entry, search_keys, update_keys)
 
             # Add speaker categories
