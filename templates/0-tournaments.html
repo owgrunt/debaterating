@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Турниры</h2>
+    <div class="container">
+        <div class="section" style="text-align: left">
+            <table id="speakers" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Тип</th>
+                        <th>Дата</th>
+                        <th>Страница</th>
+                        <th>Средний ELO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set i = namespace(value=0) %}
+                    {% set previous_score = namespace(value=101) %}
+                    {% for speaker in speakers %}
+                        <tr>
+                            <td>
+                                {{ speaker["ranking_by_rating"] }}
+                            </td>
+                            <td>
+                                {{ speaker["ranking_by_speaks"] }}
+                            </td>
+                            <td>
+                                <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["last_name"] }} {{ speaker["first_name"] }}</a>
+                            </td>
+                            <td>
+                                {{ speaker["rating"] }}
+                            </td>
+                            <td>
+                                {{ speaker["speaker_score"] }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <script>
+                $(document).ready(function () {
+                    $('#speakers').DataTable( {
+                        columnDefs: [
+                            { orderable: false, targets: 2 }
+                        ],
+                        order: [[3, 'desc']],
+                        language: {
+                            url: '//cdn.datatables.net/plug-ins/1.12.0/i18n/ru.json'
+                        }
+                    } );
+                });
+            </script>
+        </div>
+    </div>
+{% endblock %}

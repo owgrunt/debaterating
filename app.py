@@ -1094,7 +1094,7 @@ def tournament_list():
 
     tournaments = db.execute("SELECT * FROM tournaments ORDER BY date DESC")
 
-    return render_template("0-speakers.html", tournaments=tournaments)
+    return render_template("0-tournaments.html", tournaments=tournaments)
 
 
 @app.route("/speaker", methods=["GET", "POST"])
