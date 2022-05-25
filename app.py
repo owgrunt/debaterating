@@ -1159,7 +1159,7 @@ def speaker_tab():
     else:
         # Get speakers in this category
         category_id = request.args.get("category")
-        speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id WHERE tournament_id = {id} GROUP BY speaker_id")
+        speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id INNER JOIN speakers_in_categories sic ON speeches.speaker_id = sic.speaker_id WHERE tournament_id = {id} AND sic.category_id = {category_id} GROUP BY speaker_id")
 
     # Sort speakers by speaker points
     speakers = sorted(speakers, key=itemgetter("average_score"), reverse=True)
