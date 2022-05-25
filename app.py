@@ -823,7 +823,6 @@ def import_debates():
                             speech["tournament_id"] = tournament["id"]
                             speech["debate_id"] = debate["id"]
                             speech["speaker_id"] = team_speakers[i]
-                            # TODO delete speech["score"] = 0
                             # Assign position
                             if i == 0:
                                 if result["side"] == "og":
