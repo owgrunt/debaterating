@@ -12,7 +12,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>
+                        <th colspan="3">
                             Первое правительство
                         </th>
                         <th>
@@ -35,10 +35,12 @@
                                 {{ debate["speeches"][2]["first_name"] }} {{ debate["speeches"][2]["last_name"] }}
                             </td>
                             <td>
-
+                                {{ debate["speeches"][0]["score"] }}
+                                <br>
+                                {{ debate["speeches"][2]["score"] }}
                             </td>
                             <td>
-
+                                {{ debate["team_performances"][0]["score"] }}
                             </td>
                             <td>
 

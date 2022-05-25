@@ -1200,7 +1200,7 @@ def round_debates():
     debates = db.execute(f"SELECT * FROM debates WHERE round_id = {round_id}")
     for debate in debates:
         debate_id = debate["id"]
-        debate["speeches"] = db.execute(f"SELECT speaker_id, position, s.first_name, s.last_name FROM speeches ss INNER JOIN speakers s ON ss.speaker_id = s.id WHERE debate_id = {debate_id}")
+        debate["speeches"] = db.execute(f"SELECT speaker_id, position, s.first_name, s.last_name, ss.score FROM speeches ss INNER JOIN speakers s ON ss.speaker_id = s.id WHERE debate_id = {debate_id}")
         debate["speeches"] = sorted(debate["speeches"], key=itemgetter("position"))
         debate["team_performances"] = db.execute(f"SELECT * FROM team_performances WHERE debate_id = {debate_id}")
         for team in debate["team_performances"]:
