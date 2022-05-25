@@ -45,6 +45,10 @@
             <script>
                 $(document).ready(function () {
                     $('#speakers').DataTable( {
+                        columnDefs: [
+                            { orderable: false, targets: 0 }
+                        ],
+                        order: [[2, 'desc']],
                         language: {
                             url: '//cdn.datatables.net/plug-ins/1.12.0/i18n/ru.json'
                         }
