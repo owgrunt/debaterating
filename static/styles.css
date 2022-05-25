@@ -42,6 +42,10 @@ tbody tr:nth-of-type(odd) {
     background-color: rgb(179, 208, 255, 0.3)
 }
 
+table.dataTable.table-striped > tbody > tr.odd > * {
+    background-color: rgb(179, 208, 255, 0.3)
+}
+
 .container {
     margin-left: auto;
     margin-right: auto;
