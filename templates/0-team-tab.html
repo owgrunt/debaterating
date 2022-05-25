@@ -14,8 +14,11 @@
                         <th>
                             #
                         </th>
-                        <th colspan="2">
-                            Спикеры
+                        <th>
+                            Спикер 1
+                        </th>
+                        <th>
+                            Спикер 2
                         </th>
                         <th>
                             Очки
@@ -50,10 +53,7 @@
             <script>
                 $(document).ready(function () {
                     $('#teams').DataTable( {
-                        columnDefs: [
-                            { orderable: false, targets: 1 }
-                        ],
-                        order: [[2, 'desc']],
+                        order: [[0, 'asc']],
                         language: {
                             url: '//cdn.datatables.net/plug-ins/1.12.0/i18n/ru.json'
                         }
