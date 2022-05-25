@@ -7,8 +7,8 @@
 {% block main %}
     <h2 class="mb-5 mt-2">{{ tournament["name"] }}</h2>
     <div class="container">
-        <!-- <div class="row">{{achievements}}</div> -->
-        <div class="row mt-3">
+        <!-- <div class="row">{{speaker_categories}}</div> -->
+        <div class="row mt-3 mx-1">
             <table>
                 <thead>
                     <tr>
@@ -127,11 +127,6 @@
                                 </td>
                             </tr>
                         {% endfor %}
-                        <tr>
-                            <td colspan="3">
-                                <a href="/achievements?id={{ tournament["id"] }}">Все достижения</a>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -153,6 +148,13 @@
                                 <a href="/speaker-tab?id={{ tournament["id"] }}">Спикерский тэб</a>
                             </td>
                         </tr>
+                        {% for category in speaker_categories %}
+                            <tr>
+                                <td>
+                                    <a href="/speaker-tab?id={{ tournament["id"] }}&category={{ category["id"] }}">Спикерский тэб ({{ category["name"] }})</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
                         {% for round in rounds %}
                             <tr>
                                 <td>

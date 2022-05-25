@@ -1108,38 +1108,44 @@ def tournament():
 
     tournament = db.execute(f"SELECT * FROM tournaments WHERE id = {id}")[0]
 
+    # Get speaker achievements
     achievements = db.execute(f"SELECT a.*, bc.name AS break_category_name, sc.name AS speaker_category_name, s.last_name, s.first_name, s.id AS speaker_id FROM achievements a LEFT JOIN break_categories bc ON a.break_category = bc.id LEFT JOIN speaker_categories sc ON a.speaker_category = sc.id INNER JOIN speakers s on a.speaker_id = s.id WHERE a.tournament_id = {id}")
-    break_categories = len(db.execute(f"SELECT id FROM break_categories WHERE tournament_id = {id}"))
-    speaker_categories = len(db.execute(f"SELECT id FROM speaker_categories WHERE tournament_id = {id}"))
+    break_categories_len = len(db.execute(f"SELECT id FROM break_categories WHERE tournament_id = {id}"))
+    speaker_categories_len = len(db.execute(f"SELECT id FROM speaker_categories WHERE tournament_id = {id}"))
     # Order achievements by importance
     for achievement in achievements:
         if achievement["type"] == "team":
             if achievement["name"] == "победитель":
                 achievement["priority"] = achievement["break_category"]
             elif achievement["name"] == "финалист":
-                achievement["priority"] = break_categories + speaker_categories + 2 + achievement["break_category"]
+                achievement["priority"] = break_categories_len + speaker_categories_len + 2 + achievement["break_category"]
             elif achievement["name"] == "полуфиналист":
-                achievement["priority"] = ( break_categories * 2 ) + speaker_categories + 2 + achievement["break_category"]
+                achievement["priority"] = ( break_categories_len * 2 ) + speaker_categories_len + 2 + achievement["break_category"]
             elif achievement["name"] == "четвертьфиналист":
-                achievement["priority"] = ( break_categories * 3 ) + speaker_categories + 2 + achievement["break_category"]
+                achievement["priority"] = ( break_categories_len * 3 ) + speaker_categories_len + 2 + achievement["break_category"]
             elif achievement["name"] == "октофиналист":
-                achievement["priority"] = ( break_categories * 4 ) + speaker_categories + 2 + achievement["break_category"]
+                achievement["priority"] = ( break_categories_len * 4 ) + speaker_categories_len + 2 + achievement["break_category"]
             else:
-                achievement["priority"] = ( break_categories * 5 ) + speaker_categories + 3
+                achievement["priority"] = ( break_categories_len * 5 ) + speaker_categories_len + 3
         if achievement["type"] == "speaker":
             if achievement["speaker_category"] == None:
-                achievement["priority"] = break_categories + 1
+                achievement["priority"] = break_categories_len + 1
             else:
-                achievement["priority"] = break_categories + achievement["speaker_category"] + 1
+                achievement["priority"] = break_categories_len + achievement["speaker_category"] + 1
         if achievement["type"] == "adjudicator":
-            achievement["priority"] = break_categories + speaker_categories + 2
+            achievement["priority"] = break_categories_len + speaker_categories_len + 2
     achievements = sorted(achievements, key=itemgetter("priority"))
 
+    # Get rounds
     rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = {id}")
 
+    # Get participants to show judges and conveners
     participants = db.execute(f"SELECT s.first_name, s.last_name, p.role, s.id FROM tournament_participants p INNER JOIN speakers s ON p.speaker_id = s.id WHERE tournament_id = {id}")
 
-    return render_template("0-tournament.html", tournament=tournament, achievements=achievements, rounds=rounds, participants=participants)
+    # Get speaker categories to make links to speaker tabs
+    speaker_categories = db.execute(f"SELECT id, name FROM speaker_categories WHERE tournament_id = {id}")
+
+    return render_template("0-tournament.html", tournament=tournament, achievements=achievements, rounds=rounds, participants=participants, speaker_categories=speaker_categories)
 
 
 @app.route("/speaker-tab", methods=["GET", "POST"])
