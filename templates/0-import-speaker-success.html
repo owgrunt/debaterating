@@ -22,8 +22,7 @@
                         <th>Отчество</th>
                         <th>Команда</th>
                         <th>Категории</th>
-                        <th>Судья</th>
-                        <th>ГС</th>
+                        <th>Роль</th>
                         <th>Клуб</th>
                     </tr>
                 </thead>
@@ -52,15 +51,12 @@
                                 {{ speaker["categories"] }}
                             </td>
                             <td>
-                                {% if speaker["adjudicator"] == 1 %}
-                                    Да
-                                {% else %}
-                                    Нет
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if speaker["ca"] == 1 %}
-                                    Да
+                                {% if speaker["role"] == "speaker" %}
+                                    спикер
+                                {% elif speaker["role"] == "adjudicator" %}
+                                    судья
+                                {% elif speaker["role"] == "ca" %}
+                                    ГС
                                 {% else %}
                                     Нет
                                 {% endif %}
