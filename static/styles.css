@@ -43,7 +43,7 @@ tbody tr:nth-of-type(odd) {
 }
 
 table.dataTable.table-striped > tbody > tr.odd > * {
-    background-color: rgb(179, 208, 255, 0.3)
+    box-shadow: inset 0 0 0 9999px rgba(179, 208, 255, 0.3);
 }
 
 .container {
