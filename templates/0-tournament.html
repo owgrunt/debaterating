@@ -7,7 +7,7 @@
 {% block main %}
     <h2 class="mb-5 mt-2">{{ tournament["name"] }}</h2>
     <div class="container">
-        <div class="row mt-3">{{ rounds }}</div>
+        <!-- <div class="row mt-3">{{ rounds }}</div> -->
         <div class="row mt-3">
             <div class="col-4">
                 <table id="tab">
@@ -33,13 +33,6 @@
                                 {{ tournament["date"] }}
                             </td>
                         </tr>
-                        {% for round in rounds %}
-                            <tr>
-                                <td>
-                                    {{ round["name"] }}
-                                </td>
-                            </tr>
-                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -77,6 +70,38 @@
                     </tbody>
                 </table>
                 Все достижения
+                <table id="achievements">
+                    <thead>
+                        <tr>
+                            <th colspan="3">Главные судьи</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for achievement in achievements %}
+                            <tr>
+                                <td>
+                                    {{ achievement["first_name"] }} {{ achievement["last_name"] }}
+                                </td>
+                                <td>
+                                    {{ achievement["name"] }}
+                                </td>
+                                <td>
+                                    {% if achievement["type"] == "team" %}
+                                        {{ achievement["break_category_name"] }}
+                                    {% elif achievement["type"] == "speaker" %}
+                                        {% if achievement["speaker_category_name"] == None %}
+                                            open
+                                        {% else %}
+                                            {{ achievement["speaker_category_name"] }}
+                                        {% endif %}
+                                    {% else %}
+
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
             <div class="col-4">
                 <table id="tab">
