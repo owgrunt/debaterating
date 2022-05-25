@@ -24,10 +24,13 @@
                         {% for achievement in achievements %}
                             <tr>
                                 <td>
+                                    {{ achievement["first_name"] }} {{ achievement["last_name"] }}
+                                </td>
+                                <td>
                                     {{ achievement["name"] }}
                                 </td>
                                 <td>
-                                    {{ achievement["speaker_id"] }}
+                                    {{ achievement["break_category"] }}
                                 </td>
                             </tr>
                         {% endfor %}
