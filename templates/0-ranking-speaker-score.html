@@ -11,10 +11,11 @@
             <table id="speakers" class="table table-striped" style="width:100%">
                 <thead>
                     <tr>
-                        <th style="width: 25%">Место</th>
-                        <th style="width: 25%">Спикер</th>
-                        <th style="width: 25%">Средний спикерский</th>
-                        <th style="width: 25%">Рейтинг</th>
+                        <th># по ELO</th>
+                        <th># по спикерским</th>
+                        <th>Спикер</th>
+                        <th>ELO</th>
+                        <th>Средний спикерский</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,20 +24,19 @@
                     {% for speaker in speakers %}
                         <tr>
                             <td>
-                                {% if speaker["speaker_score"] < previous_score.value %}
-                                    {% set i.value = i.value + 1 %}
-                                    {% set previous_score.value = speaker["speaker_score"] %}
-                                {% endif %}
-                                {{ i.value }}
+                                {{ speaker["ranking_by_rating"] }}
+                            </td>
+                            <td>
+                                {{ speaker["ranking_by_speaks"] }}
                             </td>
                             <td>
                                 <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["last_name"] }} {{ speaker["first_name"] }}</a>
                             </td>
                             <td>
-                                {{ speaker["speaker_score"] }}
+                                {{ speaker["rating"] }}
                             </td>
                             <td>
-                                {{ speaker["rating"] }}
+                                {{ speaker["speaker_score"] }}
                             </td>
                         </tr>
                     {% endfor %}
