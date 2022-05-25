@@ -1199,7 +1199,7 @@ def team_tab():
 
     if not request.args.get("category"):
         # Get all tournament teams
-        teams = db.execute(f"SELECT s1.first_name, s1.last_name, s2.first_name, s2.last_name, sum(tp.score) WHERE tournament_id = {id} GROUP BY team_id")
+        teams = db.execute(open("sql_get_team_tab.sql").read().replace("xxxxxx", str(id)))
         # No category needed
         category_text = ""
     else:
