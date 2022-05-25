@@ -1055,6 +1055,10 @@ def ranking_speaker_score():
 
     speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
 
+    i = 1
+    for speaker in speakers:
+
+
     return render_template("0-ranking-speaker-score.html", speakers=speakers)
 
 
