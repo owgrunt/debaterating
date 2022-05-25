@@ -1047,7 +1047,7 @@ def calculate_speaker_scores():
 
     # Set up the new global ranking by speaker scores
     db_speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
-    i = 0
+    i = 1
     previous_score = 101
     current_ranking = 0
     for speaker in db_speakers:
