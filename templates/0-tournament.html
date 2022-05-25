@@ -31,7 +31,13 @@
                                     {{ achievement["name"] }}
                                 </td>
                                 <td>
-                                    {{ achievement["break_category_name"] }}
+                                    {% if achievement["type"] == "team" %}
+                                        {{ achievement["break_category_name"] }}
+                                    {% elif achievement["type"] == "speaker" %}
+                                        {{ achievement["speaker_category_name"] }}
+                                    {% else %}
+
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
