@@ -1083,13 +1083,13 @@ def calculate_speaker_scores():
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
 
-@app.route("/ranking/speaker-score", methods=["GET", "POST"])
+@app.route("/speakers", methods=["GET", "POST"])
 def ranking_speaker_score():
     """Show speaker ranking"""
 
     speakers = db.execute("SELECT * FROM speakers ORDER BY speaker_score DESC")
 
-    return render_template("0-ranking-speaker-score.html", speakers=speakers)
+    return render_template("0-speakers.html", speakers=speakers)
 
 
 @app.route("/speaker", methods=["GET", "POST"])
