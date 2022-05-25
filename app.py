@@ -1057,10 +1057,23 @@ def calculate_speaker_scores():
         speaker["ranking_by_speaks"] = current_ranking
         i = i + 1
 
+    # Set up the new global ranking by rating
+    db_speakers = sorted(db_speakers, key=itemgetter("rating"), reverse=True)
+    i = 1
+    previous_score = 10000
+    current_ranking = 0
     for speaker in db_speakers:
-        ranking = speaker["ranking_by_speaks"]
+        if speaker["rating"] < previous_score:
+            current_ranking = i
+            previous_score = speaker["rating"]
+        speaker["ranking_by_rating"] = current_ranking
+        i = i + 1
+
+    for speaker in db_speakers:
+        ranking_by_speaks = speaker["ranking_by_speaks"]
+        ranking_by_rating = speaker["ranking_by_rating"]
         id = speaker["id"]
-        db.execute(f"UPDATE speakers SET ranking_by_speaks = {ranking} WHERE id = {id}")
+        db.execute(f"UPDATE speakers SET ranking_by_speaks = {ranking_by_speaks}, ranking_by_rating = {ranking_by_rating} WHERE id = {id}")
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
