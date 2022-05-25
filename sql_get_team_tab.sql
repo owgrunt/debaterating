@@ -9,8 +9,10 @@ FROM
    team_performances tp
 INNER JOIN teams t ON
     tp.team_id = t.id
+INNER JOIN debates d ON
+    tp.debate_id = d.id
 INNER JOIN rounds r ON
-    tp.round_id = r.id
+    d.round_id = r.id
 INNER JOIN speakers AS s1 ON
     t.speaker_one_id = s1.id
 INNER JOIN speakers AS s2 ON
