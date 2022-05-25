@@ -20,9 +20,9 @@
                         <th>Фамилия</th>
                         <th>Имя</th>
                         <th>Отчество</th>
+                        <th>Роль</th>
                         <th>Команда</th>
                         <th>Категории</th>
-                        <th>Роль</th>
                         <th>Клуб</th>
                     </tr>
                 </thead>
@@ -45,12 +45,6 @@
                                 {{ speaker["middle_name"] }}
                             </td>
                             <td>
-                                {{ speaker["team_name"] }}
-                            </td>
-                            <td>
-                                {{ speaker["categories"] }}
-                            </td>
-                            <td>
                                 {% if speaker["role"] == "speaker" %}
                                     спикер
                                 {% elif speaker["role"] == "adjudicator" %}
@@ -60,6 +54,12 @@
                                 {% else %}
                                     Нет
                                 {% endif %}
+                            </td>
+                            <td>
+                                {{ speaker["team_name"] }}
+                            </td>
+                            <td>
+                                {{ speaker["categories"] }}
                             </td>
                             <td>
                                 {{ speaker["society"] }}
