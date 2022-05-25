@@ -1111,9 +1111,11 @@ def tournament():
     achievements = db.execute(f"SELECT a.*, bc.name AS break_category_name, sc.name AS speaker_category_name, s.last_name, s.first_name FROM achievements a LEFT JOIN break_categories bc ON a.break_category = bc.id LEFT JOIN speaker_categories sc ON a.speaker_category = sc.id INNER JOIN speakers s on a.speaker_id = s.id WHERE a.tournament_id = {id} AND (a.name = ? OR a.type = ? OR a.type = ?)",
                               "победитель", "speaker", "adjudicator")
 
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = {id}")
+
     speeches = db.execute(open("sql_get_speeches.sql").read().replace("xxxxxx", str(id)))
 
-    return render_template("0-tournament.html", tournament=tournament, achievements=achievements)
+    return render_template("0-tournament.html", tournament=tournament, rounds=rounds)
 
 
 @app.route("/speaker", methods=["GET", "POST"])
