@@ -1200,8 +1200,10 @@ def round_debates():
     debates = db.execute(f"SELECT * FROM debates WHERE round_id = {round_id}")
     for debate in debates:
         debate_id = debate["id"]
+        # Get speeches and sort by position
         debate["speeches"] = db.execute(f"SELECT speaker_id, position, s.first_name, s.last_name, ss.score FROM speeches ss INNER JOIN speakers s ON ss.speaker_id = s.id WHERE debate_id = {debate_id}")
         debate["speeches"] = sorted(debate["speeches"], key=itemgetter("position"))
+        # Get teams and sort by position
         debate["team_performances"] = db.execute(f"SELECT * FROM team_performances WHERE debate_id = {debate_id}")
         for team in debate["team_performances"]:
             if team["side"] == "og":
@@ -1213,6 +1215,8 @@ def round_debates():
             elif team["side"] == "co":
                 team["position"] = 4
         debate["team_performances"] = sorted(debate["team_performances"], key=itemgetter("position"))
+        # Get adjudicators and sort by role
+        debate["adjudicators"] = db.execute(f"SELECT a.speaker_id, a.role, s.first_name, s.last_name FROM adjudications a INNER JOIN speakers s ON a.speaker_id = s.id WHERE debate_id = {debate_id}")
     debates = sorted(debates, key=itemgetter("average_rating"), reverse=True)
 
     return render_template("0-round.html", round=round, debates=debates)
