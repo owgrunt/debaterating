@@ -12,10 +12,10 @@
             <table>
                 <thead>
                     <tr>
-                        {% if debates[0]["speeches"][0]["score"] == None %}
+                        {% if round["stage"] == "E" %}
                             {% set colspan = 2 %}
                         {% else %}
-                            {% set colspan = 2 %}
+                            {% set colspan = 3 %}
                         {% endif %}
                         <th>
                             Средний рейтинг
