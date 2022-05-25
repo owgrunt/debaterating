@@ -53,9 +53,9 @@
                                     {% set i2 = 7 %}
                                 {% endif %}
                                 <td>
-                                    {{ debate["speeches"][i1]["first_name"] }} {{ debate["speeches"][i1]["last_name"] }}
+                                    <a href="/speaker?id={{ debate["speeches"][i1]["speaker_id"] }}">{{ debate["speeches"][i1]["first_name"] }} {{ debate["speeches"][i1]["last_name"] }}</a>
                                     <br>
-                                    {{ debate["speeches"][i2]["first_name"] }} {{ debate["speeches"][i2]["last_name"] }}
+                                    <a href="/speaker?id={{ debate["speeches"][i2]["speaker_id"] }}">{{ debate["speeches"][i2]["first_name"] }} {{ debate["speeches"][i2]["last_name"] }}</a>
                                 </td>
                                 <td>
                                     {{ debate["speeches"][i1]["score"] }}
@@ -77,7 +77,7 @@
                                 {% endfor %}
                                 <td>
                                     {% for adjudicator in debate["adjudicators"] %}
-                                        {{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}
+                                        <a href="/speaker?id={{ adjudicator["speaker_id"] }}">{{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}</a>
                                         {% if adjudicator["role"] == "chair" %}
                                             (c)
                                         {% elif adjudicator["role"] == "panellist" %}
