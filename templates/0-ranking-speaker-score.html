@@ -46,7 +46,28 @@
                 $(document).ready(function () {
                     $('#speakers').DataTable( {
                         "language": {
-                            "lengthMenu": "Показать _MENU_ спикеров"
+                            "decimal":        "",
+                            "emptyTable":     "Нет данных",
+                            "info":           "Спикеры с _START_ по _END_ из _TOTAL_ entries",
+                            "infoEmpty":      "Нет данных",
+                            "infoFiltered":   "(из _MAX_ спикеров)",
+                            "infoPostFix":    "",
+                            "thousands":      ",",
+                            "lengthMenu":     "Показать _MENU_ спикеров"
+                            "loadingRecords": "Загрузка...",
+                            "processing":     "",
+                            "search":         "Поиск:",
+                            "zeroRecords":    "Запрос не найден",
+                            "paginate": {
+                                "first":      "Первая",
+                                "last":       "Последняя",
+                                "next":       "Следующая",
+                                "previous":   "Предыдущая"
+                            },
+                            "aria": {
+                                "sortAscending":  ": activate to sort column ascending",
+                                "sortDescending": ": activate to sort column descending"
+                            }
                         }
                     } );
                 });
