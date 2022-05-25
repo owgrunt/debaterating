@@ -256,6 +256,7 @@ table.dataTable td,
 table.dataTable th {
   -webkit-box-sizing: content-box;
   box-sizing: content-box;
+  padding: 0.75rem;
 }
 table.dataTable td.dataTables_empty,
 table.dataTable th.dataTables_empty {
