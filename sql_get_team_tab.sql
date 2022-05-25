@@ -15,5 +15,7 @@ INNER JOIN speakers AS s2 ON
     t.speaker_two_id = s2.id
 WHERE
     tp.tournament_id = 1
+GROUP BY
+    tp.team_id
 ORDER BY
     team_score DESC;
