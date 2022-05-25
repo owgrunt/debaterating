@@ -1069,11 +1069,15 @@ def calculate_speaker_scores():
         speaker["ranking_by_rating"] = current_ranking
         i = i + 1
 
+    # Create a sql query
+    query = ""
     for speaker in db_speakers:
         ranking_by_speaks = speaker["ranking_by_speaks"]
         ranking_by_rating = speaker["ranking_by_rating"]
         id = speaker["id"]
-        db.execute(f"UPDATE speakers SET ranking_by_speaks = {ranking_by_speaks}, ranking_by_rating = {ranking_by_rating} WHERE id = {id}")
+        query = query + f"UPDATE speakers SET ranking_by_speaks = {ranking_by_speaks}, ranking_by_rating = {ranking_by_rating} WHERE id = {id}; ")
+    query = "BEGIN TRANSACTION; " + query + "COMMIT;"
+    db.execute(query)
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
