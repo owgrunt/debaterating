@@ -6,7 +6,7 @@
 
 {% block main %}
     <h2 class="mb-5 mt-2">Раунд</h2>
-    <div>{{ debates }}</div>
+    <!-- <div>{{ debates }}</div> -->
     <div class="container">
         <div class="row mt-3">
             <table>
@@ -61,6 +61,15 @@
                                 </td>
                                 <td>
                                     <!-- {{ debate["team_performances"][i]["score"] }} -->
+                                    {% if debate["team_performances"][i]["score"] == 3 %}
+                                        <i class="text-success result-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"></polyline><polyline points="17 18 12 13 7 18"></polyline></svg></i>
+                                    {% elif debate["team_performances"][i]["score"] == 2 %}
+                                        <i class="text-info result-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg></i>
+                                    {% elif debate["team_performances"][i]["score"] == 1 %}
+                                        <i class="text-warning result-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg></i>
+                                    {% else %}
+                                        <i class="text-danger result-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-down"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg></i>
+                                    {% endif %}
                                 </td>
                                 {% endfor %}
                         </tr>
