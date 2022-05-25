@@ -22,7 +22,13 @@
                                 Тип
                             </td>
                             <td>
-                                {{ tournament["type"] }}
+                                {% if tournament["type"] == "open" %}
+                                    открытый
+                                {% elif tournament["type"] == "am" %}
+                                    новичковый
+                                {% elif tournament["type"] == "proam" %}
+                                    джедайский
+                                {% endif %}
                             </td>
                         </tr>
                         <tr>
@@ -31,6 +37,22 @@
                             </td>
                             <td>
                                 {{ tournament["date"] }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Средний рейтинг
+                            </td>
+                            <td>
+                                {{ tournament["average_rating"] }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Сообщество
+                            </td>
+                            <td>
+                                <a href="{{ tournament["page"] }}">{{ tournament["page"] }}</a>
                             </td>
                         </tr>
                     </tbody>
