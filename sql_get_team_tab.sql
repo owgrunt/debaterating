@@ -19,6 +19,8 @@ INNER JOIN speakers AS s1 ON
     t.speaker_one_id = s1.id
 INNER JOIN speakers AS s2 ON
     t.speaker_two_id = s2.id
+INNER JOIN speeches AS sp ON
+    t.speaker_one_id
 WHERE
     tp.tournament_id = 1
 AND

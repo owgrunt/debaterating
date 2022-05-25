@@ -143,6 +143,13 @@
                                 <a href="/team-tab?id={{ tournament["id"] }}">Командный тэб</a>
                             </td>
                         </tr>
+                        {% for category in speaker_categories %}
+                            <tr>
+                                <td>
+                                    <a href="/team-tab?id={{ tournament["id"] }}&category={{ category["id"] }}">Командный тэб ({{ category["name"] }})</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
                         <tr>
                             <td>
                                 <a href="/speaker-tab?id={{ tournament["id"] }}">Спикерский тэб</a>

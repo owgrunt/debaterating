@@ -1205,7 +1205,7 @@ def team_tab():
     else:
         # Get teams in this category
         category_id = request.args.get("category")
-        teams = db.execute(open("sql_get_team_tab_category.sql").read().replace("xxxxxx", str(id)).replace("yyyyy", category_id))
+        teams = db.execute(open("sql_get_team_tab_category.sql").read().replace("xxxxxx", str(id)).replace("yyyyyy", category_id))
         category = db.execute(f"SELECT name FROM speaker_categories WHERE id = {category_id} AND tournament_id = {id}")[0]
         category_text = " (" + category["name"] + ")"
 
