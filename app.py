@@ -1144,7 +1144,7 @@ def tournament():
 
 @app.route("/speaker-tab", methods=["GET", "POST"])
 def speaker_tab():
-    """Show speaker tab"""
+    """Show speaker tab for a tournament"""
 
     if not request.args.get("id"):
             return apology("must provide tournament id", 400)
@@ -1153,8 +1153,14 @@ def speaker_tab():
 
     tournament = db.execute(f"SELECT * FROM tournaments WHERE id = {id}")[0]
 
-    # Get tournament speakers
-    speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id WHERE tournament_id = {id} GROUP BY speaker_id")
+    if not request.args.get("category"):
+        # Get all tournament speakers
+        speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id WHERE tournament_id = {id} GROUP BY speaker_id")
+    else:
+        # Get speakers in this category
+        category_id = request.args.get("category")
+        speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id WHERE tournament_id = {id} GROUP BY speaker_id")
+
     # Sort speakers by speaker points
     speakers = sorted(speakers, key=itemgetter("average_score"), reverse=True)
     i = 1
