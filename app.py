@@ -1112,7 +1112,7 @@ def tournament():
     # Order achievements by importance
     for achievement in achievements:
         if achievement["type"] == "team":
-            if achievement["break_category"] == 1:
+            if achievement["name"] == "победитель":
                 achievement["priority"] = 1
 
     rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = {id}")
