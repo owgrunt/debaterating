@@ -1087,7 +1087,10 @@ def calculate_speaker_scores():
 def import_best_adjudicator():
     """Record best adjudicator(s)"""
 
-    global adjudicators
+    global tournament
+    id = tournament["id"]
+    adjudicators = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ? AND role = ?",
+                              id, "adjudicator")
 
     return render_template("0-import-best-adjudicator.html", adjudicators=adjudicators)
 
