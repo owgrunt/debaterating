@@ -7,9 +7,9 @@
 {% block main %}
     <h2 class="mb-5 mt-2">{{ speaker["last_name"] }} {{ speaker["first_name"] }}</h2>
     <div class="container">
-        <!-- <div class="row">
-            {{ speeches }}<br><br>{{ rankings_by_round_seq }}<br><br>{{ round_seq }}
-        </div> -->
+        <div class="row">
+            {{ achievements }}
+        </div>
         <div class="row mt-3">
             <div class="col-6">
                 <h4>Спикер #{{ speaker["ranking_by_speaks"] }}, средний спикерский: {{ speaker["speaker_score"] }}</h4>
@@ -134,7 +134,7 @@
         </div>
         <div class="row mt-3">
             <div class="col-4">
-                
+
             </div>
         </div>
         <div class="row mt-3">
