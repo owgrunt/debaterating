@@ -156,7 +156,37 @@
                         </tr>
                         {% endfor %}
                         <tr>
+                            <td colspan="2">
+                                <a href="/achievements?id={{ speaker["id"] }}">Все достижения</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-4">
+                <table>
+                    <thead>
+                        <th colspan="2">
+                            Выступления
+                        </th>
+                    </thead>
+                    <tbody>
+                        {% for achievement in achievements %}
+                        <tr>
                             <td>
+                                <a href="/tournament?id={{ achievement["tournament_id"] }}">{{ achievement["tournament_name"] }}</a>
+                            </td>
+                            <td>
+                                {% if achievement["type"] == "team" %}
+                                    {{ achievement["name"] }} ({{ achievement["break_category_name"] }})
+                                {% else %}
+                                    {{ achievement["name"] }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="2">
                                 <a href="/achievements?id={{ speaker["id"] }}">Все достижения</a>
                             </td>
                         </tr>
