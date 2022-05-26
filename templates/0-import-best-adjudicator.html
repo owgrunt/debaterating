@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Выберите лучшего судью</h2>
+    <div></div>
+    <div class="container">
+        <div class="section">
+            <form action="/import/best-adjudicator/success" method="post" class="row g-3">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="name" class="form-label">Название</label>
+                        <input autocomplete="off" autofocus class="form-control mx-auto" id="name" name="name" value="" type="text" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="short_name" class="form-label">Краткое название</label>
+                        <input autocomplete="off" autofocus class="form-control mx-auto" id="short_name" name="short_name" value="" type="text" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="link" class="form-label">Ссылка</label>
+                        <input autocomplete="off" autofocus class="form-control mx-auto" id="link" name="link" placeholder="t.me/tournament_page" type="text">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-6">
+                        <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import" role="button">Назад</a>
+                        <button class="btn btn-primary" type="submit">Продолжить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
