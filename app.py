@@ -1089,7 +1089,7 @@ def import_best_adjudicator():
 
     global tournament
     id = tournament["id"]
-    adjudicators = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ? AND role = ?",
+    adjudicators = db.execute(f"SELECT tp.*, s.first_name, s.last_name FROM tournament_participants tp INNER JOIN speakers s ON tp.speaker_id = s.id WHERE tournament_id = ? AND role = ?",
                               id, "adjudicator")
 
     return render_template("0-import-best-adjudicator.html", adjudicators=adjudicators)

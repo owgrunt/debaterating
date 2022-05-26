@@ -12,16 +12,31 @@
             <form action="/import/best-adjudicator/success" method="post" class="row g-3">
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <label for="name" class="form-label">Лучший судья 1</label>
-                        <input autocomplete="off" autofocus class="form-control mx-auto" id="1" name="1" placeholder="1" type="number">
+                        <label for="1" class="form-label">Лучший судья 1</label>
+                        <select class="form-select" id="1" name="1">
+                            <option selected value="no">нет</option>
+                            {% for adjudicator in adjudicators %}
+                                <option value="{{ adjudicator["speaker_id"] }}">{{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="col-md-4">
-                        <label for="short_name" class="form-label">Лучший судья 2</label>
-                        <input autocomplete="off" autofocus class="form-control mx-auto" id="2" name="1" placeholder="2" type="number">
+                        <label for="2" class="form-label">Лучший судья 2</label>
+                        <select class="form-select" id="2" name="2">
+                            <option selected value="no">нет</option>
+                            {% for adjudicator in adjudicators %}
+                                <option value="{{ adjudicator["speaker_id"] }}">{{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="col-md-4">
-                        <label for="link" class="form-label">Лучший судья 3</label>
-                        <input autocomplete="off" autofocus class="form-control mx-auto" id="3" name="1" placeholder="3" type="number">
+                        <label for="3" class="form-label">Лучший судья 3</label>
+                        <select class="form-select" id="3" name="3">
+                            <option selected value="no">нет</option>
+                            {% for adjudicator in adjudicators %}
+                                <option value="{{ adjudicator["speaker_id"] }}">{{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
                 <div class="row">
