@@ -990,6 +990,9 @@ def calculate_elo():
 
         all_updated_ratings = all_updated_ratings + updated_ratings
 
+        # Apparently, zero rating adjustments don't get recorded for an unknown reason, but I'm too lazy to fix it the right way
+        db.execute(f"UPDATE speeches SET rating_change = 0 WHERE rating_shange = NULL")
+
     updated_count = len(all_updated_ratings)
 
     return render_template("0-import-elo.html", all_updated_ratings=all_updated_ratings, updated_count=updated_count)
