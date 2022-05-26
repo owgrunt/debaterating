@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <h2 class="mb-5 mt-2">Лучший судья добавлен</h2>
+    <h2 class="mb-5 mt-2">Лучший судья</h2>
     <!-- <div>{{ adjudicators }}</div> -->
     <div class="container">
         <div class="section">
@@ -21,8 +21,21 @@
                             </th>
                         </tr>
                     </thead>
+                    <tbody>
+                        {% for adjudicator in best_adjudicators %}
+                            <tr>
+                                <td>
+                                    {{ adjudicator["speaker_id"] }}
+                                </td>
+                                <td>
+                                    {{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}
+                                </td>
+                            </tr>
+                    </tbody>
                 </table>
-            {{best_adjudicators}}
+            {% else %}
+                Лучший судья не был указан
+            {% endif %}
         </div>
     </div>
 {% endblock %}

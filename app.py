@@ -1123,6 +1123,11 @@ def import_best_adjudicator():
                 search_keys = ["tournament_id", "speaker_id", "type"]
                 update_keys = ["name"]
                 achivement["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+                # Get name for confirmation
+                speaker_db = db.execute("SELECT first_name, last_name FROM speakers WHERE id = ?",
+                                                    adjudicator["speaker_id"])[0]
+                adjudicator["first_name"] = speaker_db["first_name"]
+                adjudicator["last_name"] = speaker_db["last_name"]
         else:
             no_adjudicator = True
     else:
