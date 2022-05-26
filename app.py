@@ -1365,7 +1365,7 @@ def speaker():
         ranking["average_score"] = ranking["score"] / ranking["number"]
 
     # Get the latest speaker achievements
-    achievements = db.execute(f"SELECT a.*, bc.name AS break_category, sc.name AS speaker_category, sc.achievement AS achievement_name FROM achievements a LEFT JOIN break_categories bc ON a.break_category = bc.id LEFT JOIN speaker_categories sc ON a.speaker_category = sc.id WHERE speaker_id = {id} ORDER BY id DESC")
+    achievements = db.execute(f"SELECT a.*, bc.name AS break_category_name, t.short_name AS tournament_name FROM achievements a LEFT JOIN break_categories bc ON a.break_category = bc.id INNER JOIN tournaments t ON a.tournament_id = tournament.id WHERE speaker_id = {id} ORDER BY id DESC LIMIT 5")
 
     return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq, round_seq=round_seq, achievements=achievements)
 

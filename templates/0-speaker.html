@@ -136,7 +136,7 @@
             <div class="col-4">
                 <table>
                     <thead>
-                        <th>
+                        <th colspan="2">
                             Достижения
                         </th>
                     </thead>
@@ -144,7 +144,14 @@
                         {% for achievement in achievements %}
                         <tr>
                             <td>
-                                {{ achievement["name"] }}
+                                <a href="/tournament?id={{ achievement["tournament_id"] }}">{{ achievement["tournament_name"] }}</a>
+                            </td>
+                            <td>
+                                {% if achievement["type"] == "team" %}
+                                    {{ achievement["name"] }} ({{ achievement["break_category_name"] }})
+                                {% else %}
+                                    {{ achievement["name"] }}
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
