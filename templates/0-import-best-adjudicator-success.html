@@ -31,11 +31,13 @@
                                     {{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}
                                 </td>
                             </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             {% else %}
                 Лучший судья не был указан
             {% endif %}
         </div>
+        
     </div>
 {% endblock %}
