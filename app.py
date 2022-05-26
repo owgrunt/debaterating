@@ -6,6 +6,8 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from urllib.parse import urlparse
+from sqlite3 import connect, close
+
 
 from helpers import apology, login_required, lookup_data, lookup_tournament, lookup_link, add_database_entry, split_name_by_format, has_yo
 
