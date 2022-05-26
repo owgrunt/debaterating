@@ -1085,12 +1085,24 @@ def calculate_speaker_scores():
 @app.route("/import/best-adjudicator", methods=["GET", "POST"])
 @login_required
 def import_best_adjudicator():
-    """Record best adjudicator(s)"""
+    """Get best adjudicator(s)"""
 
     global tournament
     id = tournament["id"]
     adjudicators = db.execute(f"SELECT tp.*, s.first_name, s.last_name FROM tournament_participants tp INNER JOIN speakers s ON tp.speaker_id = s.id WHERE tournament_id = ? AND role = ?",
                               id, "adjudicator")
+
+    return render_template("0-import-best-adjudicator.html", adjudicators=adjudicators)
+
+
+@app.route("/import/best-adjudicator/success", methods=["GET", "POST"])
+@login_required
+def import_best_adjudicator():
+    """Record best adjudicator(s) in the db"""
+
+    global tournament
+    tournament_id = tournament["id"]
+    
 
     return render_template("0-import-best-adjudicator.html", adjudicators=adjudicators)
 
