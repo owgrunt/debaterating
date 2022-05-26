@@ -1368,9 +1368,12 @@ def speaker():
     achievements = db.execute(f"SELECT a.*, bc.name AS break_category_name, t.short_name AS tournament_name FROM achievements a LEFT JOIN break_categories bc ON a.break_category = bc.id INNER JOIN tournaments t ON a.tournament_id = t.id WHERE speaker_id = {id} ORDER BY id DESC LIMIT 5")
 
     # Get the tournaments the speaker participated in
-    participations = db.execute(f"SELECT tp.*, t.name FROM tournament_participants tp INNER JOIN tournaments t ON tp.tournament_id = t.id WHERE speaker_id = {id}")
+    participations = db.execute("SELECT tp.*, t.name, t.short_name FROM tournament_participants tp INNER JOIN tournaments t ON tp.tournament_id = t.id WHERE speaker_id = ? AND tp.role = ? ORDER BY id DESC LIMIT 5",
+                                id, "speaker")
+    adjudications = db.execute("SELECT tp.*, t.name, t.short_name FROM tournament_participants tp INNER JOIN tournaments t ON tp.tournament_id = t.id WHERE speaker_id = ? AND tp.role != ? ORDER BY id DESC LIMIT 5",
+                                id, "speaker")
 
-    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq, round_seq=round_seq, participations=participations, achievements=achievements)
+    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq, round_seq=round_seq, participations=participations, achievements=achievements, adjudications=adjudications)
 
 
 @app.route("/register", methods=["GET", "POST"])

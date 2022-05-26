@@ -166,28 +166,51 @@
             <div class="col-4">
                 <table>
                     <thead>
-                        <th colspan="2">
+                        <th>
                             Выступления
                         </th>
                     </thead>
                     <tbody>
-                        {% for achievement in achievements %}
+                        {% for participation in participations %}
+                            <tr>
+                                <td>
+                                    <a href="/tournament?id={{ participation["tournament_id"] }}">{{ participation["name"] }}</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
                         <tr>
                             <td>
-                                <a href="/tournament?id={{ achievement["tournament_id"] }}">{{ achievement["tournament_name"] }}</a>
-                            </td>
-                            <td>
-                                {% if achievement["type"] == "team" %}
-                                    {{ achievement["name"] }} ({{ achievement["break_category_name"] }})
-                                {% else %}
-                                    {{ achievement["name"] }}
-                                {% endif %}
+                                <a href="/participations?id={{ speaker["id"] }}">Все выступления</a>
                             </td>
                         </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-4">
+                <table>
+                    <thead>
+                        <th colspan="2">
+                            Судейство
+                        </th>
+                    </thead>
+                    <tbody>
+                        {% for adjudication in adjudications %}
+                            <tr>
+                                <td>
+                                    <a href="/tournament?id={{ adjudication["tournament_id"] }}">{{ adjudication["short_name"] }}</a>
+                                </td>
+                                <td>
+                                    {% if adjudication["role"] == "ca" %}
+                                        ГС
+                                    {% else %}
+                                        судья
+                                    {% endif %}
+                                </td>
+                            </tr>
                         {% endfor %}
                         <tr>
                             <td colspan="2">
-                                <a href="/achievements?id={{ speaker["id"] }}">Все достижения</a>
+                                <a href="/adjudications?id={{ speaker["id"] }}">Всё судейство</a>
                             </td>
                         </tr>
                     </tbody>
