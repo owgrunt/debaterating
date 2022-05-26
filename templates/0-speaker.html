@@ -153,6 +153,11 @@
                                     {{ achievement["name"] }}
                                 {% endif %}
                             </td>
+                            <td>
+                                <tr>
+                                    <a href="/achievements?id={{ achievement["tournament_id"] }}">{{ achievement["tournament_name"] }}</a>
+                                </tr>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
