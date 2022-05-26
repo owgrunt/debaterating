@@ -3,6 +3,7 @@ INSERT INTO speakers (first_name, last_name, middle_name) VALUES ("Ирина", 
 INSERT INTO speakers (first_name, last_name, middle_name) VALUES ("Свинг", "Свингов", "Свингович");
 INSERT INTO speakers (first_name, last_name) VALUES ("Святослав", "Архипов");
 INSERT INTO speakers (first_name, last_name) VALUES ("Мария", "Лазарук");
+INSERT INTO speakers (first_name, last_name) VALUES ("Глеб", "Игнатьев");
 INSERT INTO speakers (first_name, last_name) VALUES ("Риза", "Абасов");
 INSERT INTO speakers (first_name, last_name) VALUES ("Рустам", "Байголопов");
 INSERT INTO speakers (first_name, last_name) VALUES ("Михаил", "Волобуев");
@@ -12,6 +13,14 @@ INSERT INTO speakers (first_name, last_name) VALUES ("Алексей", "Ники
 INSERT INTO speakers (first_name, last_name) VALUES ("Арина", "Халиуллина");
 INSERT INTO speakers (first_name, last_name) VALUES ("Родион", "Белов");
 INSERT INTO speakers (first_name, last_name) VALUES ("Айзат", "Гадиев");
+INSERT INTO speakers (first_name, last_name) VALUES ("Илья", "Лапатин");
+INSERT INTO speakers (first_name, last_name) VALUES ("Тая", "Горбунова");
+INSERT INTO speakers (first_name, last_name) VALUES ("Александра", "Шляхтина");
+INSERT INTO speakers (first_name, last_name) VALUES ("Дарья", "Бубенова");
+INSERT INTO speakers (first_name, last_name) VALUES ("Александра", "Авакова");
+INSERT INTO speakers (first_name, last_name) VALUES ("", "");
+INSERT INTO speakers (first_name, last_name) VALUES ("", "");
+INSERT INTO speakers (first_name, last_name) VALUES ("", "");
 -- ALTER TABLE speakers ADD internal_id INTEGER NOT NULL DEFAULT 0;
 -- DROP TABLE team_performances;
 -- DELETE FROM speakers;
