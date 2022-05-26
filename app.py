@@ -1082,6 +1082,12 @@ def calculate_speaker_scores():
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
 
+@app.route("/import/best-adjudicator", methods=["GET", "POST"])
+@login_required
+def import_best_adjudicator():
+    """Record best speakers"""
+
+
 @app.route("/speakers", methods=["GET", "POST"])
 def speaker_list():
     """Show speaker ranking"""
