@@ -6,8 +6,8 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from urllib.parse import urlparse
-from sqlite3 import connect, close
-
+import sqlite3
+import io
 
 from helpers import apology, login_required, lookup_data, lookup_tournament, lookup_link, add_database_entry, split_name_by_format, has_yo
 
@@ -114,6 +114,22 @@ def start_import():
 def import_tournament():
     """Process the link"""
     if request.method == "POST":
+        # Create db backup
+        # conn = sqlite3.connect("sqlite:///debaterating.db")
+
+        # Open() function
+        with io.open('/backups/backupdatabase_dump.sql', 'w') as p:
+
+            # iterdump() function
+            for line in conn.iterdump():
+
+                p.write('%s\n' % line)
+
+        # print(' Backup performed successfully!')
+        # print(' Data Saved as backupdatabase_dump.sql')
+
+        conn.close()
+
         # Clear the global variables
         global tournament
         tournament = {}
