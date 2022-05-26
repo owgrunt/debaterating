@@ -117,7 +117,7 @@ def import_tournament():
         # Create db backup
         now = datetime.now()
         filename = ".backup backups/backup_" + now.strftime("%Y_%m_%d_%H_%M_%S") + ".db"
-        db.execute("")
+        db.execute("SELECT * from speakers")
 
         # Clear the global variables
         global tournament
