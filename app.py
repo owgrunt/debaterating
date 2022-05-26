@@ -1085,7 +1085,11 @@ def calculate_speaker_scores():
 @app.route("/import/best-adjudicator", methods=["GET", "POST"])
 @login_required
 def import_best_adjudicator():
-    """Record best speakers"""
+    """Record best adjudicator(s)"""
+
+    global adjudicators
+
+    return render_template("0-import-speaker-scores.html", adjudicators=adjudicators)
 
 
 @app.route("/speakers", methods=["GET", "POST"])
