@@ -1084,7 +1084,7 @@ def calculate_speaker_scores():
 
 @app.route("/import/best-adjudicator", methods=["GET", "POST"])
 @login_required
-def import_best_adjudicator():
+def get_best_adjudicator():
     """Get best adjudicator(s)"""
 
     global tournament
@@ -1116,6 +1116,12 @@ def import_best_adjudicator():
                 adjudicator["tournament_id"] = tournament["id"]
                 adjudicator["type"] = "adjudicator"
                 adjudicator["name"] = "лучший судья"
+                # Import achievement data into the db
+                db_name = "achievements"
+                entry = adjudicator
+                search_keys = ["tournament_id", "speaker_id", "type"]
+                update_keys = ["name"]
+                achivement["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
 
     return render_template("0-import-best-adjudicator.html", adjudicators=adjudicators)
