@@ -1101,19 +1101,21 @@ def import_best_adjudicator():
     """Record best adjudicator(s) in the db"""
 
     global tournament
-    tournament_id = tournament["id"]
     if request.method == "POST":
-        best_adjudicator_id = []
+        best_adjudicators = []
         # Get data from form 1
         if request.form.get("1") != "no":
-            best_adjudicator_id.append(request.form.get("1"))
+            best_adjudicators.append({"speaker_id": request.form.get("1")})
         if request.form.get("2") != "no":
-            best_adjudicator_id.append(request.form.get("2"))
+            best_adjudicators.append({"speaker_id": request.form.get("2")})
         if request.form.get("3") != "no":
-            best_adjudicator_id.append(request.form.get("3"))
+            best_adjudicators.append({"speaker_id": request.form.get("3")})
         if len(best_adjudicator_id) > 0:
-            for adjudicator_id in best_adjudicator_id:
-                achievement
+            for adjudicator in best_adjudicators:
+                # Prepare data to be added into the db
+                adjudicator["tournament_id"] = tournament["id"]
+                adjudicator["type"] = "adjudicator"
+                adjudicator["name"] = "лучший судья"
 
 
     return render_template("0-import-best-adjudicator.html", adjudicators=adjudicators)
