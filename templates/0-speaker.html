@@ -12,7 +12,7 @@
         </div> -->
         <div class="row mt-3">
             <div class="col-6">
-                <h3>Средний спикерский: {{ speaker["speaker_score"] }}</h3>
+                <h4>Средний спикерский: {{ speaker["speaker_score"] }}</h4>
                 <canvas id="speaksChart"></canvas>
                 <script>
                     const labels_speaks = [
@@ -73,7 +73,7 @@
             </div>
 
             <div class="col-6">
-                <h3>Рейтинг: {{ speaker["rating"] }}</h3>
+                <h4>Рейтинг: {{ speaker["rating"] }}</h4>
                 <canvas id="ratingChart"></canvas>
                 <script>
                     const labels_rating = [
@@ -134,7 +134,7 @@
         </div>
         <div class="row mt-3">
             <div class="col-4">
-                <h3>Спикерские по роли</h3>
+                <h4>Спикерские по роли</h4>
                 <canvas id="speaksByPositionChart"></canvas>
                 <script>
                     const labels_speaks_by_position = ["ПМ", "ЛО", "ЗПМ", "ЗЛО", "ЧП", "ЧО", "СП", "СО"];
@@ -182,7 +182,7 @@
                 </script>
             </div>
             <div class="col-4">
-                <h3>Очки по позиции</h3>
+                <h4>Очки по позиции</h4>
                 <canvas id="pointsBySideChart"></canvas>
                 <script>
                     const labels_points_by_side = ["1ПР", "1ОП", "2ПР", "2ОП"];
@@ -230,7 +230,7 @@
                 </script>
             </div>
             <div class="col-4">
-                <h3>Командные места</h3>
+                <h4>Командные места</h4>
                 <canvas id="teamRankingsChart"></canvas>
                 <script>
                     const data_team_rankings = {
@@ -277,7 +277,7 @@
         </div>
         <div class="row mt-3">
             <div class="col-6">
-                <h3>Очки по силе комнаты</h3>
+                <h4>Очки по силе комнаты</h4>
                 <canvas id="pointsByRoomStrengthChart"></canvas>
                 <script>
                     const data_points_by_room_strength = {
@@ -323,7 +323,7 @@
                 </script>
             </div>
             <div class="col-6">
-                <h3>Очки по раундам</h3>
+                <h4>Очки по раундам</h4>
                 <canvas id="scoreBySequenceChart"></canvas>
                 <script>
                     const labels_score_by_sequence = [
