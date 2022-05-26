@@ -115,20 +115,8 @@ def import_tournament():
     """Process the link"""
     if request.method == "POST":
         # Create db backup
-        # conn = sqlite3.connect("sqlite:///debaterating.db")
-
-        # Open() function
-        with io.open('/backups/backupdatabase_dump.sql', 'w') as p:
-
-            # iterdump() function
-            for line in conn.iterdump():
-
-                p.write('%s\n' % line)
-
-        # print(' Backup performed successfully!')
-        # print(' Data Saved as backupdatabase_dump.sql')
-
-        conn.close()
+        filename = datetime(now)
+        db.execute(f".backup backups/{filename}.db")
 
         # Clear the global variables
         global tournament
