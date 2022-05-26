@@ -19,8 +19,6 @@ INSERT INTO speakers (first_name, last_name) VALUES ("Александра", "Ш
 INSERT INTO speakers (first_name, last_name) VALUES ("Дарья", "Бубенова");
 INSERT INTO speakers (first_name, last_name) VALUES ("Александра", "Авакова");
 INSERT INTO speakers (first_name, last_name) VALUES ("Максим", "Карпачёв");
-INSERT INTO speakers (first_name, last_name) VALUES ("", "");
-INSERT INTO speakers (first_name, last_name) VALUES ("", "");
 -- ALTER TABLE speakers ADD internal_id INTEGER NOT NULL DEFAULT 0;
 -- DROP TABLE team_performances;
 -- DELETE FROM speakers;
