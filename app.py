@@ -1110,7 +1110,8 @@ def import_best_adjudicator():
             best_adjudicators.append({"speaker_id": request.form.get("2")})
         if request.form.get("3") != "no":
             best_adjudicators.append({"speaker_id": request.form.get("3")})
-        if len(best_adjudicator_id) > 0:
+        if len(best_adjudicators) > 0:
+            no_adjudicator = False
             for adjudicator in best_adjudicators:
                 # Prepare data to be added into the db
                 adjudicator["tournament_id"] = tournament["id"]
@@ -1122,9 +1123,12 @@ def import_best_adjudicator():
                 search_keys = ["tournament_id", "speaker_id", "type"]
                 update_keys = ["name"]
                 achivement["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+        else:
+            no_adjudicator = True
+    else:
+        no_adjudicator = True
 
-
-    return render_template("0-import-best-adjudicator.html", adjudicators=adjudicators)
+    return render_template("0-import-best-adjudicator-success.html", best_adjudicators=best_adjudicators, no_adjudicator=no_adjudicator)
 
 
 @app.route("/speakers", methods=["GET", "POST"])

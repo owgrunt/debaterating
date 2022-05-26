@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Лучший судья добавлен</h2>
+    <!-- <div>{{ adjudicators }}</div> -->
+    <div class="container">
+        <div class="section">
+            {% if no_adjudicator == False %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                Судья
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            {{best_adjudicators}}
+        </div>
+    </div>
+{% endblock %}
