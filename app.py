@@ -116,7 +116,8 @@ def import_tournament():
     if request.method == "POST":
         # Create db backup
         now = datetime.now()
-        db.execute(f".backup backups/{now}.db")
+        filename = ".backup backups/backup_" + now.strftime("%Y_%m_%d_%H_%M_%S") + ".db"
+        db.execute("")
 
         # Clear the global variables
         global tournament
