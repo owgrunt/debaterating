@@ -1102,7 +1102,19 @@ def import_best_adjudicator():
 
     global tournament
     tournament_id = tournament["id"]
-    
+    if request.method == "POST":
+        best_adjudicator_id = []
+        # Get data from form 1
+        if request.form.get("1") != "no":
+            best_adjudicator_id.append(request.form.get("1"))
+        if request.form.get("2") != "no":
+            best_adjudicator_id.append(request.form.get("2"))
+        if request.form.get("3") != "no":
+            best_adjudicator_id.append(request.form.get("3"))
+        if len(best_adjudicator_id) > 0:
+            for adjudicator_id in best_adjudicator_id:
+                achievement
+
 
     return render_template("0-import-best-adjudicator.html", adjudicators=adjudicators)
 
