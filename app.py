@@ -112,11 +112,6 @@ def start_import():
 def import_tournament():
     """Process the link"""
     if request.method == "POST":
-        # Create db backup
-        now = datetime.now()
-        filename = "backup backups/backup_" + now.strftime("%Y_%m_%d_%H_%M_%S") + ".db"
-        db.execute(f"?filename.db", ".")
-
         # Clear the global variables
         global tournament
         tournament = {}
