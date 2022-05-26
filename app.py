@@ -1079,7 +1079,7 @@ def calculate_speaker_scores():
         id = speaker["id"]
         db.execute(f"UPDATE speakers SET ranking_by_speaks = {ranking_by_speaks}, ranking_by_rating = {ranking_by_rating} WHERE id = {id}")
 
-    return render_template("0-import-best-adjudicator.html", speakers=speakers)
+    return render_template("0-import-speaker-scores.html", speakers=speakers)
 
 
 @app.route("/import/best-adjudicator", methods=["GET", "POST"])
@@ -1089,7 +1089,7 @@ def import_best_adjudicator():
 
     global adjudicators
 
-    return render_template("0-import-speaker-scores.html", adjudicators=adjudicators)
+    return render_template("0-import-best-adjudicator.html", adjudicators=adjudicators)
 
 
 @app.route("/speakers", methods=["GET", "POST"])
