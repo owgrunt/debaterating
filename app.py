@@ -24,7 +24,11 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///debaterating.db")
+# db = SQL("sqlite:///debaterating.db")
+uri = os.getenv("postgres://vtjprafbdihrwc:6dd171f946e5f79c948e084681861b2e7847c4eda3137c7000c3698d1a12a69d@ec2-3-248-121-12.eu-west-1.compute.amazonaws.com:5432/da1qjm24aa4rfr")
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://")
+db = SQL(uri)
 
 
 @app.after_request
@@ -39,7 +43,7 @@ def after_request(response):
 @app.route("/")
 #@login_required
 def index():
-    return redirect("/import")
+    return redirect("/tournaments")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -474,6 +478,7 @@ def add_speakers():
         # Record average speaker rating at the tournament
         tournament_id = tournament["id"]
         average_rating = db.execute(f"SELECT avg(rating) as av FROM speakers INNER JOIN tournament_participants ON speakers.id = tournament_participants.speaker_id WHERE tournament_participants.tournament_id = {tournament_id}")[0]["av"]
+        average_rating = round(average_rating)
         db.execute(f"UPDATE tournaments SET average_rating = {average_rating} WHERE id = {tournament_id}")
 
         return redirect("/import/speaker/success")
@@ -662,6 +667,9 @@ def import_debates():
     for round in rounds:
         # Get debates (pairings)
         debates = lookup_link(round["_links"]["pairing"])
+        if debates == None:
+            offending_link = round["_links"]["pairing"]
+            return apology(f"pairings not imported: {offending_link}", 400)
         for debate in debates:
             # Populate the entry before we import it into the db
             debate["internal_id"] = debate["id"]
@@ -724,7 +732,13 @@ def import_debates():
             # results = lookup_link(debate["url"] + "/ballots")[0]["result"]["sheets"][0]["teams"]
             # Get to the team result
             if results is None:
-                return apology(f"tabmaster needs to publish ballots", 400)
+                if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/2/pairings/20":
+                    if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/3/pairings/25":
+                        if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/5/pairings/58":
+                            if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/6/pairings/62":
+                                if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/6/pairings/61":
+                                    if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/7/pairings/63":
+                                        return apology(f"tabmaster needs to publish ballots", 400)
             elif not results == []:
                 results = results[0]["result"]["sheets"][0]["teams"]
                 # Check if this is a final
@@ -1007,15 +1021,16 @@ def calculate_speaker_scores():
         if speaker["role"] == "speaker":
             new_average = db.execute("SELECT avg(score) FROM speeches WHERE speaker_id = ?",
                                      speaker["id"])[0]["avg(score)"]
-            speaker["new_average"] = round(new_average, 2)
-            db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
-                       speaker["new_average"], speaker["id"])
+            if new_average != None:
+                speaker["new_average"] = round(new_average, 2)
+                db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
+                        speaker["new_average"], speaker["id"])
 
     # Get best speaker(s)
     global tournament
     tournament_id = tournament["id"]
     best_speakers = db.execute(open("sql_get_best_speaker.sql").read().replace("xxxxxx", str(tournament_id)))
-    if len(best_speakers) > 1:
+    if len(best_speakers) < 1:
         return apology("no best speaker found", 400)
     for speaker in best_speakers:
         achivement = {}
@@ -1228,6 +1243,11 @@ def speaker_tab():
         category = db.execute(f"SELECT name FROM speaker_categories WHERE id = {category_id} AND tournament_id = {id}")[0]
         category_text = " (" + category["name"] + ")"
 
+    # Give speakers 0 average score if they have no average
+    for speaker in speakers:
+        if speaker["average_score"] == None:
+            speaker["average_score"] = 0
+        speaker["average_score"] = round(speaker["average_score"], 2)
     # Sort speakers by speaker points
     speakers = sorted(speakers, key=itemgetter("average_score"), reverse=True)
     i = 1
