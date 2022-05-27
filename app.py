@@ -25,8 +25,8 @@ Session(app)
 
 # Configure CS50 Library to use SQLite database
 # db = SQL("sqlite:///debaterating.db")
-uri = os.getenv("postgresql://vtjprafbdihrwc:6dd171f946e5f79c948e084681861b2e7847c4eda3137c7000c3698d1a12a69d@ec2-3-248-121-12.eu-west-1.compute.amazonaws.com:5432/da1qjm24aa4rfr")
-db = SQL(uri)
+# uri = os.getenv("postgresql://vtjprafbdihrwc:6dd171f946e5f79c948e084681861b2e7847c4eda3137c7000c3698d1a12a69d@ec2-3-248-121-12.eu-west-1.compute.amazonaws.com:5432/da1qjm24aa4rfr")
+# db = SQL(uri)
 
 
 @app.after_request
