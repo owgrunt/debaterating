@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Apology
+    Дебаты - Импорт
 {% endblock %}
 
 {% block main %}
@@ -12,9 +12,54 @@
             <a class="btn btn-primary mt-2 mb-2 mx-1" href="/import/elo" role="button">Продолжить</a>
         </div>
         <div class="section">
-            {{ tournament }}
-            <br>
-            {{ debates }}
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Краткое название</th>
+                        <th>Название</th>
+                        <th>Этап</th>
+                        <th>Категория брейка</th>
+                        <th>Достижение</th>
+                        <th>Тема</th>
+                        <th>Инфослайд</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for round in rounds %}
+                        <tr>
+                            <td>
+                                {{ round["seq"] }}
+                            </td>
+                            <td>
+                                {{ round["short_name"] }}
+                            </td>
+                            <td>
+                                {{ round["name"] }}
+                            </td>
+                            <td>
+                                {% if round["stage"] == "E" %}
+                                    брейковый
+                                {% else %}
+                                    отборочный
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ round["break_category"] }}
+                            </td>
+                            <td>
+                                {{ round["achievement"] }}
+                            </td>
+                            <td>
+                                {{ round["motion"] }}
+                            </td>
+                            <td>
+                                {{ round["info_slide"] }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}

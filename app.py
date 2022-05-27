@@ -24,7 +24,11 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///debaterating.db")
+# db = SQL("sqlite:///debaterating.db")
+uri = os.getenv("postgres://vtjprafbdihrwc:6dd171f946e5f79c948e084681861b2e7847c4eda3137c7000c3698d1a12a69d@ec2-3-248-121-12.eu-west-1.compute.amazonaws.com:5432/da1qjm24aa4rfr")
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://")
+db = SQL(uri)
 
 
 @app.after_request
@@ -39,7 +43,7 @@ def after_request(response):
 @app.route("/")
 #@login_required
 def index():
-    return redirect("/import")
+    return redirect("/tournaments")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -97,6 +101,8 @@ adjudicator_name_format = ""
 swings = []
 teams = []
 rounds = []
+break_categories = []
+speaker_categories = []
 
 @app.route("/import", methods=["GET", "POST"])
 @login_required
@@ -161,10 +167,6 @@ def add_tournament():
     """Add the tournament"""
 
     if request.method == "POST":
-        # Ensure the name was submitted
-        if not request.form.get("name"):
-            return apology("must provide a tournament name", 400)
-
         # Update tournament name
         global tournament
         tournament["name"] = request.form.get("name")
@@ -173,36 +175,93 @@ def add_tournament():
         # Add date and type from form
         tournament["date"] = request.form.get("date")
         tournament["type"] = request.form.get("type")
+        if request.form.get("link"):
+            tournament["page"] = request.form.get("link")
 
-        # TODO change to use the add_entry()
-        # Add the tournament to the db
-        # Check that it is not in there already
-        candidates = db.execute("SELECT * FROM tournaments WHERE (internal_id = ? OR internal_id IS NULL) AND slug = ? AND domain = ?",
-                                tournament["internal_id"], tournament["slug"], tournament["domain"])
-        if len(candidates) == 1:
-            # Update tournament data
-            db.execute("UPDATE tournaments SET name = ?, short_name = ?, date = ?, type = ? WHERE (internal_id = ? OR internal_id IS NULL) AND slug = ? AND domain = ?",
-                       tournament["name"], tournament["short_name"], tournament["date"], tournament["type"], tournament["internal_id"], tournament["slug"], tournament["domain"])
-        elif len(candidates) == 0:
-            # Add a new tournament
-            db.execute("INSERT INTO tournaments (name, short_name, date, type, internal_id, slug, domain) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                       tournament["name"], tournament["short_name"], tournament["date"], tournament["type"], tournament["internal_id"], tournament["slug"], tournament["domain"])
-        else:
-            return apology("something went wrong", 400)
+        # Import data into the db
+        db_name = "tournaments"
+        entry = tournament
+        search_keys = ["slug", "domain"]
+        update_keys = ["name", "short_name", "date", "type"]
+        if "page" in tournament:
+            update_keys.append("page")
+        tournament["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
-        # Add the tournament db ID to the tournament dict
-        candidates = db.execute("SELECT * FROM tournaments WHERE name = ? AND (internal_id = ? OR internal_id IS NULL) AND slug = ? AND domain = ?",
-                                tournament["name"], tournament["internal_id"], tournament["slug"], tournament["domain"])
-        if len(candidates) == 1:
-            # Update the id
-            tournament["id"] = candidates[0]["id"]
-        else:
-            return apology("something went wrong", 400)
+        # Create organiser entries
+        conveners = []
+        for i in range(4):
+            if request.form.get(f"convener-{i}"):
+                conveners.append(request.form.get(f"convener-{i}"))
+
+        for convener in conveners:
+            # Add convener as tournament participant
+            db_name = "tournament_participants"
+            participant = {}
+            participant["tournament_id"] = tournament["id"]
+            participant["speaker_id"] = convener
+            participant["role"] = "convener"
+
+            entry = participant
+            search_keys = ["speaker_id", "tournament_id"]
+            update_keys = ["role"]
+            participant["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+
+        return redirect("/import/speaker/categories")
+
+    else:
+        return apology("something went wrong", 400)
+
+
+@app.route("/import/speaker/categories", methods=["GET", "POST"])
+@login_required
+def import_speaker_categories():
+    """Import speakers and get input on speaker name format"""
+
+    # Import speaker data
+    global tournament
+    domain = tournament["domain"]
+    slug = tournament["slug"]
+    global speaker_categories
+    speaker_categories = lookup_data(domain, slug, "speaker-categories")
+
+    # If there are no speaker categories, just proceed
+    if len(speaker_categories) > 0:
+        for category in speaker_categories:
+            category["internal_id"] = category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
+        return render_template("0-import-speaker-categories.html", speaker_categories=speaker_categories)
+    else:
+        return redirect("/import/speaker/format")
+
+
+@app.route("/import/speaker/categories/add", methods=["GET", "POST"])
+@login_required
+def import_speaker_categories_add():
+    """Add speaker categories to the db"""
+    global speaker_categories
+    global tournament
+
+    if request.method == "POST":
+        for category in speaker_categories:
+            # Get data from the form
+            if request.form.get(str(category["internal_id"])+"-name") == "other":
+                category["name"] = request.form.get(str(category["internal_id"])+"-name-other")
+            else:
+                category["name"] = request.form.get(str(category["internal_id"])+"-name")
+
+            category["achievement"] = request.form.get(str(category["internal_id"])+"-achievement")
+            category["tournament_id"] = tournament["id"]
+
+            # Import data into the db
+            db_name = "speaker_categories"
+            entry = category
+            search_keys = ["internal_id", "tournament_id"]
+            update_keys = ["name", "achievement"]
+            category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
         return redirect("/import/speaker/format")
 
     else:
-        return apology("something went wrong", 400)
+        return redirect("/import/speaker/format")
 
 
 @app.route("/import/speaker/format", methods=["GET", "POST"])
@@ -224,8 +283,14 @@ def import_speakers():
 
     if speakers != None:
         for speaker in speakers:
-            speaker["adjudicator"] = 0
-            speaker["ca"] = 0
+            speaker["role"] = "speaker"
+            if "categories" in speaker:
+                if len(speaker["categories"]) > 0:
+                    new_categories = []
+                    for category in speaker["categories"]:
+                        new_category = category.replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
+                        new_categories = new_categories + [new_category]
+                    speaker["categories"] = new_categories
             for team in teams:
                 for member in team["speakers"]:
                     if speaker["id"] == member["id"]:
@@ -261,11 +326,9 @@ def import_adjudicators():
     # Ensure the adjudicators are imported
     if adjudicators != None:
         for speaker in adjudicators:
-            speaker["adjudicator"] = 1
+            speaker["role"] = "adjudicator"
             if speaker["adj_core"] == True:
-                speaker["ca"] = 1
-            else:
-                speaker["ca"] = 0
+                speaker["role"] = "ca"
         count = len(adjudicators)
         return render_template("0-import-adjudicator-format.html", speakers=adjudicators, count=count, tournament=tournament)
     else:
@@ -358,6 +421,7 @@ def confirm_speakers():
 def add_speakers():
     """Add speakers to the database"""
     if request.method == "POST":
+        global tournament
         global speakers
         for speaker in speakers:
             # If speaker is in the db, connect general speaker id with tournament speaker id
@@ -383,16 +447,39 @@ def add_speakers():
             # Add speaker as tournament participant
             db_name = "tournament_participants"
             participant = {}
-            global tournament
             participant["tournament_id"] = tournament["id"]
             participant["speaker_id"] = speaker["id"]
-            participant["adjudicator"] = speaker["adjudicator"]
-            participant["ca"] = speaker["ca"]
+            participant["role"] = speaker["role"]
             participant["internal_name"] = speaker["name"]
             participant["speaker_internal_id"] = speaker["internal_id"]
-            search_keys = ["speaker_internal_id", "tournament_id", "adjudicator"]
-            update_keys = ["speaker_id", "internal_name"]
-            trash_variable = add_database_entry(db_name, participant, search_keys, update_keys)
+
+            entry = participant
+            search_keys = ["speaker_id", "speaker_internal_id", "tournament_id"]
+            update_keys = ["internal_name", "role"]
+            trash_variable = add_database_entry(db_name, entry, search_keys, update_keys)
+
+            # Add speaker categories
+            global speaker_categories
+            if "categories" in speaker:
+                for instance in speaker["categories"]:
+                    category = {}
+                    db_name = "speakers_in_categories"
+                    category["speaker_id"] = speaker["id"]
+                    category["tournament_id"] = tournament["id"]
+                    category["internal_id"] = instance
+                    for global_category in speaker_categories:
+                        if category["internal_id"] == global_category["internal_id"]:
+                            entry = category
+                            category["category_id"] = global_category["id"]
+                            search_keys = ["speaker_id", "tournament_id", "internal_id"]
+                            update_keys = ["category_id"]
+                            category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+
+        # Record average speaker rating at the tournament
+        tournament_id = tournament["id"]
+        average_rating = db.execute(f"SELECT avg(rating) as av FROM speakers INNER JOIN tournament_participants ON speakers.id = tournament_participants.speaker_id WHERE tournament_participants.tournament_id = {tournament_id}")[0]["av"]
+        average_rating = round(average_rating)
+        db.execute(f"UPDATE tournaments SET average_rating = {average_rating} WHERE id = {tournament_id}")
 
         return redirect("/import/speaker/success")
 
@@ -413,15 +500,7 @@ def speakers_success():
 def import_teams():
     """Get teams"""
 
-    # Clean teams just in case
     global teams
-    # teams = []
-
-    # # Import team data
-    # global tournament
-    # domain = tournament["domain"]
-    # slug = tournament["slug"]
-    # teams = lookup_data(domain, slug, "teams")
 
     # Ensure the teams are imported
     if teams == None:
@@ -508,20 +587,23 @@ def import_rounds():
         round["internal_id"] = round["id"]
         round["short_name"] = round["abbreviation"]
         if not round["break_category"]:
-            round["break_category"] = ""
+            round["break_category_internal_id"] = ""
         else:
-            round["break_category"] = lookup_link(round["break_category"])["name"]
+            # Connect the break category in the db
+            round["break_category_internal_id"] = round["break_category"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
         # Remove unnecessary vars
-        del round["id"], round["url"], round["completed"], round["draw_type"], round["draw_status"], round["silent"], round["motions_released"], round["starts_at"], round["weight"]
+        del round["id"], round["url"], round["completed"], round["draw_type"], round["draw_status"], round["silent"], round["motions_released"], round["starts_at"], round["weight"], round["break_category"]
 
-        # Import round data into the db
-        db_name = "rounds"
-        search_keys = ["internal_id", "tournament_id"]
-        update_keys = ["name", "short_name", "seq", "break_category", "stage", "motion", "info_slide"]
-        round["tournament_id"] = tournament["id"]
-        round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
+    # Get break categories
+    global break_categories
+    break_categories = lookup_data(domain, slug, "break-categories")
+    for break_category in break_categories:
+        break_category["internal_id"] = break_category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
 
-    return redirect("/import/debates")
+    if len(rounds) > 0:
+        return render_template("0-import-round-check.html", rounds=rounds, break_categories=break_categories)
+    else:
+        return apology("something went wrong", 400)
 
 
 @app.route("/import/debates", methods=["GET", "POST"])
@@ -529,6 +611,54 @@ def import_rounds():
 def import_debates():
     """Import debates"""
     global rounds
+    global break_categories
+
+    if request.method == "POST":
+        for break_category in break_categories:
+            # Get data from the form
+            if request.form.get(str(break_category["internal_id"])+"-break-category") == "other":
+                break_category["name"] = request.form.get(str(break_category["internal_id"])+"-break-category-other")
+            else:
+                break_category["name"] = request.form.get(str(break_category["internal_id"])+"-break-category")
+            if break_category["is_general"] == True:
+                break_category["general"] = 1
+            else:
+                break_category["general"] = 0
+
+            #return render_template("0-import-round-check.html", rounds=rounds)
+
+            # Import round data into the db
+            db_name = "break_categories"
+            search_keys = ["internal_id", "tournament_id"]
+            update_keys = ["name", "general"]
+            break_category["tournament_id"] = tournament["id"]
+            break_category["id"] = add_database_entry(db_name, break_category, search_keys, update_keys)
+
+        for round in rounds:
+            # Get data from the form
+            round["name"] = request.form.get(str(round["internal_id"])+"-name")
+            round["short_name"] = request.form.get(str(round["internal_id"])+"-short-name")
+            round["motion"] = request.form.get(str(round["internal_id"])+"-motion")
+            round["info_slide"] = request.form.get(str(round["internal_id"])+"-info-slide")
+            round["achievement"] = request.form.get(str(round["internal_id"])+"-achievement")
+            for break_category in break_categories:
+                if break_category["internal_id"] == round["break_category_internal_id"]:
+                    round["break_category"] = break_category["id"]
+
+            #return render_template("0-import-round-check.html", rounds=rounds)
+
+            # Import round data into the db
+            db_name = "rounds"
+            search_keys = ["internal_id", "tournament_id"]
+            update_keys = ["name", "short_name", "seq", "stage"]
+            if round["motion"] != None:
+                update_keys.append("motion")
+            if round["info_slide"] != None:
+                update_keys.append("info_slide")
+            if "break_category" in round:
+                update_keys.append("break_category")
+            round["tournament_id"] = tournament["id"]
+            round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
 
     # Prepare for link cleanup in the future
     domain = tournament["domain"]
@@ -537,6 +667,9 @@ def import_debates():
     for round in rounds:
         # Get debates (pairings)
         debates = lookup_link(round["_links"]["pairing"])
+        if debates == None:
+            offending_link = round["_links"]["pairing"]
+            return apology(f"pairings not imported: {offending_link}", 400)
         for debate in debates:
             # Populate the entry before we import it into the db
             debate["internal_id"] = debate["id"]
@@ -599,9 +732,25 @@ def import_debates():
             # results = lookup_link(debate["url"] + "/ballots")[0]["result"]["sheets"][0]["teams"]
             # Get to the team result
             if results is None:
-                return apology(f"tabmaster needs to publish ballots", 400)
+                if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/2/pairings/20":
+                    if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/3/pairings/25":
+                        if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/5/pairings/58":
+                            if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/6/pairings/62":
+                                if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/6/pairings/61":
+                                    if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/7/pairings/63":
+                                        return apology(f"tabmaster needs to publish ballots", 400)
             elif not results == []:
                 results = results[0]["result"]["sheets"][0]["teams"]
+                # Check if this is a final
+                if round["stage"] == "E":
+                    winners = 0
+                    for result in results:
+                        if result["win"] == True:
+                            winners = winners + 1
+                    if winners == 1:
+                        round["final"] = True
+                    else:
+                        round["final"] = False
                 for result in results:
                     # Prepare data for import
                     result["tournament_id"] = tournament["id"]
@@ -674,9 +823,10 @@ def import_debates():
                             # Import speech data into the db
                             db_name = "speeches"
                             entry = speech
-                            search_keys = ["debate_id", "tournament_id", "speaker_id"]
-                            update_keys = ["position", "score"]
+                            search_keys = ["debate_id", "tournament_id", "speaker_id", "position"]
+                            update_keys = ["score"]
                             result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+                    # For elimination rounds
                     else:
                         team_entry = db.execute("SELECT * FROM teams WHERE tournament_id = ? AND id = ?",
                                                    tournament["id"], result["team_id"])
@@ -688,7 +838,6 @@ def import_debates():
                             speech["tournament_id"] = tournament["id"]
                             speech["debate_id"] = debate["id"]
                             speech["speaker_id"] = team_speakers[i]
-                            # TODO delete speech["score"] = 0
                             # Assign position
                             if i == 0:
                                 if result["side"] == "og":
@@ -717,10 +866,32 @@ def import_debates():
                             # Import speech data into the db
                             db_name = "speeches"
                             entry = speech
-                            search_keys = ["debate_id", "tournament_id", "speaker_id"]
-                            # TODO delete update_keys = ["position", "score"]
+                            search_keys = ["debate_id", "tournament_id", "speaker_id", "position"]
                             update_keys = ["position"]
-                            result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+                            speech["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+
+                            # Add achievement to the database
+                            if round["stage"] == "E":
+                                # Use the speech dict because I'm lazy
+                                speech["type"] = "team"
+                                speech["name"] = round["achievement"]
+                                speech["break_category"] = round["break_category"]
+
+                                # Import achievement data into the db
+                                db_name = "achievements"
+                                entry = speech
+                                search_keys = ["tournament_id", "speaker_id"]
+                                update_keys = ["type", "name", "break_category", "debate_id"]
+                                speech["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+
+                                if round["final"] and result["win"]:
+                                    speech["name"] = "победитель"
+                                    # Import achievement data into the db
+                                    db_name = "achievements"
+                                    entry = speech
+                                    search_keys = ["tournament_id", "type", "speaker_id"]
+                                    update_keys = ["name", "break_category"]
+                                    speech["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
     return redirect("/import/debate/success")
 
@@ -833,6 +1004,9 @@ def calculate_elo():
 
         all_updated_ratings = all_updated_ratings + updated_ratings
 
+        # Apparently, zero rating adjustments don't get recorded for an unknown reason, but I'm too lazy to fix it the right way
+        db.execute(f"UPDATE speeches SET rating_change = 0 WHERE rating_change is NULL")
+
     updated_count = len(all_updated_ratings)
 
     return render_template("0-import-elo.html", all_updated_ratings=all_updated_ratings, updated_count=updated_count)
@@ -841,30 +1015,336 @@ def calculate_elo():
 @app.route("/import/speaker-scores", methods=["GET", "POST"])
 @login_required
 def calculate_speaker_scores():
-    """Calculate and update new average speaker scores"""
+    """Calculate new average speaker scores, record best speakers"""
     global speakers
     for speaker in speakers:
-        if speaker["adjudicator"] == 0:
+        if speaker["role"] == "speaker":
             new_average = db.execute("SELECT avg(score) FROM speeches WHERE speaker_id = ?",
                                      speaker["id"])[0]["avg(score)"]
-            speaker["new_average"] = round(new_average, 2)
-            db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
-                       speaker["new_average"], speaker["id"])
+            if new_average != None:
+                speaker["new_average"] = round(new_average, 2)
+                db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
+                        speaker["new_average"], speaker["id"])
+
+    # Get best speaker(s)
+    global tournament
+    tournament_id = tournament["id"]
+    best_speakers = db.execute(open("sql_get_best_speaker.sql").read().replace("xxxxxx", str(tournament_id)))
+    if len(best_speakers) < 1:
+        return apology("no best speaker found", 400)
+    for speaker in best_speakers:
+        achivement = {}
+        achivement["tournament_id"] = tournament["id"]
+        achivement["speaker_id"] = speaker["speaker_id"]
+        achivement["type"] = "speaker"
+        achivement["name"] = "лучший спикер"
+        # Import achievement data into the db
+        db_name = "achievements"
+        entry = achivement
+        search_keys = ["tournament_id", "speaker_id", "type"]
+        update_keys = ["name"]
+        achivement["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+
+    # Get best speakers for all of the categories
+    global speaker_categories
+    for category in speaker_categories:
+        best_speakers = db.execute(open("sql_get_best_speaker_in_category.sql").read().replace("xxxxxx", str(tournament_id)).replace("yyyyyy", str(category["id"])))
+        for speaker in best_speakers:
+            achivement = {}
+            achivement["tournament_id"] = tournament["id"]
+            achivement["speaker_id"] = speaker["speaker_id"]
+            achivement["type"] = "speaker"
+            achivement["name"] = category["achievement"]
+            achivement["speaker_category"] = category["id"]
+            # Import achievement data into the db
+            db_name = "achievements"
+            entry = achivement
+            search_keys = ["tournament_id", "speaker_id", "type", "speaker_category"]
+            update_keys = ["name"]
+            achivement["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+
+    # Set up the new global ranking by speaker scores
+    db_speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
+    i = 1
+    previous_score = 101
+    current_ranking = 0
+    for speaker in db_speakers:
+        if speaker["speaker_score"] < previous_score:
+            current_ranking = i
+            previous_score = speaker["speaker_score"]
+        speaker["ranking_by_speaks"] = current_ranking
+        i = i + 1
+
+    # Set up the new global ranking by rating
+    db_speakers = sorted(db_speakers, key=itemgetter("rating"), reverse=True)
+    i = 1
+    previous_score = 10000
+    current_ranking = 0
+    for speaker in db_speakers:
+        if speaker["rating"] < previous_score:
+            current_ranking = i
+            previous_score = speaker["rating"]
+        speaker["ranking_by_rating"] = current_ranking
+        i = i + 1
+
+    # Create a sql query
+    for speaker in db_speakers:
+        ranking_by_speaks = speaker["ranking_by_speaks"]
+        ranking_by_rating = speaker["ranking_by_rating"]
+        id = speaker["id"]
+        db.execute(f"UPDATE speakers SET ranking_by_speaks = {ranking_by_speaks}, ranking_by_rating = {ranking_by_rating} WHERE id = {id}")
 
     return render_template("0-import-speaker-scores.html", speakers=speakers)
 
 
-@app.route("/ranking/speaker-score", methods=["GET", "POST"])
-def ranking_speaker_score():
-    """Show speaker ranking by speaker scores"""
+@app.route("/import/best-adjudicator", methods=["GET", "POST"])
+@login_required
+def get_best_adjudicator():
+    """Get best adjudicator(s)"""
 
-    speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
+    global tournament
+    id = tournament["id"]
+    adjudicators = db.execute(f"SELECT tp.*, s.first_name, s.last_name FROM tournament_participants tp INNER JOIN speakers s ON tp.speaker_id = s.id WHERE tournament_id = ? AND role = ?",
+                              id, "adjudicator")
 
-    return render_template("0-ranking-speaker-score.html", speakers=speakers)
+    return render_template("0-import-best-adjudicator.html", adjudicators=adjudicators)
 
+
+@app.route("/import/best-adjudicator/success", methods=["GET", "POST"])
+@login_required
+def import_best_adjudicator():
+    """Record best adjudicator(s) in the db"""
+
+    global tournament
+    if request.method == "POST":
+        best_adjudicators = []
+        # Get data from form 1
+        if request.form.get("1") != "no":
+            best_adjudicators.append({"speaker_id": request.form.get("1")})
+        if request.form.get("2") != "no":
+            best_adjudicators.append({"speaker_id": request.form.get("2")})
+        if request.form.get("3") != "no":
+            best_adjudicators.append({"speaker_id": request.form.get("3")})
+        if len(best_adjudicators) > 0:
+            no_adjudicator = False
+            for adjudicator in best_adjudicators:
+                # Prepare data to be added into the db
+                adjudicator["tournament_id"] = tournament["id"]
+                adjudicator["type"] = "adjudicator"
+                adjudicator["name"] = "лучший судья"
+                # Import achievement data into the db
+                db_name = "achievements"
+                entry = adjudicator
+                search_keys = ["tournament_id", "speaker_id", "type"]
+                update_keys = ["name"]
+                adjudicator["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+                # Get name for confirmation
+                speaker_db = db.execute("SELECT first_name, last_name FROM speakers WHERE id = ?",
+                                                    adjudicator["speaker_id"])[0]
+                adjudicator["first_name"] = speaker_db["first_name"]
+                adjudicator["last_name"] = speaker_db["last_name"]
+        else:
+            no_adjudicator = True
+    else:
+        no_adjudicator = True
+
+    return render_template("0-import-best-adjudicator-success.html", best_adjudicators=best_adjudicators, no_adjudicator=no_adjudicator)
+
+
+@app.route("/speakers", methods=["GET", "POST"])
+def speaker_list():
+    """Show speaker ranking"""
+
+    speakers = db.execute("SELECT * FROM speakers ORDER BY speaker_score DESC")
+
+    return render_template("0-speakers.html", speakers=speakers)
+
+
+@app.route("/tournaments", methods=["GET", "POST"])
+def tournament_list():
+    """Show speaker ranking"""
+
+    tournaments = db.execute("SELECT * FROM tournaments ORDER BY date DESC")
+
+    return render_template("0-tournaments.html", tournaments=tournaments)
+
+
+@app.route("/tournament", methods=["GET", "POST"])
+def tournament():
+    """Show tournament profile"""
+
+    if not request.args.get("id"):
+            return apology("must provide tournament id", 400)
+
+    id = request.args.get("id")
+
+    tournament = db.execute(f"SELECT * FROM tournaments WHERE id = {id}")[0]
+
+    # Get speaker achievements
+    achievements = db.execute(f"SELECT a.*, bc.name AS break_category_name, sc.name AS speaker_category_name, s.last_name, s.first_name, s.id AS speaker_id FROM achievements a LEFT JOIN break_categories bc ON a.break_category = bc.id LEFT JOIN speaker_categories sc ON a.speaker_category = sc.id INNER JOIN speakers s on a.speaker_id = s.id WHERE a.tournament_id = {id}")
+    break_categories_len = len(db.execute(f"SELECT id FROM break_categories WHERE tournament_id = {id}"))
+    speaker_categories_len = len(db.execute(f"SELECT id FROM speaker_categories WHERE tournament_id = {id}"))
+    # Order achievements by importance
+    for achievement in achievements:
+        if achievement["type"] == "team":
+            if achievement["name"] == "победитель":
+                achievement["priority"] = achievement["break_category"]
+            elif achievement["name"] == "финалист":
+                achievement["priority"] = break_categories_len + speaker_categories_len + 2 + achievement["break_category"]
+            elif achievement["name"] == "полуфиналист":
+                achievement["priority"] = ( break_categories_len * 2 ) + speaker_categories_len + 2 + achievement["break_category"]
+            elif achievement["name"] == "четвертьфиналист":
+                achievement["priority"] = ( break_categories_len * 3 ) + speaker_categories_len + 2 + achievement["break_category"]
+            elif achievement["name"] == "октофиналист":
+                achievement["priority"] = ( break_categories_len * 4 ) + speaker_categories_len + 2 + achievement["break_category"]
+            else:
+                achievement["priority"] = ( break_categories_len * 5 ) + speaker_categories_len + 3
+        if achievement["type"] == "speaker":
+            if achievement["speaker_category"] == None:
+                achievement["priority"] = break_categories_len + 1
+            else:
+                achievement["priority"] = break_categories_len + achievement["speaker_category"] + 1
+        if achievement["type"] == "adjudicator":
+            achievement["priority"] = break_categories_len + speaker_categories_len + 2
+    achievements = sorted(achievements, key=itemgetter("priority"))
+
+    # Get rounds
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = {id}")
+
+    # Get participants to show judges and conveners
+    participants = db.execute(f"SELECT s.first_name, s.last_name, p.role, s.id FROM tournament_participants p INNER JOIN speakers s ON p.speaker_id = s.id WHERE tournament_id = {id}")
+
+    # Get speaker categories to make links to speaker tabs
+    speaker_categories = db.execute(f"SELECT id, name FROM speaker_categories WHERE tournament_id = {id}")
+
+    return render_template("0-tournament.html", tournament=tournament, achievements=achievements, rounds=rounds, participants=participants, speaker_categories=speaker_categories)
+
+
+@app.route("/speaker-tab", methods=["GET", "POST"])
+def speaker_tab():
+    """Show speaker tab for a tournament"""
+
+    if not request.args.get("id"):
+            return apology("must provide tournament id", 400)
+
+    id = request.args.get("id")
+
+    tournament = db.execute(f"SELECT * FROM tournaments WHERE id = {id}")[0]
+
+    if not request.args.get("category"):
+        # Get all tournament speakers
+        speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id WHERE tournament_id = {id} GROUP BY speaker_id")
+        # No category needed
+        category_text = ""
+    else:
+        # Get speakers in this category
+        category_id = request.args.get("category")
+        speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id INNER JOIN speakers_in_categories sic ON speeches.speaker_id = sic.speaker_id WHERE speeches.tournament_id = {id} AND sic.category_id = {category_id} GROUP BY speeches.speaker_id")
+        category = db.execute(f"SELECT name FROM speaker_categories WHERE id = {category_id} AND tournament_id = {id}")[0]
+        category_text = " (" + category["name"] + ")"
+
+    # Give speakers 0 average score if they have no average
+    for speaker in speakers:
+        if speaker["average_score"] == None:
+            speaker["average_score"] = 0
+        speaker["average_score"] = round(speaker["average_score"], 2)
+    # Sort speakers by speaker points
+    speakers = sorted(speakers, key=itemgetter("average_score"), reverse=True)
+    i = 1
+    previous_score = 101
+    current_ranking = 0
+    for speaker in speakers:
+        if speaker["average_score"] < previous_score:
+            current_ranking = i
+            previous_score = speaker["average_score"]
+        speaker["ranking_by_speaks"] = current_ranking
+        i = i + 1
+
+    return render_template("0-speaker-tab.html", tournament=tournament, speakers=speakers, category_text=category_text)
+
+
+@app.route("/team-tab", methods=["GET", "POST"])
+def team_tab():
+    """Show speaker tab for a tournament"""
+
+    if not request.args.get("id"):
+            return apology("must provide tournament id", 400)
+
+    id = request.args.get("id")
+
+    tournament = db.execute(f"SELECT * FROM tournaments WHERE id = {id}")[0]
+
+    if not request.args.get("category"):
+        # Get all tournament teams
+        teams = db.execute(open("sql_get_team_tab.sql").read().replace("xxxxxx", str(id)))
+        # No category needed
+        category_text = ""
+    else:
+        # Get teams in this category
+        category_id = request.args.get("category")
+        teams = db.execute(open("sql_get_team_tab_category.sql").read().replace("xxxxxx", str(id)).replace("yyyyyy", category_id))
+        category = db.execute(f"SELECT name FROM speaker_categories WHERE id = {category_id} AND tournament_id = {id}")[0]
+        category_text = " (" + category["name"] + ")"
+
+    # Sort speakers by speaker points
+    i = 1
+    previous_score = 101
+    current_ranking = 0
+    for team in teams:
+        if team["team_score"] < previous_score:
+            current_ranking = i
+            previous_score = team["team_score"]
+        team["ranking"] = current_ranking
+        i = i + 1
+
+    return render_template("0-team-tab.html", tournament=tournament, teams=teams, category_text=category_text)
+
+
+@app.route("/round", methods=["GET", "POST"])
+def round_debates():
+    """Show speaker tab for a tournament"""
+
+    if not request.args.get("id"):
+            return apology("must provide round id", 400)
+
+    round_id = request.args.get("id")
+
+    round = db.execute(f"SELECT r.*, t.short_name AS tournament_name FROM rounds r INNER JOIN tournaments t ON r.tournament_id = t.id WHERE r.id = {round_id}")[0]
+
+    debates = db.execute(f"SELECT * FROM debates WHERE round_id = {round_id}")
+    for debate in debates:
+        debate_id = debate["id"]
+        # Get speeches and sort by position
+        debate["speeches"] = db.execute(f"SELECT speaker_id, position, s.first_name, s.last_name, ss.score FROM speeches ss INNER JOIN speakers s ON ss.speaker_id = s.id WHERE debate_id = {debate_id}")
+        debate["speeches"] = sorted(debate["speeches"], key=itemgetter("position"))
+        # Get teams and sort by position
+        debate["team_performances"] = db.execute(f"SELECT * FROM team_performances WHERE debate_id = {debate_id}")
+        for team in debate["team_performances"]:
+            if team["side"] == "og":
+                team["position"] = 1
+            elif team["side"] == "oo":
+                team["position"] = 2
+            elif team["side"] == "cg":
+                team["position"] = 3
+            elif team["side"] == "co":
+                team["position"] = 4
+        debate["team_performances"] = sorted(debate["team_performances"], key=itemgetter("position"))
+        # Get adjudicators and sort by role
+        debate["adjudicators"] = db.execute(f"SELECT a.speaker_id, a.role, s.first_name, s.last_name FROM adjudications a INNER JOIN speakers s ON a.speaker_id = s.id WHERE debate_id = {debate_id}")
+        for adjudicator in debate["adjudicators"]:
+            if adjudicator["role"] == "chair":
+                adjudicator["position"] = 1
+            elif adjudicator["role"] == "panellist":
+                adjudicator["position"] = 2
+            else:
+                adjudicator["position"] = 3
+        debate["adjudicators"] = sorted(debate["adjudicators"], key=itemgetter("position"))
+    debates = sorted(debates, key=itemgetter("average_rating"), reverse=True)
+
+    return render_template("0-round.html", round=round, debates=debates)
 
 @app.route("/speaker", methods=["GET", "POST"])
-def speaker_profile():
+def speaker():
     """Show speaker profile"""
 
     if not request.args.get("id"):
@@ -961,7 +1441,16 @@ def speaker_profile():
     for ranking in rankings_by_round_seq:
         ranking["average_score"] = ranking["score"] / ranking["number"]
 
-    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq, round_seq=round_seq)
+    # Get the latest speaker achievements
+    achievements = db.execute(f"SELECT a.*, bc.name AS break_category_name, t.short_name AS tournament_name FROM achievements a LEFT JOIN break_categories bc ON a.break_category = bc.id INNER JOIN tournaments t ON a.tournament_id = t.id WHERE speaker_id = {id} ORDER BY id DESC LIMIT 5")
+
+    # Get the tournaments the speaker participated in
+    participations = db.execute("SELECT tp.*, t.name, t.short_name FROM tournament_participants tp INNER JOIN tournaments t ON tp.tournament_id = t.id WHERE speaker_id = ? AND tp.role = ? ORDER BY id DESC LIMIT 5",
+                                id, "speaker")
+    adjudications = db.execute("SELECT tp.*, t.name, t.short_name FROM tournament_participants tp INNER JOIN tournaments t ON tp.tournament_id = t.id WHERE speaker_id = ? AND tp.role != ? ORDER BY id DESC LIMIT 5",
+                                id, "speaker")
+
+    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq, round_seq=round_seq, participations=participations, achievements=achievements, adjudications=adjudications)
 
 
 @app.route("/register", methods=["GET", "POST"])

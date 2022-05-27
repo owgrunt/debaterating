@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Спикеры
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Рейтинг спикеров</h2>
+    <div class="container">
+        <div class="section" style="text-align: left">
+            <table id="speakers" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th># по ELO</th>
+                        <th># по спикерским</th>
+                        <th>Спикер</th>
+                        <th>ELO</th>
+                        <th>Средний спикерский</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for speaker in speakers %}
+                        <tr>
+                            <td>
+                                {{ speaker["ranking_by_rating"] }}
+                            </td>
+                            <td>
+                                {{ speaker["ranking_by_speaks"] }}
+                            </td>
+                            <td>
+                                <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</a>
+                            </td>
+                            <td>
+                                {{ speaker["rating"] }}
+                            </td>
+                            <td>
+                                {{ speaker["speaker_score"] }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <script>
+                $(document).ready(function () {
+                    $('#speakers').DataTable( {
+                        columnDefs: [
+                            { orderable: false, targets: 2 }
+                        ],
+                        order: [[3, 'desc']],
+                        language: {
+                            url: '//cdn.datatables.net/plug-ins/1.12.0/i18n/ru.json'
+                        }
+                    } );
+                });
+            </script>
+        </div>
+    </div>
+{% endblock %}

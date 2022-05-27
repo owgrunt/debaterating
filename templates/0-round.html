@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ round["name"] }} - {{ round["tournament_name"] }}
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">{{ round["tournament_name"] }} — {{ round["name"] }}</h2>
+    <!-- <div>{{ debates }}</div> -->
+    <div class="container">
+        <div class="row mt-3">
+            <table>
+                <thead>
+                    <tr>
+                        {% if round["stage"] == "E" %}
+                            {% set colspan = 2 %}
+                        {% else %}
+                            {% set colspan = 3 %}
+                        {% endif %}
+                        <th>
+                            Средний рейтинг
+                        </th>
+                        <th colspan="{{ colspan }}">
+                            Первое правительство
+                        </th>
+                        <th colspan="{{ colspan }}">
+                            Первая оппозиция
+                        </th>
+                        <th colspan="{{ colspan }}">
+                            Второе правительство
+                        </th>
+                        <th colspan="{{ colspan }}">
+                            Вторая оппозиция
+                        </th>
+                        <th>
+                            Судья
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for debate in debates %}
+                        <tr>
+                            <td>
+                                {{ debate["average_rating"] }}
+                            </th>
+                            {% for i in range(4) %}
+                                {% if i == 0 %}
+                                    {% set i1 = 0 %}
+                                    {% set i2 = 2 %}
+                                {% elif i == 1 %}
+                                    {% set i1 = 1 %}
+                                    {% set i2 = 3 %}
+                                {% elif i == 2 %}
+                                    {% set i1 = 4 %}
+                                    {% set i2 = 6 %}
+                                {% elif i == 3 %}
+                                    {% set i1 = 5 %}
+                                    {% set i2 = 7 %}
+                                {% endif %}
+                                <td>
+                                    <a href="/speaker?id={{ debate["speeches"][i1]["speaker_id"] }}">{{ debate["speeches"][i1]["first_name"] }} {{ debate["speeches"][i1]["last_name"] }}</a>
+                                    <br>
+                                    <a href="/speaker?id={{ debate["speeches"][i2]["speaker_id"] }}">{{ debate["speeches"][i2]["first_name"] }} {{ debate["speeches"][i2]["last_name"] }}</a>
+                                </td>
+                                {% if debate["speeches"][i1]["score"] != None %}
+                                    <td>
+                                        {{ debate["speeches"][i1]["score"] }}
+                                        <br>
+                                        {{ debate["speeches"][i2]["score"] }}
+                                    </td>
+                                {% endif %}
+                                <td>
+                                    <!-- {{ debate["team_performances"][i]["score"] }} -->
+                                    {% if debate["team_performances"][i]["score"] == 3 %}
+                                        <i class="text-success result-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"></polyline><polyline points="17 18 12 13 7 18"></polyline></svg></i>
+                                    {% elif debate["team_performances"][i]["score"] == 2 %}
+                                        <i class="text-info result-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg></i>
+                                    {% elif debate["team_performances"][i]["score"] == 1 %}
+                                        <i class="text-warning result-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg></i>
+                                    {% else %}
+                                        <i class="text-danger result-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-down"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg></i>
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                                <td>
+                                    {% for adjudicator in debate["adjudicators"] %}
+                                        <a href="/speaker?id={{ adjudicator["speaker_id"] }}">{{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}</a>
+                                        {% if adjudicator["role"] == "chair" %}
+                                            (c)
+                                        {% elif adjudicator["role"] == "panellist" %}
+                                            (p)
+                                        {% else %}
+                                            (t)
+                                        {% endif %}
+                                        <br>
+                                    {% endfor %}
+                                </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="section">
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/tournament?id={{ round["tournament_id"] }}" role="button">Назад</a>
+        </div>
+    </div>
+{% endblock %}

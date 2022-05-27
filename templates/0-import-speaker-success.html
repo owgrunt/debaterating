@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Apology
+    Спикеры - Импорт
 {% endblock %}
 
 {% block main %}
@@ -12,9 +12,62 @@
             <a class="btn btn-primary mt-2 mb-2 mx-1" href="/import/team" role="button">Продолжить</a>
         </div>
         <div class="section">
-            {{ tournament }}
-            <br>
-            {{ speakers }}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Внутреннее ID</th>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Роль</th>
+                        <th>Команда</th>
+                        <th>Категории</th>
+                        <th>Клуб</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for speaker in speakers %}
+                        <tr>
+                            <td>
+                                {{ speaker["id"] }}
+                            </td>
+                            <td>
+                                {{ speaker["internal_id"] }}
+                            </td>
+                            <td>
+                                {{ speaker["last_name"] }}
+                            </td>
+                            <td>
+                                {{ speaker["first_name"] }}
+                            </td>
+                            <td>
+                                {{ speaker["middle_name"] }}
+                            </td>
+                            <td>
+                                {% if speaker["role"] == "speaker" %}
+                                    спикер
+                                {% elif speaker["role"] == "adjudicator" %}
+                                    судья
+                                {% elif speaker["role"] == "ca" %}
+                                    ГС
+                                {% else %}
+                                    Нет
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ speaker["team_name"] }}
+                            </td>
+                            <td>
+                                {{ speaker["categories"] }}
+                            </td>
+                            <td>
+                                {{ speaker["society"] }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}

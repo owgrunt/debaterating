@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Apology
+    Турнир - Импорт
 {% endblock %}
 
 {% block main %}
@@ -9,31 +9,58 @@
     <div class="container">
         <div class="section">
             <form action="/import/tournament/add" method="post" class="row g-3">
-                <div class="col-md-8">
-                    <label for="name" class="form-label">Название</label>
-                    <input autocomplete="off" autofocus class="form-control mx-auto" id="name" name="name" value="{{ tournament["name"] }}" type="text" required>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="name" class="form-label">Название</label>
+                        <input autocomplete="off" autofocus class="form-control mx-auto" id="name" name="name" value="{{ tournament["name"] }}" type="text" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="short_name" class="form-label">Краткое название</label>
+                        <input autocomplete="off" autofocus class="form-control mx-auto" id="short_name" name="short_name" value="{{ tournament["short_name"] }}" type="text" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="link" class="form-label">Ссылка</label>
+                        <input autocomplete="off" autofocus class="form-control mx-auto" id="link" name="link" placeholder="t.me/tournament_page" type="text">
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <label for="short_name" class="form-label">Краткое название</label>
-                    <input autocomplete="off" autofocus class="form-control mx-auto" id="short_name" name="short_name" value="{{ tournament["short_name"] }}" type="text" required>
+                <div class="row mb-5">
+                    <div class="col-md-4">
+                        <label for="date" class="form-label">Дата окончания</label>
+                        <input autocomplete="off" autofocus class="form-control mx-auto" id="date" name="date" type="date" value="2022-01-01" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="type" class="form-label">Тип</label>
+                        <select class="form-select mx-auto" id="type" name="type" required>
+                            <option disabled>Тип турнира</option>
+                            <option value="open" selected>Открытый</option>
+                            <option value="proam">Джедайский</option>
+                            <option value="am">Новичковый</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">ID организаторов</label>
+                        <div class="row">
+                            <div class="col-3">
+                                <input autocomplete="off" autofocus class="form-control mx-auto" id="convener-1" name="convener-1" placeholder="1" type="number">
+                            </div>
+                            <div class="col-3">
+                                <input autocomplete="off" autofocus class="form-control mx-auto" id="convener-2" name="convener-2" placeholder="2" type="number">
+                            </div>
+                            <div class="col-3">
+                                <input autocomplete="off" autofocus class="form-control mx-auto" id="convener-3" name="convener-3" placeholder="3" type="number">
+                            </div>
+                            <div class="col-3">
+                                <input autocomplete="off" autofocus class="form-control mx-auto" id="convener-4" name="convener-4" placeholder="4" type="number">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label for="date" class="form-label">Дата окончания</label>
-                    <input autocomplete="off" autofocus class="form-control mx-auto" id="date" name="date" type="date" value="2022-01-01" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="type" class="form-label">Тип</label>
-                    <select class="form-select mx-auto" id="type" name="type" required>
-                        <option disabled>Тип турнира</option>
-                        <option value="open" selected>Открытый</option>
-                        <option value="proam">Джедайский</option>
-                        <option value="am">Новичковый</option>
-                    </select>
-                </div>
-                <div class="col-3"></div>
-                <div class="col-6">
-                    <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import" role="button">Назад</a>
-                    <button class="btn btn-primary" type="submit">Продолжить</button>
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-6">
+                        <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import" role="button">Назад</a>
+                        <button class="btn btn-primary" type="submit">Продолжить</button>
+                    </div>
                 </div>
             </form>
         </div>

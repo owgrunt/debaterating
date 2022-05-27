@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Турниры
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Турниры</h2>
+    <div class="container">
+        <div class="section" style="text-align: left">
+            <table id="tournaments" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Тип</th>
+                        <th>Дата</th>
+                        <th>Страница</th>
+                        <th>Средний ELO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tournament in tournaments %}
+                        <tr>
+                            <td>
+                                <a href="/tournament?id={{ tournament["id"] }}">{{ tournament["name"] }}</a>
+                            </td>
+                            <td>
+                                {{ tournament["type"] }}
+                            </td>
+                            <td>
+                                {{ tournament["date"] }}
+                            </td>
+                            <td>
+                                {% if tournament["page"] != None %}
+                                    <a href="{{ tournament["page"] }}">ссылка</a>
+                                {% else %}
+                                    нет
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ tournament["average_rating"] }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <script>
+                $(document).ready(function () {
+                    $('#tournaments').DataTable( {
+                        columnDefs: [
+                            { orderable: false, targets: 0 },
+                            { orderable: false, targets: 1 },
+                            { orderable: false, targets: 3 },
+                            { orderable: false, targets: 4 }
+                        ],
+                        order: [[2, 'desc']],
+                        language: {
+                            url: '//cdn.datatables.net/plug-ins/1.12.0/i18n/ru.json'
+                        }
+                    } );
+                });
+            </script>
+        </div>
+    </div>
+{% endblock %}

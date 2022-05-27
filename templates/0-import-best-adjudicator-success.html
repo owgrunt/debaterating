@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Лучший судья - Импорт
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Лучший судья</h2>
+    <!-- <div>{{ adjudicators }}</div> -->
+    <div class="container">
+        <div class="section">
+            {% if no_adjudicator == False %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                Судья
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for adjudicator in best_adjudicators %}
+                            <tr>
+                                <td>
+                                    {{ adjudicator["speaker_id"] }}
+                                </td>
+                                <td>
+                                    {{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                Лучший судья не был указан
+            {% endif %}
+        </div>
+        <div class="section">
+            <a class="btn btn-primary mt-2 mb-2 mx-1" href="/" role="button">Завершить</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Брейки и раунды - Импорт
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Брейки и раунды</h2>
+    <form action="/import/debates" method="post" class="needs-validation" novalidate>
+        <div class="container">
+            <div class="section">
+                <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
+            </div>
+            <div class="section">
+                <h3>Виды брейка</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 25%">#</th>
+                            <th style="width: 25%">Название в системе</th>
+                            <th colspan="2" style="width: 50%">Название</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for break_category in break_categories %}
+                            <tr>
+                                <td>
+                                    {{ break_category["internal_id"] }}
+                                </td>
+                                <td>
+                                    {{ break_category["name"] }}
+                                </td>
+                                <td>
+                                    <select class="form-select" id="{{ break_category["internal_id"] }}-break-category" name="{{ break_category["internal_id"] }}-break-category">
+                                        <option value="open" selected>открытый</option>
+                                        <option value="novice">новичковый</option>
+                                        <option value="other">другой</option>
+                                    </select>
+                                </td>
+                                <td style="display: none;" id="{{ break_category["internal_id"] }}-hide">
+                                    <input autocomplete="off" class="form-control mx-auto" id="{{ break_category["internal_id"] }}-break-category-other" name="{{ break_category["internal_id"] }}-break-category-other" value="{{ break_category["name"] }}" type="text">
+                                    <script>
+                                        document.getElementById('{{ break_category["internal_id"] }}-break-category').addEventListener('change', function () {
+                                            var style = this.value == "other" ? 'block' : 'none';
+                                            document.getElementById('{{ break_category["internal_id"] }}-hide').style.display = style;
+                                        });
+                                    </script>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="section">
+                <h3>Раунды</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 2%">#</th>
+                            <th style="width: 4%">Категория брейка</th>
+                            <th style="width: 4%">Краткое название</th>
+                            <th style="width: 15%">Название</th>
+                            <th style="width: 30%">Тема</th>
+                            <th style="width: 30%">Инфослайд</th>
+                            <th style="width: 15%">Достижение</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for round in rounds %}
+                            <tr>
+                                <td>
+                                    {{ round["seq"] }}
+                                </td>
+                                <td>
+                                    {{ round["break_category_internal_id"] }}
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-short-name" name="{{ round["internal_id"] }}-short-name" value="{{ round["short_name"] }}" type="text" required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-name" name="{{ round["internal_id"] }}-name" value="{{ round["name"] }}" type="text" required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-motion" name="{{ round["internal_id"] }}-motion" value="{{ round["motion"] }}" type="text">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-info-slide" name="{{ round["internal_id"] }}-info-slide" value="{{ round["info_slide"] }}" type="text">
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if round["stage"] == "E" %}
+                                        <div>
+                                            <select class="form-select" id="{{ round["internal_id"] }}-achievement" name="{{ round["internal_id"] }}-achievement" required>
+                                                <option selected disabled value="">Название достижения</option>
+                                                <option value="финалист">финалист</option>
+                                                <option value="полуфиналист">полуфиналист</option>
+                                                <option value="четвертьфиналист">четвертьфиналист</option>
+                                                <option value="октофиналист">октофиналист</option>
+                                            </select>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                          Please select a valid state.
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
+        <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit">Продолжить</button>
+        <script>
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            (() => {
+                'use strict'
+
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                const forms = document.querySelectorAll('.needs-validation')
+
+                // Loop over them and prevent submission
+                Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+                })
+            })()
+        </script>
+    </form>
+{% endblock %}

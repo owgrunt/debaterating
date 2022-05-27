@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Лучший судья - Импорт
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Выберите лучшего судью</h2>
+    <!-- <div>{{ adjudicators }}</div> -->
+    <div class="container">
+        <div class="section">
+            <form action="/import/best-adjudicator/success" method="post" class="row g-3">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="1" class="form-label">Лучший судья 1</label>
+                        <select class="form-select" id="1" name="1">
+                            <option selected value="no">нет</option>
+                            {% for adjudicator in adjudicators %}
+                                <option value="{{ adjudicator["speaker_id"] }}">{{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="2" class="form-label">Лучший судья 2</label>
+                        <select class="form-select" id="2" name="2">
+                            <option selected value="no">нет</option>
+                            {% for adjudicator in adjudicators %}
+                                <option value="{{ adjudicator["speaker_id"] }}">{{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="3" class="form-label">Лучший судья 3</label>
+                        <select class="form-select" id="3" name="3">
+                            <option selected value="no">нет</option>
+                            {% for adjudicator in adjudicators %}
+                                <option value="{{ adjudicator["speaker_id"] }}">{{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-6">
+                        <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker-scores" role="button">Назад</a>
+                        <button class="btn btn-primary" type="submit">Продолжить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

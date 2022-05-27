@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Категории спикеров - Импорт
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Категории спикеров</h2>
+    <form action="/import/speaker/categories/add" method="post" class="needs-validation" novalidate>
+        <div class="container">
+            <div class="section">
+                <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/tournament/edit" role="button">Назад</a>
+            </div>
+            <div class="section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 2%">#</th>
+                            <th style="width: 18%">Название в системе</th>
+                            <th style="width: 40%">Название достижения (лучший спикер)</th>
+                            <th colspan="2" style="width: 40%">Название</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in speaker_categories %}
+                            <tr>
+                                <td>
+                                    {{ category["internal_id"] }}
+                                </td>
+                                <td>
+                                    {{ category["name"] }}
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ category["internal_id"] }}-achievement" name="{{ category["internal_id"] }}-achievement" value="лучший спикер ({{ category["name"] }})" type="text" required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <select class="form-select" id="{{ category["internal_id"] }}-name" name="{{ category["internal_id"] }}-name">
+                                        <option value="novice">новички</option>
+                                        <option value="other">другой</option>
+                                    </select>
+                                </td>
+                                <td style="display: none;" id="{{ category["internal_id"] }}-hide">
+                                    <input autocomplete="off" class="form-control mx-auto" id="{{ category["internal_id"] }}-name-other" name="{{ category["internal_id"] }}-name-other" value="{{ category["name"] }}" type="text">
+                                    <script>
+                                        document.getElementById('{{ category["internal_id"] }}-name').addEventListener('change', function () {
+                                            var style = this.value == "other" ? 'block' : 'none';
+                                            document.getElementById('{{ category["internal_id"] }}-hide').style.display = style;
+                                        });
+                                    </script>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/tournament/edit" role="button">Назад</a>
+        <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit">Продолжить</button>
+        <script>
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            (() => {
+                'use strict'
+
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                const forms = document.querySelectorAll('.needs-validation')
+
+                // Loop over them and prevent submission
+                Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+                })
+            })()
+        </script>
+    </form>
+{% endblock %}

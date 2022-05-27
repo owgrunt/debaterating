@@ -12,6 +12,8 @@ CREATE TABLE speakers (
     society_id INTEGER,
     speaker_score NUMERIC NOT NULL DEFAULT 70,
     rating INTEGER NOT NULL DEFAULT 1500,
+    ranking_by_speaks INTEGER,
+    ranking_by_rating INTEGER,
     shown INTEGER NOT NULL DEFAULT 1,
     FOREIGN KEY (society_id) REFERENCES societies(id)
 );
@@ -32,9 +34,10 @@ CREATE TABLE tournaments (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name TEXT NOT NULL,
     short_name TEXT NOT NULL,
-    internal_id INTEGER,
     slug TEXT,
     domain TEXT,
+    average_rating INTEGER,
+    page TEXT,
     date TEXT NOT NULL,
     type TEXT NOT NULL
 );
@@ -64,14 +67,26 @@ CREATE TABLE rounds (
     name TEXT NOT NULL,
     short_name TEXT NOT NULL,
     seq INTEGER NOT NULL,
-    break_category TEXT,
+    break_category INTEGER,
     stage TEXT NOT NULL,
     motion TEXT,
     info_slide TEXT,
-    FOREIGN KEY(tournament_id) REFERENCES tournaments(id)
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
+    FOREIGN KEY(break_category) REFERENCES break_categories(id)
 );
 CREATE UNIQUE INDEX round_id ON rounds (id);
 CREATE INDEX round_by_tournament ON rounds (tournament_id);
+
+CREATE TABLE break_categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    tournament_id INTEGER NOT NULL,
+    internal_id INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    general INTEGER DEFAULT 1,
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id)
+);
+CREATE UNIQUE INDEX break_category_id ON break_categories (id);
+CREATE INDEX break_categories_by_tournament ON break_categories (tournament_id);
 
 CREATE TABLE debates (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -117,11 +132,10 @@ CREATE INDEX team_performance_debate ON team_performances (debate_id);
 CREATE TABLE tournament_participants (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     tournament_id INTEGER NOT NULL,
-    speaker_id INTEGER,
-    speaker_internal_id INTEGER NOT NULL,
-    internal_name TEXT NOT NULL,
-    adjudicator INTEGER NOT NULL DEFAULT 0,
-    ca INTEGER NOT NULL DEFAULT 0,
+    speaker_id INTEGER NOT NULL,
+    speaker_internal_id INTEGER,
+    internal_name TEXT,
+    role TEXT NOT NULL,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
     FOREIGN KEY(speaker_id) REFERENCES speakers(id)
 );
@@ -141,3 +155,46 @@ CREATE TABLE adjudications (
 CREATE UNIQUE INDEX adjudication_id ON adjudications (id);
 CREATE INDEX adjudication_by_adjudicator ON adjudications (speaker_id);
 CREATE INDEX adjudication_by_debate ON adjudications (debate_id);
+
+CREATE TABLE achievements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    tournament_id INTEGER NOT NULL,
+    speaker_id INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    name TEXT,
+    break_category INTEGER,
+    speaker_category INTEGER,
+    debate_id INTEGER,
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
+    FOREIGN KEY(speaker_id) REFERENCES speakers(id),
+    FOREIGN KEY(break_category) REFERENCES break_categories(id),
+    FOREIGN KEY(speaker_category) REFERENCES speaker_categories(id),
+    FOREIGN KEY(debate_id) REFERENCES debates(id)
+);
+CREATE UNIQUE INDEX achievement_id ON achievements (id);
+CREATE INDEX achievement_by_speaker ON achievements (speaker_id);
+CREATE INDEX achievement_by_tournament ON achievements (tournament_id);
+
+CREATE TABLE speaker_categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    tournament_id INTEGER NOT NULL,
+    internal_id INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    achievement TEXT NOT NULL,
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id)
+);
+CREATE UNIQUE INDEX speaker_category_id ON speaker_categories (id);
+CREATE INDEX speaker_categories_by_tournament ON speaker_categories (tournament_id);
+
+CREATE TABLE speakers_in_categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    tournament_id INTEGER NOT NULL,
+    internal_id INTEGER NOT NULL,
+    speaker_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
+    FOREIGN KEY(speaker_id) REFERENCES speakers(id),
+    FOREIGN KEY(category_id) REFERENCES speaker_categories(id)
+);
+CREATE INDEX speakers_in_categories_by_category_id ON speakers_in_categories (category_id);
+CREATE INDEX speakers_in_categories_by_tournament ON speakers_in_categories (tournament_id);
