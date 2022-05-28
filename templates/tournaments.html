@@ -47,7 +47,7 @@
                 </table>
                 <script>
                     $(document).ready(function () {
-                        $('#tournaments').DataTable( {
+                        var table = $('#tournaments').DataTable( {
                             columnDefs: [
                                 { orderable: false, targets: 0 },
                                 { orderable: false, targets: 1 },
@@ -60,20 +60,18 @@
                         } );
 
                         $('#tournaments').on('order.dt', function () {
-                            let order = table.order();
+                            let width = screen.width;
                             var column = table.column(0);
                             var column1 = table.column(1);
+                            column.visible(false);
+                            column1.visible(false);
 
-                            if (order[0][0] == 2) {
-                                // Toggle the visibility
-                                column.visible(true);
-                                column1.visible(false);
-                            }
-                            else {
+                            if (width < 1000) {
                                 // Toggle the visibility
                                 column.visible(false);
-                                column1.visible(true);
+                                column1.visible(false);
                             }
+
                         });
                     });
                 </script>
