@@ -9,7 +9,30 @@
     <div class="container">
         <!-- <div class="row">{{speaker_categories}}</div> -->
         <div class="row mt-3 mx-1">
-            <div class="col"></div>
+            <div class="col-sm-6 col-md-3">
+                Тип:
+                {% if tournament["type"] == "open" %}
+                    открытый
+                {% elif tournament["type"] == "am" %}
+                    новичковый
+                {% elif tournament["type"] == "proam" %}
+                    джедайский
+                {% endif %}
+            </div>
+            <div class="col-sm-6 col-md-3">
+                Дата: {{ tournament["date"] }}
+            </div>
+            <div class="col-sm-6 col-md-3">
+                Средний ELO: {{ tournament["average_rating"] }}
+            </div>
+            <div class="col-sm-6 col-md-3">
+                Сообщество:
+                {% if tournament["page"] != None %}
+                    <a href="{{ tournament["page"] }}">{{ tournament["page"] }}</a>
+                {% else %}
+                    нет
+                {% endif %}
+            </div>
         </div>
         <div class="row mt-3 mx-1">
             <table id="tournament">
@@ -26,9 +49,6 @@
                         </th>
                         <th>
                             Сообщество
-                        </th>
-                        <th>
-                            Организаторы
                         </th>
                     </tr>
                 </thead>
@@ -55,13 +75,6 @@
                             {% else %}
                                 нет
                             {% endif %}
-                        </td>
-                        <td>
-                            {% for participant in participants %}
-                                {% if participant["role"] == "convener" %}
-                                    <a href="/speaker?id={{ participant["id"] }}">{{ participant["first_name"] }} {{ participant["last_name"] }}<br>
-                                {% endif %}
-                            {% endfor %}
                         </td>
                     </tr>
                 </tbody>
