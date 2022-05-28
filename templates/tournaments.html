@@ -61,6 +61,24 @@
                                 url: '//cdn.datatables.net/plug-ins/1.12.0/i18n/ru.json'
                             }
                         } );
+
+                        $('#tournaments').on('order.dt', function () {
+                            let width = screen.width;
+                            var column = table.column(0);
+                            var column1 = table.column(1);
+
+                            if (order[0][0] == 3) {
+                                // Toggle the visibility
+                                column.visible(true);
+                                column1.visible(false);
+                            }
+                            else {
+                                // Toggle the visibility
+                                column.visible(false);
+                                column1.visible(true);
+                            }
+
+                        });
                     });
                 </script>
             </div>
