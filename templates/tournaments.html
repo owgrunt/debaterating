@@ -9,7 +9,7 @@
     <div class="container-md">
         <div class="row">
             <div class="col" style="text-align: left"></div>
-                <table id="tournaments" class="table table-striped dt-responsive" style="width:100%">
+                <table id="tournaments" class="table table-striped" style="width:100%">
                     <thead>
                         <tr>
                             <th>Название</th>
@@ -48,7 +48,19 @@
                 <script>
                     $(document).ready(function () {
                         $('#tournaments').DataTable( {
-                            responsive: true,
+                            responsive: {
+                                details: {
+                                    display: $.fn.dataTable.Responsive.display.modal( {
+                                        header: function ( row ) {
+                                            var data = row.data();
+                                            return 'Details for '+data[0]+' '+data[1];
+                                        }
+                                    } ),
+                                    renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                                        tableClass: 'table'
+                                    } )
+                                }
+                            },
                             columnDefs: [
                                 { responsivePriority: 1, orderable: false, targets: 0 },
                                 { responsivePriority: 4, orderable: false, targets: 1 },
