@@ -7,52 +7,54 @@
 {% block main %}
     <h2 class="mb-5 mt-2">Рейтинг спикеров</h2>
     <div class="container-md">
-        <div class="col" style="text-align: left">
-            <table id="speakers" class="table table-striped" style="width:100%">
-                <thead>
-                    <tr>
-                        <th style="width: 25%"># по ELO</th>
-                        <th style="width: 25%"># по спикерским</th>
-                        <th style="width: 25%">Спикер</th>
-                        <th style="width: 25%">ELO</th>
-                        <th style="width: 25%">Средний спикерский</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for speaker in speakers %}
+        <div class="row">
+            <div class="col" style="text-align: left">
+                <table id="speakers" class="table table-striped" style="width:100%">
+                    <thead>
                         <tr>
-                            <td>
-                                {{ speaker["ranking_by_rating"] }}
-                            </td>
-                            <td>
-                                {{ speaker["ranking_by_speaks"] }}
-                            </td>
-                            <td>
-                                <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</a>
-                            </td>
-                            <td>
-                                {{ speaker["rating"] }}
-                            </td>
-                            <td>
-                                {{ speaker["speaker_score"] }}
-                            </td>
+                            <th style="width: 25%"># ELO</th>
+                            <th style="width: 25%"># спикер</th>
+                            <th style="width: 25%">Спикер</th>
+                            <th style="width: 25%">ELO</th>
+                            <th style="width: 25%">Средний спикерский</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <script>
-                $(document).ready(function () {
-                    $('#speakers').DataTable( {
-                        columnDefs: [
-                            { orderable: false, targets: 2 }
-                        ],
-                        order: [[3, 'desc']],
-                        language: {
-                            url: '//cdn.datatables.net/plug-ins/1.12.0/i18n/ru.json'
-                        }
-                    } );
-                });
-            </script>
+                    </thead>
+                    <tbody>
+                        {% for speaker in speakers %}
+                            <tr>
+                                <td>
+                                    {{ speaker["ranking_by_rating"] }}
+                                </td>
+                                <td>
+                                    {{ speaker["ranking_by_speaks"] }}
+                                </td>
+                                <td>
+                                    <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</a>
+                                </td>
+                                <td>
+                                    {{ speaker["rating"] }}
+                                </td>
+                                <td>
+                                    {{ speaker["speaker_score"] }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <script>
+                    $(document).ready(function () {
+                        $('#speakers').DataTable( {
+                            columnDefs: [
+                                { orderable: false, targets: 2 }
+                            ],
+                            order: [[3, 'desc']],
+                            language: {
+                                url: '//cdn.datatables.net/plug-ins/1.12.0/i18n/ru.json'
+                            }
+                        } );
+                    });
+                </script>
+            </div>
         </div>
     </div>
 {% endblock %}
