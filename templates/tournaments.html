@@ -59,17 +59,21 @@
                             }
                         } );
 
-                        $('#tournaments').on('order.dt', function remove_columns() {
-                            let width = screen.width;
+                        $('#tournaments').on('order.dt', function () {
+                            let order = table.order();
                             var column = table.column(0);
                             var column1 = table.column(1);
 
-                            if (width < 1000) {
+                            if (order[0][0] == 2) {
                                 // Toggle the visibility
-                                column.visible(false);
+                                column.visible(true);
                                 column1.visible(false);
                             }
-
+                            else {
+                                // Toggle the visibility
+                                column.visible(false);
+                                column1.visible(true);
+                            }
                         });
                     });
                 </script>
