@@ -34,6 +34,6 @@ WHERE
 AND
     r.stage != 'E'
 GROUP BY
-    tp.team_id, t.speaker_one_id, s1.first_name, s2.first_name, s1.last_name, s2.last_name, s1.id, s2.id
+    tp.team_id, t.speaker_one_id, s1.first_name, s2.first_name, s1.last_name, s2.last_name, s1.id, s2.id, sp.rating_change
 ORDER BY
     team_score DESC;
