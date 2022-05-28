@@ -1,7 +1,7 @@
 SELECT
     tp.team_id,
     sum(tp.score) AS team_score,
-    sp.rating_change,
+    sp.rating_change AS rating_change,
     s1.first_name AS s1_first_name,
     s2.first_name AS s2_first_name,
     s1.last_name AS s1_last_name,
