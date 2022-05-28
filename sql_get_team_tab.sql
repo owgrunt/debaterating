@@ -10,17 +10,17 @@ SELECT
     s2.id AS s2_id
 FROM
     team_performances tp
-LEFT JOIN teams t ON
+INNER JOIN teams t ON
     tp.team_id = t.id
-LEFT JOIN debates d ON
+INNER JOIN debates d ON
     tp.debate_id = d.id
-LEFT JOIN rounds r ON
+INNER JOIN rounds r ON
     d.round_id = r.id
-LEFT JOIN speakers AS s1 ON
+INNER JOIN speakers AS s1 ON
     t.speaker_one_id = s1.id
-LEFT JOIN speakers AS s2 ON
+INNER JOIN speakers AS s2 ON
     t.speaker_two_id = s2.id
-LEFT JOIN speeches sp ON
+INNER JOIN speeches sp ON
     t.speaker_one_id = sp.speaker_id
 WHERE
     tp.tournament_id = xxxxxx

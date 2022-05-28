@@ -1287,7 +1287,7 @@ def team_tab():
         category = db.execute(f"SELECT name FROM speaker_categories WHERE id = {category_id} AND tournament_id = {id}")[0]
         category_text = " (" + category["name"] + ")"
 
-    # Sort speakers by speaker points
+    # Sort teams by team points
     i = 1
     previous_score = 101
     current_ranking = 0
