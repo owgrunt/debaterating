@@ -77,7 +77,7 @@ h1 {
 }
 
 /* Improving DataTable */
-div.dataTables_length, div.dataTables_filter {
+div.dataTables_length, div.dataTables_filter, div.dataTables_info {
     margin-bottom: 1rem;
 }
 
