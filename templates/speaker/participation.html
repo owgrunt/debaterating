@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ speaker["first_name"] }} {{ speaker["last_name"] }} - Турниры
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Турниры — <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</a></h2>
+    <div class="container">
+        <div class="col">
+            <table id="achievements" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="width: 30%">Турнир</th>
+                        <th style="width: 30%">Дата</th>
+                        <th style="width: 30%">Роль</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tournament in tournaments %}
+                        <tr>
+                            <td>
+                                <a href="/tournament?id={{ tournament["tournament_id"] }}">{{ tournament["tournament_name"] }}</a>
+                            </td>
+                            <td>
+                                {{ tournament["date"] }}
+                            </td>
+                            <td>
+                                {% if tournament["role"] == "speaker" %}
+                                    спикер
+                                {% elif tournament["role"] == "ca" %}
+                                    гс
+                                {% elif tournament["role"] == "adjudicator" %}
+                                    судья
+                                {% else %}
+                                    {{ tournament["role"] }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <script>
+                $(document).ready(function () {
+                    $('#achievements').DataTable( {
+                        order: [[1, 'desc']],
+                        language: {
+                            url: '//cdn.datatables.net/plug-ins/1.12.0/i18n/ru.json'
+                        }
+                    } );
+                });
+            </script>
+        </div>
+    </div>
+{% endblock %}

@@ -1,6 +1,7 @@
 # my files
 flask_session/
 .vscode
+pg_config/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

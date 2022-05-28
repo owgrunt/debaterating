@@ -109,7 +109,7 @@ speaker_categories = []
 @login_required
 def start_import():
     """Start importing the tournament"""
-    return render_template("0-import-tournament.html")
+    return render_template("import/tournament.html")
 
 
 @app.route("/import/tournament", methods=["GET", "POST"])
@@ -159,7 +159,7 @@ def import_tournament():
 @login_required
 def edit_tournament():
     """ Get tournament details """
-    return render_template("0-import-tournament-edit.html", tournament=tournament)
+    return render_template("import/tournament-edit.html", tournament=tournament)
 
 
 @app.route("/import/tournament/add", methods=["GET", "POST"])
@@ -229,7 +229,7 @@ def import_speaker_categories():
     if len(speaker_categories) > 0:
         for category in speaker_categories:
             category["internal_id"] = category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
-        return render_template("0-import-speaker-categories.html", speaker_categories=speaker_categories)
+        return render_template("import/speaker-categories.html", speaker_categories=speaker_categories)
     else:
         return redirect("/import/speaker/format")
 
@@ -297,7 +297,7 @@ def import_speakers():
                     if speaker["id"] == member["id"]:
                         speaker["team_name"] = team["short_name"]
         count = len(speakers)
-        return render_template("0-import-speaker-format.html", speakers=speakers, count=count, tournament=tournament)
+        return render_template("import/speaker-format.html", speakers=speakers, count=count, tournament=tournament)
     else:
         return apology("speakers not imported", 400)
 
@@ -331,7 +331,7 @@ def import_adjudicators():
             if speaker["adj_core"] == True:
                 speaker["role"] = "ca"
         count = len(adjudicators)
-        return render_template("0-import-adjudicator-format.html", speakers=adjudicators, count=count, tournament=tournament)
+        return render_template("import/adjudicator-format.html", speakers=adjudicators, count=count, tournament=tournament)
     else:
         return apology("adjudicators not imported", 400)
 
@@ -360,11 +360,11 @@ def check_speakers():
 
         speakers = speakers + adjudicators
 
-        return render_template("0-import-speaker-check.html", speakers=speakers)
+        return render_template("import/speaker-check.html", speakers=speakers)
 
     else:
         if len(speakers) > 0:
-            return render_template("0-import-speaker-check.html", speakers=speakers)
+            return render_template("import/speaker-check.html", speakers=speakers)
         else:
             return apology("something went wrong", 400)
 
@@ -414,7 +414,7 @@ def confirm_speakers():
         if len(candidates) > 0:
             speaker["candidates"] = candidates
 
-    return render_template("0-import-speaker-confirm.html", speakers=speakers)
+    return render_template("import/speaker-confirm.html", speakers=speakers)
 
 
 @app.route("/import/speaker/add", methods=["GET", "POST"])
@@ -493,7 +493,7 @@ def add_speakers():
 @login_required
 def speakers_success():
     """Show the speakers that have been added to the database"""
-    return render_template("0-import-speaker-success.html", speakers=speakers, tournament=tournament, teams=teams)
+    return render_template("import/speaker-success.html", speakers=speakers, tournament=tournament, teams=teams)
 
 
 @app.route("/import/team", methods=["GET", "POST"])
@@ -555,7 +555,7 @@ def import_teams():
 @login_required
 def teams_success():
     """Show the speakers that have been added to the database"""
-    return render_template("0-import-team-success.html", speakers=speakers, tournament=tournament, teams=teams, rounds=rounds)
+    return render_template("import/team-success.html", speakers=speakers, tournament=tournament, teams=teams, rounds=rounds)
 
 
 @app.route("/import/round", methods=["GET", "POST"])
@@ -602,7 +602,7 @@ def import_rounds():
         break_category["internal_id"] = break_category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
 
     if len(rounds) > 0:
-        return render_template("0-import-round-check.html", rounds=rounds, break_categories=break_categories)
+        return render_template("import/round-check.html", rounds=rounds, break_categories=break_categories)
     else:
         return apology("something went wrong", 400)
 
@@ -626,7 +626,7 @@ def import_debates():
             else:
                 break_category["general"] = 0
 
-            #return render_template("0-import-round-check.html", rounds=rounds)
+            #return render_template("import/round-check.html", rounds=rounds)
 
             # Import round data into the db
             db_name = "break_categories"
@@ -646,7 +646,7 @@ def import_debates():
                 if break_category["internal_id"] == round["break_category_internal_id"]:
                     round["break_category"] = break_category["id"]
 
-            #return render_template("0-import-round-check.html", rounds=rounds)
+            #return render_template("import/round-check.html", rounds=rounds)
 
             # Import round data into the db
             db_name = "rounds"
@@ -901,7 +901,7 @@ def import_debates():
 @login_required
 def debates_success():
     """Show the speakers that have been added to the database"""
-    return render_template("0-import-debate-success.html", speakers=speakers, tournament=tournament, teams=teams, rounds=rounds)
+    return render_template("import/debate-success.html", speakers=speakers, tournament=tournament, teams=teams, rounds=rounds)
 
 
 @app.route("/import/elo", methods=["GET", "POST"])
@@ -1010,7 +1010,7 @@ def calculate_elo():
 
     updated_count = len(all_updated_ratings)
 
-    return render_template("0-import-elo.html", all_updated_ratings=all_updated_ratings, updated_count=updated_count)
+    return render_template("import/elo.html", all_updated_ratings=all_updated_ratings, updated_count=updated_count)
 
 
 @app.route("/import/speaker-scores", methods=["GET", "POST"])
@@ -1095,7 +1095,7 @@ def calculate_speaker_scores():
         id = speaker["id"]
         db.execute(f"UPDATE speakers SET ranking_by_speaks = {ranking_by_speaks}, ranking_by_rating = {ranking_by_rating} WHERE id = {id}")
 
-    return render_template("0-import-speaker-scores.html", speakers=speakers)
+    return render_template("import/speaker-scores.html", speakers=speakers)
 
 
 @app.route("/import/best-adjudicator", methods=["GET", "POST"])
@@ -1108,7 +1108,7 @@ def get_best_adjudicator():
     adjudicators = db.execute(f"SELECT tp.*, s.first_name, s.last_name FROM tournament_participants tp INNER JOIN speakers s ON tp.speaker_id = s.id WHERE tournament_id = ? AND role = ?",
                               id, "adjudicator")
 
-    return render_template("0-import-best-adjudicator.html", adjudicators=adjudicators)
+    return render_template("import/best-adjudicator.html", adjudicators=adjudicators)
 
 
 @app.route("/import/best-adjudicator/success", methods=["GET", "POST"])
@@ -1149,7 +1149,7 @@ def import_best_adjudicator():
     else:
         no_adjudicator = True
 
-    return render_template("0-import-best-adjudicator-success.html", best_adjudicators=best_adjudicators, no_adjudicator=no_adjudicator)
+    return render_template("import/best-adjudicator-success.html", best_adjudicators=best_adjudicators, no_adjudicator=no_adjudicator)
 
 
 @app.route("/speakers", methods=["GET", "POST"])
@@ -1158,7 +1158,7 @@ def speaker_list():
 
     speakers = db.execute("SELECT * FROM speakers ORDER BY speaker_score DESC")
 
-    return render_template("0-speakers.html", speakers=speakers)
+    return render_template("speakers.html", speakers=speakers)
 
 
 @app.route("/tournaments", methods=["GET", "POST"])
@@ -1167,7 +1167,7 @@ def tournament_list():
 
     tournaments = db.execute("SELECT * FROM tournaments ORDER BY date DESC")
 
-    return render_template("0-tournaments.html", tournaments=tournaments)
+    return render_template("tournaments.html", tournaments=tournaments)
 
 
 @app.route("/tournament", methods=["GET", "POST"])
@@ -1218,7 +1218,7 @@ def tournament():
     # Get speaker categories to make links to speaker tabs
     speaker_categories = db.execute(f"SELECT id, name FROM speaker_categories WHERE tournament_id = {id}")
 
-    return render_template("0-tournament.html", tournament=tournament, achievements=achievements, rounds=rounds, participants=participants, speaker_categories=speaker_categories)
+    return render_template("tournament/tournament.html", tournament=tournament, achievements=achievements, rounds=rounds, participants=participants, speaker_categories=speaker_categories)
 
 
 @app.route("/speaker-tab", methods=["GET", "POST"])
@@ -1234,13 +1234,13 @@ def speaker_tab():
 
     if not request.args.get("category"):
         # Get all tournament speakers
-        speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id WHERE tournament_id = {id} GROUP BY speaker_id")
+        speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id WHERE tournament_id = {id} GROUP BY speaker_id, speakers.first_name, speakers.last_name")
         # No category needed
         category_text = ""
     else:
         # Get speakers in this category
         category_id = request.args.get("category")
-        speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id INNER JOIN speakers_in_categories sic ON speeches.speaker_id = sic.speaker_id WHERE speeches.tournament_id = {id} AND sic.category_id = {category_id} GROUP BY speeches.speaker_id")
+        speakers = db.execute(f"SELECT speeches.speaker_id, avg(speeches.score) AS average_score, sum(speeches.rating_change) AS rating, speakers.first_name, speakers.last_name FROM speeches INNER JOIN speakers ON speeches.speaker_id = speakers.id INNER JOIN speakers_in_categories sic ON speeches.speaker_id = sic.speaker_id WHERE speeches.tournament_id = {id} AND sic.category_id = {category_id} GROUP BY speeches.speaker_id, speakers.first_name, speakers.last_name")
         category = db.execute(f"SELECT name FROM speaker_categories WHERE id = {category_id} AND tournament_id = {id}")[0]
         category_text = " (" + category["name"] + ")"
 
@@ -1261,7 +1261,7 @@ def speaker_tab():
         speaker["ranking_by_speaks"] = current_ranking
         i = i + 1
 
-    return render_template("0-speaker-tab.html", tournament=tournament, speakers=speakers, category_text=category_text)
+    return render_template("tournament/speaker-tab.html", tournament=tournament, speakers=speakers, category_text=category_text)
 
 
 @app.route("/team-tab", methods=["GET", "POST"])
@@ -1298,7 +1298,7 @@ def team_tab():
         team["ranking"] = current_ranking
         i = i + 1
 
-    return render_template("0-team-tab.html", tournament=tournament, teams=teams, category_text=category_text)
+    return render_template("tournament/team-tab.html", tournament=tournament, teams=teams, category_text=category_text)
 
 
 @app.route("/round", methods=["GET", "POST"])
@@ -1342,7 +1342,7 @@ def round_debates():
         debate["adjudicators"] = sorted(debate["adjudicators"], key=itemgetter("position"))
     debates = sorted(debates, key=itemgetter("average_rating"), reverse=True)
 
-    return render_template("0-round.html", round=round, debates=debates)
+    return render_template("tournament/round.html", round=round, debates=debates)
 
 @app.route("/speaker", methods=["GET", "POST"])
 def speaker():
@@ -1431,16 +1431,17 @@ def speaker():
     rankings_by_round_seq = []
     for speech in speeches:
         if speech["seq"] not in round_seq:
-            round_seq = round_seq + [speech["seq"]]
+            round_seq.append(speech["seq"])
             round_instance = {"seq": speech["seq"], "score": speech["team_score"], "number": 1}
             rankings_by_round_seq = rankings_by_round_seq + [round_instance]
         else:
             for ranking in rankings_by_round_seq:
                 if ranking["seq"] == speech["seq"]:
-                    ranking["score"] = speech["team_score"]
+                    ranking["score"] = ranking["score"] + speech["team_score"]
                     ranking["number"] = ranking["number"] + 1
     for ranking in rankings_by_round_seq:
         ranking["average_score"] = ranking["score"] / ranking["number"]
+        ranking["average_score"] = round(ranking["average_score"], 2)
 
     # Get the latest speaker achievements
     achievements = db.execute(f"SELECT a.*, bc.name AS break_category_name, t.short_name AS tournament_name FROM achievements a LEFT JOIN break_categories bc ON a.break_category = bc.id INNER JOIN tournaments t ON a.tournament_id = t.id WHERE speaker_id = {id} ORDER BY id DESC LIMIT 5")
@@ -1451,58 +1452,97 @@ def speaker():
     adjudications = db.execute("SELECT tp.*, t.name, t.short_name FROM tournament_participants tp INNER JOIN tournaments t ON tp.tournament_id = t.id WHERE speaker_id = ? AND tp.role != ? ORDER BY id DESC LIMIT 5",
                                 id, "speaker")
 
-    return render_template("0-speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq, round_seq=round_seq, participations=participations, achievements=achievements, adjudications=adjudications)
+    return render_template("speaker/speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq, round_seq=round_seq, participations=participations, achievements=achievements, adjudications=adjudications)
 
 
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    """Register user"""
+@app.route("/achievements", methods=["GET", "POST"])
+def achievement_list():
+    """Show speaker achievements"""
+    if not request.args.get("id"):
+            return apology("must provide speaker id", 400)
 
-    # Forget any user_id
-    session.clear()
+    id = request.args.get("id")
 
-    # User reached route via POST (as by submitting a form via POST)
-    if request.method == "POST":
+    speaker = db.execute(f"SELECT * FROM speakers WHERE id = {id}")[0]
 
-        # Ensure username was submitted
-        if not request.form.get("username"):
-            return apology("must provide username", 400)
+    achievements = db.execute(f"SELECT a.*, bc.name AS break_category_name, t.name AS tournament_name, t.date AS date FROM achievements a LEFT JOIN break_categories bc ON a.break_category = bc.id LEFT JOIN tournaments t ON a.tournament_id = t.id WHERE speaker_id = {id} ORDER BY id DESC")
 
-        # Ensure password was submitted
-        elif not request.form.get("password"):
-            return apology("must provide password", 400)
+    return render_template("speaker/achievements.html", achievements=achievements, speaker=speaker)
 
-        # Ensure password confirmation is correct
-        elif request.form.get("password") != request.form.get("confirmation"):
-            return apology("password confirmation does not match password", 400)
 
-        # Query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
+@app.route("/participation", methods=["GET", "POST"])
+def tournaments_by_speaker():
+    """Show speaker tournaments"""
+    if not request.args.get("id"):
+            return apology("must provide speaker id", 400)
 
-        # Ensure username does not exist
-        if len(rows) > 0:
-            return apology("username already taken", 400)
+    id = request.args.get("id")
 
-        # Create username and password hash
-        username = request.form.get("username")
-        hash = generate_password_hash(request.form.get("password"))
+    speaker = db.execute(f"SELECT * FROM speakers WHERE id = {id}")[0]
 
-        # Add the user's entry into the database
-        db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", username, hash)
+    tournaments = db.execute(f"SELECT tp.*, t.name AS tournament_name, t.date AS date FROM tournament_participants tp LEFT JOIN tournaments t ON tp.tournament_id = t.id WHERE speaker_id = {id} ORDER BY id DESC")
 
-        # Query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = ?", username)
+    return render_template("speaker/participation.html", tournaments=tournaments, speaker=speaker)
 
-        # Ensure username does not exist
-        if len(rows) != 1:
-            return apology("unknown error", 403)
 
-        # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+# That is one way to not allow anyone to regirster =)
+# @app.route("/register", methods=["GET", "POST"])
+# def register():
+#     """Register user"""
 
-        # Redirect user to home page
-        return redirect("/")
+#     # Forget any user_id
+#     session.clear()
 
-    # User reached route via GET (as by clicking a link or via redirect)
-    else:
-        return render_template("register.html")
+#     # User reached route via POST (as by submitting a form via POST)
+#     if request.method == "POST":
+
+#         # Ensure username was submitted
+#         if not request.form.get("username"):
+#             return apology("must provide username", 400)
+
+#         # Ensure password was submitted
+#         elif not request.form.get("password"):
+#             return apology("must provide password", 400)
+
+#         # Ensure password confirmation is correct
+#         elif request.form.get("password") != request.form.get("confirmation"):
+#             return apology("password confirmation does not match password", 400)
+
+#         # Query database for username
+#         rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
+
+#         # Ensure username does not exist
+#         if len(rows) > 0:
+#             return apology("username already taken", 400)
+
+#         # Create username and password hash
+#         username = request.form.get("username")
+#         hash = generate_password_hash(request.form.get("password"))
+
+#         # Add the user's entry into the database
+#         db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", username, hash)
+
+#         # Query database for username
+#         rows = db.execute("SELECT * FROM users WHERE username = ?", username)
+
+#         # Ensure username does not exist
+#         if len(rows) != 1:
+#             return apology("unknown error", 403)
+
+#         # Remember which user has logged in
+#         session["user_id"] = rows[0]["id"]
+
+#         # Redirect user to home page
+#         return redirect("/")
+
+#     # User reached route via GET (as by clicking a link or via redirect)
+#     else:
+#         return render_template("register.html")
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return apology("Page not found", 404)
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return apology("Internal Server Error", 500)

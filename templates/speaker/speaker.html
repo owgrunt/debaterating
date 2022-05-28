@@ -7,9 +7,9 @@
 {% block main %}
     <h2 class="mb-5 mt-2">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</h2>
     <div class="container">
-        <!-- <div class="row">
-            {{ participations }}
-        </div> -->
+        <div class="row">
+            {{ rankings_by_round_seq }}
+        </div>
         <div class="row mt-3">
             <div class="col-6">
                 <h4>Спикер #{{ speaker["ranking_by_speaks"] }}, средний спикерский: {{ speaker["speaker_score"] }}</h4>
@@ -180,7 +180,7 @@
                         {% endfor %}
                         <tr>
                             <td>
-                                <a href="/participations?id={{ speaker["id"] }}">Все выступления</a>
+                                <a href="/participation?id={{ speaker["id"] }}">Все турниры</a>
                             </td>
                         </tr>
                     </tbody>
@@ -210,7 +210,7 @@
                         {% endfor %}
                         <tr>
                             <td colspan="2">
-                                <a href="/adjudications?id={{ speaker["id"] }}">Всё судейство</a>
+                                <a href="/participation?id={{ speaker["id"] }}">Все турниры</a>
                             </td>
                         </tr>
                     </tbody>

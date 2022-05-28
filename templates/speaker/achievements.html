@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ speaker["first_name"] }} {{ speaker["last_name"] }} - Достижения
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Достижения — <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</a></h2>
+    <div class="container">
+        <div class="col">
+            <table id="achievements" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="width: 30%">Турнир</th>
+                        <th style="width: 30%">Дата</th>
+                        <th style="width: 30%">Достижение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for achievement in achievements %}
+                        <tr>
+                            <td>
+                                <a href="/tournament?id={{ achievement["tournament_id"] }}">{{ achievement["tournament_name"] }}</a>
+                            </td>
+                            <td>
+                                {{ achievement["date"] }}
+                            </td>
+                            <td>
+                                {{ achievement["name"] }}
+                                {% if achievement["type"] == "team" and achievement["break_category_name"] != "open" %}
+                                    ({{ achievement["break_category_name"] }})
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <script>
+                $(document).ready(function () {
+                    $('#achievements').DataTable( {
+                        order: [[1, 'desc']],
+                        language: {
+                            url: '//cdn.datatables.net/plug-ins/1.12.0/i18n/ru.json'
+                        }
+                    } );
+                });
+            </script>
+        </div>
+    </div>
+{% endblock %}
