@@ -24,6 +24,7 @@ INNER JOIN
     (
         SELECT sum(rating_change) AS rating_change, speaker_id
         FROM speeches
+        WHERE tournament_id = xxxxxx
         GROUP BY speaker_id
     )
     sp ON
@@ -32,8 +33,6 @@ WHERE
     tp.tournament_id = xxxxxx
 AND
     r.stage != 'E'
-AND
-    sp.tournament_id = xxxxxx
 GROUP BY
     tp.team_id, t.speaker_one_id, s1.first_name, s2.first_name, s1.last_name, s2.last_name, s1.id, s2.id
 ORDER BY
