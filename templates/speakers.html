@@ -45,6 +45,8 @@
                     $(document).ready(function () {
                         $('#speakers').DataTable( {
                             columnDefs: [
+                                { orderable: false, targets: 0 },
+                                { orderable: false, targets: 1 },
                                 { orderable: false, targets: 2 }
                             ],
                             order: [[3, 'desc']],
