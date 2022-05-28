@@ -48,10 +48,13 @@
                 <script>
                     $(document).ready(function () {
                         $('#tournaments').DataTable( {
+                            responsive: true,
                             columnDefs: [
-                                { orderable: false, targets: 0 },
-                                { orderable: false, targets: 1 },
-                                { orderable: false, targets: 3 }
+                                { responsivePriority: 1, orderable: false, targets: 0 },
+                                { responsivePriority: 4, orderable: false, targets: 1 },
+                                { responsivePriority: 2, targets: 2 },
+                                { responsivePriority: 5, orderable: false, targets: 3 },
+                                { responsivePriority: 3, targets: 4 }
                             ],
                             order: [[2, 'desc']],
                             language: {
