@@ -61,10 +61,8 @@
 
                         $('#tournaments').on('order.dt', function () {
                             let width = screen.width;
-                            var column = table.column(0);
-                            var column1 = table.column(1);
-                            column.visible(false);
-                            column1.visible(false);
+                            var column = table.column(1);
+                            var column1 = table.column(3);
 
                             if (width < 1000) {
                                 // Toggle the visibility
