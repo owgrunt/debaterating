@@ -6,6 +6,9 @@
 
 {% block main %}
     <h2 class="mb-5 mt-2">{{ tournament["short_name"] }} — Командный тэб{{ category_text }}</h2>
+    <div>
+        {{ teams }}
+    </div>
     <div class="container" style="text-align: left">
         <div class="row mt-3">
             <table id="teams" class="table table-striped" style="width:100%">
