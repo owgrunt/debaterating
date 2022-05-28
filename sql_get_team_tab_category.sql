@@ -1,7 +1,7 @@
 SELECT
     tp.team_id,
     sum(tp.score) as team_score,
-    sum(sp.rating_change),
+    sp.rating_change AS rating_change,
     s1.first_name AS s1_first_name,
     s2.first_name AS s2_first_name,
     s1.last_name AS s1_last_name,
@@ -25,7 +25,14 @@ LEFT JOIN speakers_in_categories AS s1c ON
     t.speaker_one_id = s1c.speaker_id
 LEFT JOIN speakers_in_categories AS s2c ON
     t.speaker_two_id = s2c.speaker_id
-LEFT JOIN speeches sp ON
+INNER JOIN
+    (
+        SELECT sum(rating_change) AS rating_change, speaker_id
+        FROM speeches
+        WHERE tournament_id = xxxxxx
+        GROUP BY speaker_id
+    )
+    sp ON
     t.speaker_one_id = sp.speaker_id
 WHERE
     tp.tournament_id = xxxxxx
