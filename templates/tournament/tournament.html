@@ -25,15 +25,11 @@
             <div class="col">
                 <h4>Средний ELO: <small class="text-muted">{{ tournament["average_rating"] }}</small></h4>
             </div>
-            
-            <div class="col">
-                <h4>Сообщество:<small class="text-muted">
-
-                    <a href="{{ tournament["page"] }}">{{ tournament["page"] }}</a>
-                {% else %}
-                    нет
-                {% endif %}</small></h4>
-            </div>
+            {% if tournament["page"] != None %}
+                <div class="col">
+                    <h4><a href="{{ tournament["page"] }}">{{ tournament["page"] }}</a></h4>
+                </div>
+            {% endif %}
         </div>
         <div class="row mt-3">
             <div class="col-sm-12 col-md-4">
