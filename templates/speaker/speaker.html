@@ -145,7 +145,10 @@
                             </td>
                             <td>
                                 {% if achievement["type"] == "team" %}
-                                    {{ achievement["name"] }} ({{ achievement["break_category_name"] }})
+                                    {{ achievement["name"] }}
+                                    {% if achievement["break_category_name"] != "open" %}
+                                         ({{ achievement["break_category_name"] }})
+                                    {% endif %}
                                 {% else %}
                                     {{ achievement["name"] }}
                                 {% endif %}
