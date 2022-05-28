@@ -43,6 +43,6 @@ AND
 AND
     s2c.category_id = yyyyyy
 GROUP BY
-    tp.team_id, t.speaker_one_id, s1.first_name, s2.first_name, s1.last_name, s2.last_name, s1.id, s2.id, s1c.category_id
+    tp.team_id, t.speaker_one_id, s1.first_name, s2.first_name, s1.last_name, s2.last_name, s1.id, s2.id, s1c.category_id, sp.rating_change
 ORDER BY
     team_score DESC;
