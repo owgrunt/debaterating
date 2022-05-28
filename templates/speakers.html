@@ -60,11 +60,11 @@
 
                             // Get the column API object
                             // var column = table.column($(this).attr('data-column'));
-                            var column0 = table.column(0);
+                            var column = table.column(0);
                             var column1 = table.column(1);
 
                             // Toggle the visibility
-                            column0.visible(!column.visible());
+                            column.visible(!column.visible());
                             column1.visible(!column.visible());
                         });
                     });
