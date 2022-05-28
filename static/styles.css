@@ -76,6 +76,11 @@ h1 {
     text-align: center;
 }
 
+/* Improving DataTable */
+div.dataTables_length, div.dataTables_filter {
+    margin-bottom: 1rem;
+}
+
 /* Styles to negate DataTable styles */
 table.dataTable td,
 table.dataTable th {
