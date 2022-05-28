@@ -9,7 +9,7 @@
     <div class="container">
         <!-- <div class="row">{{speaker_categories}}</div> -->
         <div class="row mt-3 mx-1">
-            <table>
+            <table id="tournament">
                 <thead>
                     <tr>
                         <th>
@@ -64,6 +64,11 @@
                     </tr>
                 </tbody>
             </table>
+            <script>
+                $('#tournament').DataTable({
+                    responsive: true
+                });
+            </script>
         </div>
         <div class="row mt-3">
             <div class="col-sm-12 col-md-4">
