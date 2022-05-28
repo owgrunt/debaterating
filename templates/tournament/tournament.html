@@ -34,52 +34,6 @@
                 {% endif %}
             </div>
         </div>
-        <div class="row mt-3 mx-1">
-            <table id="tournament">
-                <thead>
-                    <tr>
-                        <th>
-                            Тип
-                        </th>
-                        <th>
-                            Дата
-                        </th>
-                        <th>
-                            Средний ELO
-                        </th>
-                        <th>
-                            Сообщество
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            {% if tournament["type"] == "open" %}
-                                    открытый
-                            {% elif tournament["type"] == "am" %}
-                                новичковый
-                            {% elif tournament["type"] == "proam" %}
-                                джедайский
-                            {% endif %}
-                        </td>
-                        <td>
-                            {{ tournament["date"] }}
-                        </td>
-                        <td>
-                            {{ tournament["average_rating"] }}
-                        </td>
-                        <td>
-                            {% if tournament["page"] != None %}
-                                <a href="{{ tournament["page"] }}">{{ tournament["page"] }}</a>
-                            {% else %}
-                                нет
-                            {% endif %}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
         <div class="row mt-3">
             <div class="col-sm-12 col-md-4">
                 <table id="achievements">
