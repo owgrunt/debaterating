@@ -12,8 +12,8 @@
                 <table id="speakers" class="table table-striped" style="width:100%">
                     <thead>
                         <tr>
-                            <th># ELO</th>
-                            <th># спик</th>
+                            <th>#</th>
+                            <th>#</th>
                             <th>Спикер</th>
                             <th>ELO</th>
                             <th>Спик</th>
@@ -62,8 +62,13 @@
 
                             if (order[0][0] == 3) {
                                 // Toggle the visibility
-                                column.visible(!column.visible());
-                                column1.visible(!column.visible());
+                                column.visible(true);
+                                column1.visible(false);
+                            }
+                            else {
+                                // Toggle the visibility
+                                column.visible(false);
+                                column1.visible(true);
                             }
 
                         });
