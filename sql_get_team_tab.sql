@@ -20,7 +20,13 @@ INNER JOIN speakers AS s1 ON
     t.speaker_one_id = s1.id
 INNER JOIN speakers AS s2 ON
     t.speaker_two_id = s2.id
-INNER JOIN speeches sp ON
+INNER JOIN
+    (
+        SELECT sum(rating_change) AS rating_change, speaker_id
+        FROM speeches
+        GROUP BY speaker_id
+    )
+    sp ON
     t.speaker_one_id = sp.speaker_id
 WHERE
     tp.tournament_id = xxxxxx
