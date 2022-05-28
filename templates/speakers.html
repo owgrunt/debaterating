@@ -56,10 +56,8 @@
                         } );
 
                         $('#speakers').on('order.dt', function () {
-                            // e.preventDefault();
-
-                            // Get the column API object
-                            // var column = table.column($(this).attr('data-column'));
+                            let order = table.order();
+                            
                             var column = table.column(0);
                             var column1 = table.column(1);
 
