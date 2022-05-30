@@ -1,5 +1,5 @@
 # Debaterating
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://youtu.be/bM-rgiAs-lE
 #### Description:
 The goal of this website is to calculate show a rating of Russian British Parliamentary debaters and record the results of Russian BP tournaments. BP debating is an intellectual sport where participants are given a motion related to an important societal, political, economic or philosophical question and are asked to deliver arguments in support of the side they have been allocated to.
 
