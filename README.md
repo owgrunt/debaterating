@@ -6,3 +6,5 @@ The goal of this website is to calculate show a rating of Russian British Parlia
 BP tournaments require complex tabulation to observe power pairing rules, prevent teams from being allocated to the same role multiple times and observe other rules. This is normally done with the use of Tabbycat software. My web application uses Tabbycat API to export multiple types of data from tournament instances (participants, participant categories, rounds, individual debates, team performances, individual speeches, etc.), with ~800 rows of data per tournament. This data is then validated by the admin and transformed into the format that my application uses, to be used in various views and dashboards. An ELO rating is calculated for all the tournament participants.
 
 The views that I've made include a speaker rating, a list of tournaments, a dashboard with various charts exploring speaker performance and a dashboard showing the result of the tournament and individual rounds. I use DataTables for table sorting, pagination and responsiveness, and Charts.js to show speaker performance charts.
+
+Here is the link to the website: https://debaterating.herokuapp.com
