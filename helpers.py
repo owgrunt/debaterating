@@ -8,7 +8,10 @@ from functools import wraps
 import re
 
 # Configure CS50 Library to use SQLite database
-# db = SQL("sqlite:///debaterating.db")
+uri = os.getenv("HEROKU_POSTGRESQL_BLUE_URL")
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://")
+db = SQL(uri)
 
 
 def apology(message, code=400):
@@ -118,7 +121,7 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
             else:
                 search_query = search_query + " AND " + key + " = ?"
             search_values.append(entry[key])
-        candidates = db.execute(f"SELECT COUNT(*) as number FROM {type} WHERE {search_query}",
+        candidates = db.execute(f"SELECT COUNT(*) as 'number' FROM {type} WHERE {search_query}",
                                 *search_values)
 
     # If there are duplicate entries, return error
