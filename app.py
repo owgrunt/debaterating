@@ -1151,6 +1151,7 @@ def import_best_adjudicator():
 
 
 @app.route("/speakers", methods=["GET", "POST"])
+@login_required
 def speaker_list():
     """Show speaker ranking"""
 
@@ -1160,6 +1161,7 @@ def speaker_list():
 
 
 @app.route("/tournaments", methods=["GET", "POST"])
+@login_required
 def tournament_list():
     """Show speaker ranking"""
 
@@ -1169,6 +1171,7 @@ def tournament_list():
 
 
 @app.route("/tournament", methods=["GET", "POST"])
+@login_required
 def tournament():
     """Show tournament profile"""
 
@@ -1220,6 +1223,7 @@ def tournament():
 
 
 @app.route("/speaker-tab", methods=["GET", "POST"])
+@login_required
 def speaker_tab():
     """Show speaker tab for a tournament"""
 
@@ -1263,6 +1267,7 @@ def speaker_tab():
 
 
 @app.route("/team-tab", methods=["GET", "POST"])
+@login_required
 def team_tab():
     """Show speaker tab for a tournament"""
 
@@ -1300,6 +1305,7 @@ def team_tab():
 
 
 @app.route("/round", methods=["GET", "POST"])
+@login_required
 def round_debates():
     """Show speaker tab for a tournament"""
 
@@ -1343,6 +1349,7 @@ def round_debates():
     return render_template("tournament/round.html", round=round, debates=debates)
 
 @app.route("/speaker", methods=["GET", "POST"])
+@login_required
 def speaker():
     """Show speaker profile"""
 
@@ -1454,6 +1461,7 @@ def speaker():
 
 
 @app.route("/achievements", methods=["GET", "POST"])
+@login_required
 def achievement_list():
     """Show speaker achievements"""
     if not request.args.get("id"):
@@ -1469,6 +1477,7 @@ def achievement_list():
 
 
 @app.route("/participation", methods=["GET", "POST"])
+@login_required
 def tournaments_by_speaker():
     """Show speaker tournaments"""
     if not request.args.get("id"):
