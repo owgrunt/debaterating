@@ -8,7 +8,7 @@ from functools import wraps
 import re
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///debaterating.db")
+# db = SQL("sqlite:///debaterating.db")
 
 
 def apology(message, code=400):
