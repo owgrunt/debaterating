@@ -25,7 +25,7 @@ Session(app)
 
 # Configure CS50 Library to use SQLite database
 # db = SQL("sqlite:///debaterating.db")
-uri = os.getenv("DATABASE_URL")
+uri = os.getenv("HEROKU_POSTGRESQL_BLUE_URL")
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://")
 db = SQL(uri)
