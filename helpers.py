@@ -143,7 +143,7 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
             update_values = update_values + search_values
             # Update the entry
             db.execute(f"UPDATE {type} SET {update_query} WHERE {search_query}",
-                    *update_values)
+                       *update_values)
 
     # If entry not in db, add the entry
     else:
