@@ -147,7 +147,7 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
 
     # If entry not in db, add the entry
     else:
-        # Prepare query and list to update the entry
+        # Prepare query and list to add the entry
         i = 0
         update_values = []
         if not forego_search:
