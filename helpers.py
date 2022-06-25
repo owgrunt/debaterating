@@ -124,26 +124,26 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
         candidates = db.execute(f"SELECT COUNT(*) FROM {type} WHERE {search_query}",
                                 *search_values)
 
-    # If there are duplicate entries, return error
-    if candidates[0]["count"] > 1:
-        return apology(f"more than one entry {entry} of type {type} exists for the tournament", 400)
+        # If there are duplicate entries, return error
+        if candidates[0]["count"] > 1:
+            return apology(f"more than one entry {entry} of type {type} exists for the tournament", 400)
 
-    # If entry is in the db, edit it
-    elif candidates[0]["count"] == 1:
-        # Prepare query and list to update the entry
-        i = 0
-        update_values = []
-        for key in update_keys:
-            if i == 0:
-                update_query = key + " = ?"
-                i = 1
-            else:
-                update_query = update_query + ", " + key + " = ?"
-            update_values.append(entry[key])
-        update_values = update_values + search_values
-        # Update the entry
-        db.execute(f"UPDATE {type} SET {update_query} WHERE {search_query}",
-                   *update_values)
+        # If entry is in the db, edit it
+        elif candidates[0]["count"] == 1:
+            # Prepare query and list to update the entry
+            i = 0
+            update_values = []
+            for key in update_keys:
+                if i == 0:
+                    update_query = key + " = ?"
+                    i = 1
+                else:
+                    update_query = update_query + ", " + key + " = ?"
+                update_values.append(entry[key])
+            update_values = update_values + search_values
+            # Update the entry
+            db.execute(f"UPDATE {type} SET {update_query} WHERE {search_query}",
+                    *update_values)
 
     # If entry not in db, add the entry
     else:
