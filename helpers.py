@@ -121,15 +121,15 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
             else:
                 search_query = search_query + " AND " + key + " = ?"
             search_values.append(entry[key])
-        candidates = db.execute(f"SELECT COUNT(*) as 'number' FROM {type} WHERE {search_query}",
+        candidates = db.execute(f"SELECT COUNT(*) FROM {type} WHERE {search_query}",
                                 *search_values)
 
     # If there are duplicate entries, return error
-    if candidates[0]["number"] > 1:
+    if candidates[0]["count"] > 1:
         return apology(f"more than one entry {entry} of type {type} exists for the tournament", 400)
 
     # If entry is in the db, edit it
-    elif candidates[0]["number"] == 1:
+    elif candidates[0]["count"] == 1:
         # Prepare query and list to update the entry
         i = 0
         update_values = []
