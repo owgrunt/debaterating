@@ -126,7 +126,7 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
         return apology(f"more than one entry {entry} of type {type} exists for the tournament", 400)
 
     # If entry is in the db, edit it
-    elif len(candidates) == 1:
+    elif len(candidates) == 1 and candidates[0]["id"] > 0:
         # Prepare query and list to update the entry
         i = 0
         update_values = []
