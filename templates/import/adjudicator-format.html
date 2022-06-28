@@ -4,16 +4,42 @@
     Формат имён судей - Импорт
 {% endblock %}
 
+{% block audio %}
+onload="autoNotify()"
+{% endblock %}
+
 {% block main %}
+    <audio id="notifypop"> <!--Source the audio file. -->
+        <source src="/static/notification_sound.ogg" type="audio/ogg">
+        <source src="/static/notification_sound.mpeg" type="audio/mpeg">
+    </audio>
+    <script>
+        var popupsound = document.getElementById("notifypop");
+
+        function autoNotify() {
+        popupsound.play(); //play the audio file
+        }
+    </script>
     <h2 class="mb-5 mt-2">В каком порядке указаны ФИО судей?</h2>
     <div class="container">
         <div class="section">
-            <form action="/import/debater/check" method="post">
-                <button class="btn btn-primary mt-4 mx-1 mb-4" type="submit" name="format" id="fio" value="fio">Фамилия Имя Отчество</button>
-                <button class="btn btn-primary mt-4 mx-1 mb-4" type="submit" name="format" id="iof" value="iof">Имя Отчество Фамилия</button>
-                <button class="btn btn-primary mt-4 mx-1 mb-4" type="submit" name="format" id="if" value="if">Имя Фамилия</button>
-                <button class="btn btn-primary mt-4 mx-1 mb-4" type="submit" name="format" id="fi" value="fi">Фамилия Имя</button>
-            </form>
+            <div class="d-flex justify-content-center">
+                <form action="/import/debater/check" method="post">
+                    <button class="btn btn-primary mt-4 mx-1 mb-4" type="submit" name="format" id="fio" value="fio">Фамилия Имя Отчество</button>
+                    <button class="btn btn-primary mt-4 mx-1 mb-4" type="submit" name="format" id="iof" value="iof">Имя Отчество Фамилия</button>
+                    <button class="btn btn-primary mt-4 mx-1 mb-4" type="submit" name="format" id="if" value="if">Имя Фамилия</button>
+                    <button class="btn btn-primary mt-4 mx-1 mb-4" type="submit" name="format" id="fi" value="fi">Фамилия Имя</button>
+                    <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <script>
+                        document.addEventListener('submit', function()
+                        {
+                            document.querySelector('#spinner').style.display = 'block';
+                        });
+                    </script>
+                </form>
+            </div>
         </div>
         <div class="section">
             <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker/format" role="button">Назад</a>

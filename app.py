@@ -16,7 +16,7 @@ from operator import itemgetter
 app = Flask(__name__)
 
 # Ensure templates are auto-reloaded
-# app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
@@ -1045,7 +1045,7 @@ def calculate_speaker_scores():
         achivement["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
     # Get best speakers for all of the categories
-    global speaker_categories
+    speaker_categories = db.execute(f"SELECT * FROM speaker_categories WHERE tournament_id = {tournament_id}")
     for category in speaker_categories:
         best_speakers = db.execute(open("sql_get_best_speaker_in_category.sql").read().replace("xxxxxx", str(tournament_id)).replace("yyyyyy", str(category["id"])))
         for speaker in best_speakers:

@@ -4,12 +4,39 @@
     Дебаты - Импорт
 {% endblock %}
 
+{% block audio %}
+onload="autoNotify()"
+{% endblock %}
+
 {% block main %}
+    <audio id="notifypop"> <!--Source the audio file. -->
+        <source src="/static/notification_sound.ogg" type="audio/ogg">
+        <source src="/static/notification_sound.mpeg" type="audio/mpeg">
+    </audio>
+    <script>
+        var popupsound = document.getElementById("notifypop");
+
+        function autoNotify() {
+        popupsound.play(); //play the audio file
+        }
+    </script>
     <h2 class="mb-5 mt-2">Дебаты импортированы</h2>
     <div class="container">
         <div class="section">
-            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
-            <a class="btn btn-primary mt-2 mb-2 mx-1" href="/import/elo" role="button">Продолжить</a>
+            <div class="d-flex justify-content-center">
+                <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
+                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/import/elo" role="button" id="next">Продолжить</a>
+                <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <script>
+                    document.querySelector('#next').addEventListener('click', function()
+                    {
+                        document.querySelector('#next').setAttribute("class", "btn btn-primary mt-2 mb-2 mx-1 disabled");
+                        document.querySelector('#spinner').style.display = 'block';
+                    });
+                </script>
+            </div>
         </div>
         <div class="section">
             <table>

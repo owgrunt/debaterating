@@ -13,7 +13,21 @@
                     <label for="name" class="form-label">Адрес турнира</label>
                     <input autocomplete="off" autofocus class="form-control mx-auto" id="address" name="address" placeholder="https://domain.herokuapp.com/tournament/" value="" type="url" required>
                 </div>
-                <button class="btn btn-primary" type="submit">Продолжить</button>
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-primary" type="submit" id="submit">
+                        Продолжить
+                    </button>
+                    <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <script>
+                        document.addEventListener('submit', function()
+                        {
+                            document.querySelector('#submit').setAttribute("disabled", "");
+                            document.querySelector('#spinner').style.display = 'block';
+                        });
+                    </script>
+                </div>
             </form>
         </div>
     </div>

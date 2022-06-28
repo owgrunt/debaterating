@@ -4,7 +4,22 @@
     Брейки и раунды - Импорт
 {% endblock %}
 
+{% block audio %}
+onload="autoNotify()"
+{% endblock %}
+
 {% block main %}
+    <audio id="notifypop"> <!--Source the audio file. -->
+        <source src="/static/notification_sound.ogg" type="audio/ogg">
+        <source src="/static/notification_sound.mpeg" type="audio/mpeg">
+    </audio>
+    <script>
+        var popupsound = document.getElementById("notifypop");
+
+        function autoNotify() {
+        popupsound.play(); //play the audio file
+        }
+    </script>
     <h2 class="mb-5 mt-2">Брейки и раунды</h2>
     <form action="/import/debates" method="post" class="needs-validation" novalidate>
         <div class="container">
@@ -116,13 +131,24 @@
                 </table>
             </div>
         </div>
-        <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
-        <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Продолжить
-        </button>
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
+            <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">
+                Продолжить
+            </button>
+            <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <script>
+                document.addEventListener('submit', function()
+                {
+                    document.querySelector('#submit').setAttribute("disabled", "");
+                    document.querySelector('#spinner').style.display = 'block';
+                });
+            </script>
+        </div>
         <script>
-            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            // JavaScript for disabling form submissions if there are invalid fields
             (() => {
                 'use strict'
 

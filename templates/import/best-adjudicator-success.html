@@ -4,7 +4,22 @@
     Лучший судья - Импорт
 {% endblock %}
 
+{% block audio %}
+onload="autoNotify()"
+{% endblock %}
+
 {% block main %}
+    <audio id="notifypop"> <!--Source the audio file. -->
+        <source src="/static/notification_sound.ogg" type="audio/ogg">
+        <source src="/static/notification_sound.mpeg" type="audio/mpeg">
+    </audio>
+    <script>
+        var popupsound = document.getElementById("notifypop");
+
+        function autoNotify() {
+        popupsound.play(); //play the audio file
+        }
+    </script>
     <h2 class="mb-5 mt-2">Лучший судья</h2>
     <!-- <div>{{ adjudicators }}</div> -->
     <div class="container">
