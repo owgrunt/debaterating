@@ -1019,7 +1019,7 @@ def calculate_speaker_scores():
     for speaker in speakers:
         if speaker["role"] == "speaker":
             new_average = db.execute("SELECT avg(score) FROM speeches WHERE speaker_id = ?",
-                                     speaker["id"])[0]["avg(score)"]
+                                     speaker["id"])[0]["avg"]
             if new_average != None:
                 speaker["new_average"] = round(new_average, 2)
                 db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
