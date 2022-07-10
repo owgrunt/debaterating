@@ -11,6 +11,7 @@ from helpers import apology, login_required, lookup_data, lookup_tournament, loo
 
 from datetime import datetime
 from operator import itemgetter
+import subprocess
 
 # Configure application
 app = Flask(__name__)
@@ -108,6 +109,18 @@ speaker_categories = []
 def start_import():
     """Start importing the tournament"""
     return render_template("import/tournament.html")
+
+@app.route("/import/backup", methods=["GET", "POST"])
+@login_required
+def start_backup():
+    if request.method == "POST":
+        subprocess.run(["bash pg:backups:capture HEROKU_POSTGRESQL_BLUE", "-l"])
+        # os.system("heroku pg:backups:capture HEROKU_POSTGRESQL_BLUE -a debaterating")
+        return render_template("import/backup.html")
+
+    else:
+        # Check if we want to backup the db
+        return render_template("import/backup.html")
 
 
 @app.route("/import/tournament", methods=["GET", "POST"])
