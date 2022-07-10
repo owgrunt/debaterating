@@ -559,7 +559,8 @@ def import_teams():
         del team["url"], team["reference"], team["short_reference"], team["code_name"], team["short_name"], team["long_name"], team["emoji"], team["speakers"]
         # Check that ids have been assigned
         if "speaker_one_id" not in team or "speaker_two_id" not in team:
-            return apology("speaker ids have not been assigned for one of the teams", 400)
+            internal_id = team["internal_id"]
+            return apology(f"speaker ids have not been assigned for team internal_id {internal_id}", 400)
 
         # Import team data into the db
         db_name = "teams"
