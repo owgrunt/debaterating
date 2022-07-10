@@ -94,6 +94,8 @@ def logout():
 
 
 tournament = {}
+slug = ""
+domain = ""
 speakers = []
 adjudicators = []
 speaker_name_format = ""
@@ -154,6 +156,7 @@ def import_tournament():
                 slashes = slashes + 1
 
         # Remove slashes from the slug
+        global slug
         slug = path.replace("/", "")
 
         # Get key tournament data
