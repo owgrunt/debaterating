@@ -198,7 +198,9 @@ def split_name_by_format(speaker, name_format):
     if "id" in speaker:
         speaker["internal_id"] = speaker["id"]
     # Remove unnecessary vars
-    del speaker["id"], speaker["_links"], speaker["url"]
+    del speaker["_links"], speaker["url"]
+    if "id" in speaker:
+        del speaker["id"]
     # Remove ё from speaker names
     speaker["name"] = speaker["name"].replace("ё", "е")
     if name_format == "fio" or name_format == "iof":
