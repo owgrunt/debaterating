@@ -1506,7 +1506,7 @@ def tournaments_by_speaker():
 
 
 # That is one way to not allow anyone to regirster =)
-@app.route("/register-ira", methods=["GET", "POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
 
