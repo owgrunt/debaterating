@@ -158,6 +158,8 @@ def import_tournament():
         # Remove slashes from the slug
         global slug
         slug = path.replace("/", "")
+        global domain
+        domain = netloc
 
         # Get key tournament data
         tournament = lookup_tournament(netloc, slug)
@@ -184,8 +186,8 @@ def add_tournament():
     if request.method == "POST":
         # Update tournament name
         global tournament
-        slug = tournament["slug"]
-        domain = tournament["domain"]
+        global slug
+        global domain
         tournament = {}
         tournament["slug"] = slug
         tournament["domain"] = domain
