@@ -241,8 +241,8 @@ def import_speaker_categories():
 
     # Import speaker data
     global tournament
-    domain = tournament["domain"]
-    slug = tournament["slug"]
+    global domain
+    global slug
     global speaker_categories
     speaker_categories = lookup_data(domain, slug, "speaker-categories")
 
