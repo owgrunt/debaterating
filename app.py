@@ -247,11 +247,10 @@ def import_speaker_categories():
     speaker_categories = lookup_data(domain, slug, "speaker-categories")
 
     # If there are no speaker categories, just proceed
-    if speaker_categories is not None:
-        if len(speaker_categories) > 0:
-            for category in speaker_categories:
-                category["internal_id"] = category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
-            return render_template("import/speaker-categories.html", speaker_categories=speaker_categories)
+    if len(speaker_categories) > 0:
+        for category in speaker_categories:
+            category["internal_id"] = category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
+        return render_template("import/speaker-categories.html", speaker_categories=speaker_categories)
     else:
         return redirect("/import/speaker/format")
 
