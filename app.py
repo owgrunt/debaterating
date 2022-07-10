@@ -539,10 +539,11 @@ def import_teams():
             team["swing"] = 0
         # Assign db id to speakers in the team
         for speaker in speakers:
-            if speaker["internal_id"] == team["speaker_one_internal_id"]:
-                team["speaker_one_id"] = speaker["id"]
-            if speaker["internal_id"] == team["speaker_two_internal_id"]:
-                team["speaker_two_id"] = speaker["id"]
+            if "internal_id" is in speaker:
+                if speaker["internal_id"] == team["speaker_one_internal_id"]:
+                    team["speaker_one_id"] = speaker["id"]
+                if speaker["internal_id"] == team["speaker_two_internal_id"]:
+                    team["speaker_two_id"] = speaker["id"]
         # Remove unnecessary vars
         del team["url"], team["reference"], team["short_reference"], team["code_name"], team["short_name"], team["long_name"], team["emoji"], team["speakers"]
         # Check that ids have been assigned
