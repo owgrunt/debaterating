@@ -1,8 +1,8 @@
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username TEXT NOT NULL,
-    hash TEXT NOT NULL);
-CREATE UNIQUE INDEX username ON users (username);
+-- CREATE TABLE users (
+--     id SERIAL PRIMARY KEY,
+--     username TEXT NOT NULL,
+--     hash TEXT NOT NULL);
+-- CREATE UNIQUE INDEX username ON users (username);
 CREATE TABLE societies (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
