@@ -198,7 +198,10 @@ def split_name_by_format(speaker, name_format):
     if "id" in speaker:
         speaker["internal_id"] = speaker["id"]
     # Remove unnecessary vars
-    del speaker["_links"], speaker["url"]
+    if "_links" in speaker:
+        del speaker["_links"]
+    if "url" in speaker:
+        del speaker["url"]
     if "id" in speaker:
         del speaker["id"]
     # Remove ё from speaker names
