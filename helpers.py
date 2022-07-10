@@ -43,12 +43,12 @@ def login_required(f):
     return decorated_function
 
 
-def lookup_tournament(domain, slug):
+def lookup_tournament(tournament_domain, slug):
 
     # Contact API
     try:
         # api_key = os.environ.get("API_KEY")
-        url = f"https://{domain}/api/v1/tournaments/{slug}"
+        url = f"https://{tournament_domain}/api/v1/tournaments/{slug}"
         response = requests.get(url)
         response.raise_for_status()
     except requests.RequestException:
@@ -62,19 +62,19 @@ def lookup_tournament(domain, slug):
             "short_name": tournament["short_name"],
             "internal_id": tournament["id"],
             "slug": tournament["slug"],
-            "domain": domain
+            "domain": tournament_domain
         }
     except (KeyError, TypeError, ValueError):
         return None
 
 
-def lookup_data(domain, slug, data_type):
+def lookup_data(tournament_domain, slug, data_type):
     """Look up quote for symbol."""
 
     # Contact API
     try:
         # api_key = os.environ.get("API_KEY")
-        url = f"https://{domain}/api/v1/tournaments/{slug}/{data_type}"
+        url = f"https://{tournament_domain}/api/v1/tournaments/{slug}/{data_type}"
         response = requests.get(url)
         response.raise_for_status()
     except requests.RequestException:
