@@ -392,12 +392,13 @@ def edit_speakers():
 
         # Assign first, middle and last name add internal id
         for speaker in speakers:
-            if request.form.get(str(speaker["internal_id"])+"-swing"):
-                # Change swing name to swing in Russian
-                speaker["last_name"] = "Свингов"
-                speaker["first_name"] = "Свинг"
-                speaker["middle_name"] = "Свингович"
-                swings.append(speaker["internal_id"])
+            if "internal_id" in speaker:
+                if request.form.get(str(speaker["internal_id"])+"-swing"):
+                    # Change swing name to swing in Russian
+                    speaker["last_name"] = "Свингов"
+                    speaker["first_name"] = "Свинг"
+                    speaker["middle_name"] = "Свингович"
+                    swings.append(speaker["internal_id"])
             else:
                 speaker["last_name"] = request.form.get(str(speaker["internal_id"])+"-last-name")
                 speaker["first_name"] = request.form.get(str(speaker["internal_id"])+"-first-name")
