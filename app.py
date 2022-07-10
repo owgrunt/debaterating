@@ -181,7 +181,11 @@ def add_tournament():
     if request.method == "POST":
         # Update tournament name
         global tournament
+        slug = tournament["slug"]
+        domain = tournament["domain"]
         tournament = {}
+        tournament["slug"] = slug
+        tournament["domain"] = domain
         tournament["name"] = request.form.get("name")
         tournament["short_name"] = request.form.get("short_name")
 
