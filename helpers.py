@@ -195,7 +195,8 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
 
 def split_name_by_format(speaker, name_format):
     # Change id to comp id
-    speaker["internal_id"] = speaker["id"]
+    if "id" is in speaker:
+        speaker["internal_id"] = speaker["id"]
     # Remove unnecessary vars
     del speaker["id"], speaker["_links"], speaker["url"]
     # Remove ё from speaker names
