@@ -339,8 +339,8 @@ def import_adjudicators():
 
     # Import adjudicator data
     global tournament
-    domain = tournament["domain"]
-    slug = tournament["slug"]
+    global domain
+    global slug
     global adjudicators
     adjudicators = lookup_data(domain, slug, "adjudicators")
 
@@ -591,8 +591,8 @@ def import_rounds():
 
     # Import round data
     global tournament
-    domain = tournament["domain"]
-    slug = tournament["slug"]
+    global domain
+    global slug
     rounds = lookup_data(domain, slug, "rounds")
 
     # Ensure the rounds are imported
