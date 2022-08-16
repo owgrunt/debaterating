@@ -569,10 +569,9 @@ def add_speakers():
             # Import debater data into the db
             db_name = "speakers"
             search_keys = ["id"]
+            update_keys = ["first_name", "last_name"]
             if speaker["middle_name"] != "":
-                update_keys = ["first_name", "last_name", "middle_name"]
-            else:
-                update_keys = ["first_name", "last_name"]
+                update_keys.append("middle_name")
             if forego_search:
                 speaker["id"] = add_database_entry(db_name, speaker, search_keys, update_keys, forego_search=True)
             else:
