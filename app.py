@@ -619,6 +619,8 @@ def add_speakers():
 @login_required
 def speakers_success():
     """Show the speakers that have been added to the database"""
+    speakers = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
+                              tournament["id"])
     return render_template("import/speaker-success.html", speakers=speakers, tournament=tournament, teams=teams)
 
 
