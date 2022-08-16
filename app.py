@@ -587,7 +587,8 @@ def add_speakers():
             add_database_entry(db_name, entry, search_keys, update_keys)
 
             # Add speaker categories
-            if "categories" in speaker:
+            if speaker["categories"] is not None:
+                
                 for instance in speaker["categories"]:
                     category = {}
                     db_name = "speakers_in_categories"
@@ -619,6 +620,12 @@ def add_speakers():
 @login_required
 def speakers_success():
     """Show the speakers that have been added to the database"""
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+    # Get speakers
     speakers = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
                               tournament["id"])
     return render_template("import/speaker-success.html", speakers=speakers, tournament=tournament, teams=teams)
