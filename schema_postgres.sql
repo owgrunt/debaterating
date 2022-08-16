@@ -126,7 +126,7 @@ CREATE TABLE tournament_participants (
     id SERIAL PRIMARY KEY,
     tournament_id INTEGER NOT NULL,
     speaker_id INTEGER,
-    speaker_internal_id INTEGER,
+    internal_id INTEGER,
     internal_name TEXT,
     first_name TEXT,
     last_name TEXT,
@@ -137,7 +137,7 @@ CREATE TABLE tournament_participants (
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(speaker_id) REFERENCES speakers(id)
 );
-CREATE INDEX tournament_participants_internal_id ON tournament_participants (speaker_internal_id);
+CREATE INDEX tournament_participants_internal_id ON tournament_participants (internal_id);
 CREATE INDEX tournament_participants_by_tournament ON tournament_participants (tournament_id);
 CREATE TABLE adjudications (
     id SERIAL PRIMARY KEY,

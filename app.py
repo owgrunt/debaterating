@@ -819,7 +819,7 @@ def import_debates():
                 adjudicator["internal_id"] = debate["adjudicators"]["chair"].replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
                 adjudicator_internal_id = adjudicator["internal_id"]
                 tournament_id = tournament["id"]
-                adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE speaker_internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
+                adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
                 adjudicator["role"] = "chair"
 
                 # Import adjudication instance into the db
@@ -832,7 +832,7 @@ def import_debates():
                     for panellist in debate["adjudicators"]["panellists"]:
                         adjudicator["internal_id"] = panellist.replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
                         adjudicator_internal_id = adjudicator["internal_id"]
-                        adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE speaker_internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
+                        adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
                         adjudicator["role"] = "panellist"
 
                         # Import adjudication instance into the db
@@ -845,7 +845,7 @@ def import_debates():
                     for trainee in debate["adjudicators"]["trainees"]:
                         adjudicator["internal_id"] = trainee.replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
                         adjudicator_internal_id = adjudicator["internal_id"]
-                        adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE speaker_internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
+                        adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
                         adjudicator["role"] = "trainee"
 
                         # Import adjudication instance into the db
@@ -921,7 +921,7 @@ def import_debates():
                             speech["speaker_internal_id"] = speech["speaker"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speakers/", "")
                             speaker_internal_id = speech["speaker_internal_id"]
                             tournament_id = tournament["id"]
-                            speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE speaker_internal_id = {speaker_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
+                            speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {speaker_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
                             # Assign position
                             if i == 0:
                                 if result["side"] == "og":
