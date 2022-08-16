@@ -465,7 +465,10 @@ def check_speakers():
 
         participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
                                   tournament["id"])
-        return render_template("import/speaker-check.html", speakers=participants)
+        if len(participants) > 0:
+            return render_template("import/speaker-check.html", speakers=participants)
+        else:
+            return apology("no participants", 400)
 
     else:
         participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
