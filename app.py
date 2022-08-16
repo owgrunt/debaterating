@@ -552,10 +552,12 @@ def add_speakers():
         return apology("more than one tournaments being imported", 400)
     tournament = tournament[0]
 
-    # Check if the speaker is already in the database
+    # Get tournament participants
     speakers = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
                               tournament["id"])
-
+    # Get speaker_categories
+    speaker_categories = db.execute(f"SELECT * FROM speaker_categories WHERE tournament_id = ?",
+                                    tournament["id"])
     if request.method == "POST":
         for speaker in speakers:
             # If speaker is in the db, connect general speaker id with tournament speaker id
@@ -585,8 +587,6 @@ def add_speakers():
             add_database_entry(db_name, entry, search_keys, update_keys)
 
             # Add speaker categories
-            speaker_categories = db.execute(f"SELECT * FROM speaker_categories WHERE tournament_id = ?",
-                                            tournament["id"])
             if "categories" in speaker:
                 for instance in speaker["categories"]:
                     category = {}
