@@ -35,8 +35,11 @@ CREATE TABLE tournaments (
     domain TEXT,
     average_rating INTEGER,
     page TEXT,
-    date TEXT NOT NULL,
-    type TEXT NOT NULL
+    date TEXT,
+    type TEXT,
+    speaker_name_format TEXT,
+    adjudicator_name_format TEXT,
+    import_complete INTEGER
 );
 CREATE UNIQUE INDEX tournament_id ON tournaments (id);
 CREATE TABLE teams (
@@ -47,7 +50,7 @@ CREATE TABLE teams (
     swing INTEGER NOT NULL DEFAULT 0,
     speaker_one_id INTEGER NOT NULL,
     speaker_two_id INTEGER NOT NULL,
-    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(speaker_one_id) REFERENCES speakers(id),
     FOREIGN KEY(speaker_two_id) REFERENCES speakers(id)
 );
@@ -61,7 +64,7 @@ CREATE TABLE break_categories (
     internal_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     general INTEGER DEFAULT 1,
-    FOREIGN KEY(tournament_id) REFERENCES tournaments(id)
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX break_category_id ON break_categories (id);
 CREATE INDEX break_categories_by_tournament ON break_categories (tournament_id);
@@ -76,8 +79,8 @@ CREATE TABLE rounds (
     stage TEXT NOT NULL,
     motion TEXT,
     info_slide TEXT,
-    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
-    FOREIGN KEY(break_category) REFERENCES break_categories(id)
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
+    FOREIGN KEY(break_category) REFERENCES break_categories(id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX round_id ON rounds (id);
 CREATE INDEX round_by_tournament ON rounds (tournament_id);
@@ -87,8 +90,8 @@ CREATE TABLE debates (
     round_id INTEGER NOT NULL,
     internal_id INTEGER NOT NULL,
     average_rating INTEGER,
-    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
-    FOREIGN KEY(round_id) REFERENCES rounds(id)
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
+    FOREIGN KEY(round_id) REFERENCES rounds(id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX debate_id ON debates (id);
 CREATE INDEX debate_by_round ON debates (round_id);
@@ -100,9 +103,9 @@ CREATE TABLE speeches (
     score INTEGER,
     rating_change INTEGER,
     position INTEGER NOT NULL,
-    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(speaker_id) REFERENCES speakers(id),
-    FOREIGN KEY(debate_id) REFERENCES debates(id)
+    FOREIGN KEY(debate_id) REFERENCES debates(id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX speech_id ON speeches (id);
 CREATE INDEX speech_by_speaker ON speeches (speaker_id);
@@ -114,19 +117,24 @@ CREATE TABLE team_performances (
     team_id INTEGER NOT NULL,
     side TEXT NOT NULL,
     score INTEGER NOT NULL,
-    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
-    FOREIGN KEY(debate_id) REFERENCES debates(id),
-    FOREIGN KEY(team_id) REFERENCES teams(id)
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
+    FOREIGN KEY(debate_id) REFERENCES debates(id) ON DELETE CASCADE,
+    FOREIGN KEY(team_id) REFERENCES teams(id) ON DELETE CASCADE
 );
 CREATE INDEX team_performance_debate ON team_performances (debate_id);
 CREATE TABLE tournament_participants (
     id SERIAL PRIMARY KEY,
     tournament_id INTEGER NOT NULL,
-    speaker_id INTEGER NOT NULL,
+    speaker_id INTEGER,
     speaker_internal_id INTEGER,
     internal_name TEXT,
+    first_name TEXT,
+    last_name TEXT,
+    middle_name TEXT,
     role TEXT NOT NULL,
-    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
+    team_name TEXT,
+    categories TEXT[],
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(speaker_id) REFERENCES speakers(id)
 );
 CREATE INDEX tournament_participants_internal_id ON tournament_participants (speaker_internal_id);
@@ -137,9 +145,9 @@ CREATE TABLE adjudications (
     speaker_id INTEGER NOT NULL,
     debate_id INTEGER NOT NULL,
     role TEXT NOT NULL,
-    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(speaker_id) REFERENCES speakers(id),
-    FOREIGN KEY(debate_id) REFERENCES debates(id)
+    FOREIGN KEY(debate_id) REFERENCES debates(id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX adjudication_id ON adjudications (id);
 CREATE INDEX adjudication_by_adjudicator ON adjudications (speaker_id);
@@ -150,7 +158,7 @@ CREATE TABLE speaker_categories (
     internal_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     achievement TEXT NOT NULL,
-    FOREIGN KEY(tournament_id) REFERENCES tournaments(id)
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX speaker_category_id ON speaker_categories (id);
 CREATE INDEX speaker_categories_by_tournament ON speaker_categories (tournament_id);
@@ -163,11 +171,11 @@ CREATE TABLE achievements (
     break_category INTEGER,
     speaker_category INTEGER,
     debate_id INTEGER,
-    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(speaker_id) REFERENCES speakers(id),
-    FOREIGN KEY(break_category) REFERENCES break_categories(id),
-    FOREIGN KEY(speaker_category) REFERENCES speaker_categories(id),
-    FOREIGN KEY(debate_id) REFERENCES debates(id)
+    FOREIGN KEY(break_category) REFERENCES break_categories(id) ON DELETE CASCADE,
+    FOREIGN KEY(speaker_category) REFERENCES speaker_categories(id) ON DELETE CASCADE,
+    FOREIGN KEY(debate_id) REFERENCES debates(id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX achievement_id ON achievements (id);
 CREATE INDEX achievement_by_speaker ON achievements (speaker_id);
@@ -178,9 +186,9 @@ CREATE TABLE speakers_in_categories (
     internal_id INTEGER NOT NULL,
     speaker_id INTEGER NOT NULL,
     category_id INTEGER NOT NULL,
-    FOREIGN KEY(tournament_id) REFERENCES tournaments(id),
+    FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(speaker_id) REFERENCES speakers(id),
-    FOREIGN KEY(category_id) REFERENCES speaker_categories(id)
+    FOREIGN KEY(category_id) REFERENCES speaker_categories(id) ON DELETE CASCADE
 );
 CREATE INDEX speakers_in_categories_by_category_id ON speakers_in_categories (category_id);
 CREATE INDEX speakers_in_categories_by_tournament ON speakers_in_categories (tournament_id);

@@ -148,17 +148,11 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
     # If entry not in db, add the entry
     else:
         # Prepare query and list to add the entry
-        i = 0
-        update_values = []
         if not forego_search:
             update_keys = update_keys + search_keys
-        for key in update_keys:
-            if i == 0:
-                update_query = key
-                i = 1
-            else:
-                update_query = update_query + ", " + key
-            update_values.append(entry[key])
+
+        update_query = get_update_query(update_keys)
+        update_values = get_update_values(update_keys, entry)
 
         add_questions = "?"
         i = 0
@@ -192,22 +186,33 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
     return database_record[0]["id"]
 
 
+def get_update_query(update_keys):
+    i = 0
+    for key in update_keys:
+        if i == 0:
+            update_query = key
+            i = 1
+        else:
+            update_query = update_query + ", " + key
+    return update_query
+
+
+def get_update_values(update_keys, entry):
+    update_values = []
+    for key in update_keys:
+        if isinstance(entry[key], list):
+            update_text = f"{{" + ",".join(entry[key]) + f"}}"
+            update_values.append(update_text)
+        else:
+            update_values.append(entry[key])
+    return update_values
+
 
 def split_name_by_format(speaker, name_format):
-    # Change id to comp id
-    if "id" in speaker:
-        speaker["internal_id"] = speaker["id"]
-    # Remove unnecessary vars
-    if "_links" in speaker:
-        del speaker["_links"]
-    if "url" in speaker:
-        del speaker["url"]
-    if "id" in speaker:
-        del speaker["id"]
     # Remove ё from speaker names
-    speaker["name"] = speaker["name"].replace("ё", "е")
+    speaker["internal_name"] = speaker["internal_name"].replace("ё", "е")
     if name_format == "fio" or name_format == "iof":
-        split = speaker["name"].split(" ", 2)
+        split = speaker["internal_name"].split(" ", 2)
         if len(split) > 1:
             if name_format == "fio":
                 speaker["last_name"] = split[0]
@@ -222,7 +227,7 @@ def split_name_by_format(speaker, name_format):
                 speaker["first_name"] = split[0]
                 speaker["middle_name"] = ""
     else:
-        split = speaker["name"].split(" ", 1)
+        split = speaker["internal_name"].split(" ", 1)
         if len(split) > 1:
             if name_format == "fi":
                 speaker["last_name"] = split[0]

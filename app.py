@@ -112,17 +112,17 @@ def start_import():
     """Start importing the tournament"""
     return render_template("import/tournament.html")
 
-@app.route("/import/backup", methods=["GET", "POST"])
-@login_required
-def start_backup():
-    if request.method == "POST":
-        subprocess.run(["bash pg:backups:capture HEROKU_POSTGRESQL_BLUE", "-l"])
-        # os.system("heroku pg:backups:capture HEROKU_POSTGRESQL_BLUE -a debaterating")
-        return render_template("import/backup.html")
+# @app.route("/import/backup", methods=["GET", "POST"])
+# @login_required
+# def start_backup():
+#     if request.method == "POST":
+#         subprocess.run(["bash pg:backups:capture HEROKU_POSTGRESQL_BLUE", "-l"])
+#         # os.system("heroku pg:backups:capture HEROKU_POSTGRESQL_BLUE -a debaterating")
+#         return render_template("import/backup.html")
 
-    else:
-        # Check if we want to backup the db
-        return render_template("import/backup.html")
+#     else:
+#         # Check if we want to backup the db
+#         return render_template("import/backup.html")
 
 
 @app.route("/import/tournament", methods=["GET", "POST"])
@@ -130,9 +130,11 @@ def start_backup():
 def import_tournament():
     """Process the link"""
     if request.method == "POST":
-        # Clear the global variables
-        global tournament
+        # Create the variable
         tournament = {}
+
+        # Clear the DB entries
+        db.execute("DELETE FROM tournaments WHERE import_complete = 0")
 
         # Ensure the address was submitted
         if not request.form.get("address"):
@@ -140,7 +142,7 @@ def import_tournament():
 
         address = urlparse(request.form.get("address"))
 
-        netloc = address[1]
+        domain = address[1]
         path = address[2]
 
         # Validate the address
@@ -156,13 +158,20 @@ def import_tournament():
                 slashes = slashes + 1
 
         # Remove slashes from the slug
-        global slug
         slug = path.replace("/", "")
-        global domain
-        domain = netloc
 
         # Get key tournament data
-        tournament = lookup_tournament(netloc, slug)
+        tournament = lookup_tournament(domain, slug)
+        tournament["slug"] = slug
+        tournament["domain"] = domain
+        tournament["import_complete"] = 0
+
+        # Import data into the db
+        db_name = "tournaments"
+        entry = tournament
+        search_keys = ["slug", "domain"]
+        update_keys = ["name", "short_name", "import_complete"]
+        add_database_entry(db_name, entry, search_keys, update_keys)
 
         return redirect("/import/tournament/edit")
 
@@ -174,7 +183,12 @@ def import_tournament():
 @app.route("/import/tournament/edit", methods=["GET", "POST"])
 @login_required
 def edit_tournament():
-    """ Get tournament details """
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+
     return render_template("import/tournament-edit.html", tournament=tournament)
 
 
@@ -184,13 +198,13 @@ def add_tournament():
     """Add the tournament"""
 
     if request.method == "POST":
+        # Get tournament
+        tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+        if len(tournament) != 1:
+            return apology("more than one tournaments being imported", 400)
+        tournament = tournament[0]
+
         # Update tournament name
-        global tournament
-        global slug
-        global domain
-        tournament = {}
-        tournament["slug"] = slug
-        tournament["domain"] = domain
         tournament["name"] = request.form.get("name")
         tournament["short_name"] = request.form.get("short_name")
 
@@ -207,7 +221,7 @@ def add_tournament():
         update_keys = ["name", "short_name", "date", "type"]
         if "page" in tournament:
             update_keys.append("page")
-        tournament["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+        add_database_entry(db_name, entry, search_keys, update_keys)
 
         # Create organiser entries
         conveners = []
@@ -226,7 +240,7 @@ def add_tournament():
             entry = participant
             search_keys = ["speaker_id", "tournament_id"]
             update_keys = ["role"]
-            participant["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+            add_database_entry(db_name, entry, search_keys, update_keys)
 
         return redirect("/import/speaker/categories")
 
@@ -239,17 +253,30 @@ def add_tournament():
 def import_speaker_categories():
     """Import speakers and get input on speaker name format"""
 
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+    domain = tournament["domain"]
+    slug = tournament["slug"]
+
     # Import speaker data
-    global tournament
-    global domain
-    global slug
-    global speaker_categories
-    speaker_categories = lookup_data(domain, slug, "speaker-categories")
+    speaker_categories = lookup_data(tournament["domain"], tournament["slug"], "speaker-categories")
 
     # If there are no speaker categories, just proceed
     if len(speaker_categories) > 0:
         for category in speaker_categories:
             category["internal_id"] = category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
+            category["achievement"] = "undefined"
+            category["tournament_id"] = tournament["id"]
+
+            # Import data into the db
+            db_name = "speaker_categories"
+            entry = category
+            search_keys = ["internal_id", "tournament_id"]
+            update_keys = ["name", "achievement"]
+            add_database_entry(db_name, entry, search_keys, update_keys)
         return render_template("import/speaker-categories.html", speaker_categories=speaker_categories)
     else:
         return redirect("/import/speaker/format")
@@ -259,10 +286,19 @@ def import_speaker_categories():
 @login_required
 def import_speaker_categories_add():
     """Add speaker categories to the db"""
-    global speaker_categories
-    global tournament
 
     if request.method == "POST":
+        # Get tournament
+        tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+        if len(tournament) != 1:
+            return apology("more than one tournaments being imported", 400)
+        tournament_id = tournament[0]["id"]
+
+        # Get categories
+        speaker_categories = db.execute(f"SELECT * FROM speaker_categories WHERE tournament_id = {tournament_id}")
+        if len(speaker_categories) < 1:
+            return apology("no categories found", 400)
+
         for category in speaker_categories:
             # Get data from the form
             if request.form.get(str(category["internal_id"])+"-name") == "other":
@@ -271,14 +307,14 @@ def import_speaker_categories_add():
                 category["name"] = request.form.get(str(category["internal_id"])+"-name")
 
             category["achievement"] = request.form.get(str(category["internal_id"])+"-achievement")
-            category["tournament_id"] = tournament["id"]
+            category["tournament_id"] = tournament_id
 
             # Import data into the db
             db_name = "speaker_categories"
             entry = category
             search_keys = ["internal_id", "tournament_id"]
             update_keys = ["name", "achievement"]
-            category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+            add_database_entry(db_name, entry, search_keys, update_keys)
 
         return redirect("/import/speaker/format")
 
@@ -291,32 +327,59 @@ def import_speaker_categories_add():
 def import_speakers():
     """Import speakers and get input on speaker name format"""
 
-    # Import speaker data
-    global tournament
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
     domain = tournament["domain"]
     slug = tournament["slug"]
-    global speakers
-    speakers = lookup_data(domain, slug, "speakers")
+
+    # Import speaker data
+    speakers = []
+    speakers = lookup_data(tournament["domain"], tournament["slug"], "speakers")
 
     # Import team data to show team name in the next screen. The same list will be used further in team import
-    global teams
     teams = []
-    teams = lookup_data(domain, slug, "teams")
+    teams = lookup_data(tournament["domain"], tournament["slug"], "teams")
 
     if speakers != None:
-        for speaker in speakers:
-            speaker["role"] = "speaker"
-            if "categories" in speaker:
-                if len(speaker["categories"]) > 0:
+        for participant in speakers:
+            participant["role"] = "speaker"
+            if "categories" in participant:
+                if len(participant["categories"]) > 0:
                     new_categories = []
-                    for category in speaker["categories"]:
+                    for category in participant["categories"]:
                         new_category = category.replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
                         new_categories = new_categories + [new_category]
-                    speaker["categories"] = new_categories
+                    # categories_string = f'{{' + ", ".join(new_categories) + f'}}'
+                    # categories_string = '{}{}{}'.format('{',", ".join(new_categories),'}')
+                    participant["categories"] = new_categories
+
             for team in teams:
                 for member in team["speakers"]:
-                    if speaker["id"] == member["id"]:
-                        speaker["team_name"] = team["short_name"]
+                    if participant["id"] == member["id"]:
+                        participant["team_name"] = team["short_name"]
+
+            # Add speaker as tournament participant
+            db_name = "tournament_participants"
+            participant["tournament_id"] = tournament["id"]
+            participant["internal_name"] = participant["name"]
+            participant["speaker_internal_id"] = participant["id"]
+
+            entry = participant
+            search_keys = ["speaker_internal_id", "tournament_id"]
+            update_keys = ["internal_name", "role", "team_name"]
+            if "categories" in participant:
+                if len(participant["categories"]) > 0:
+                    update_keys.append("categories")
+            # TODO Check if add_database_entry still needs a select at the end. If not, remove it and add select here and in other places where it's necessary
+            participant["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+            # if "categories" in participant:
+            #     if len(participant["categories"]) > 0:
+            #         query = "UPDATE tournament_participants SET categories = '" + f"{{" + ",".join(participant["categories"]) + f"}}' WHERE id = " + str(participant["id"])
+            #         db.execute(query)
+
         count = len(speakers)
         return render_template("import/speaker-format.html", speakers=speakers, count=count, tournament=tournament)
     else:
@@ -328,29 +391,41 @@ def import_speakers():
 def import_adjudicators():
     """Import adjudicators and get input on speaker name format"""
 
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+
     # Record speaker name format from the previous page
     if request.method == "POST":
         # Ensure the format was chosen
         if not request.form.get("format"):
             return apology("must specify name format", 400)
-
-        global speaker_name_format
-        speaker_name_format = request.form.get("format")
+        db.execute(f"UPDATE tournaments SET speaker_name_format = ? WHERE id = ?",
+                   request.form.get("format"), tournament["id"])
 
     # Import adjudicator data
-    global tournament
-    global domain
-    global slug
-    global adjudicators
-    adjudicators = lookup_data(domain, slug, "adjudicators")
-
+    adjudicators = lookup_data(tournament["domain"], tournament["slug"], "adjudicators")
 
     # Ensure the adjudicators are imported
     if adjudicators != None:
-        for speaker in adjudicators:
-            speaker["role"] = "adjudicator"
-            if speaker["adj_core"] == True:
-                speaker["role"] = "ca"
+        for participant in adjudicators:
+            participant["role"] = "adjudicator"
+            if participant["adj_core"] == True:
+                participant["role"] = "ca"
+
+            # Add adjudicator as tournament participant
+            db_name = "tournament_participants"
+            participant["tournament_id"] = tournament["id"]
+            participant["internal_name"] = participant["name"]
+            participant["speaker_internal_id"] = participant["id"]
+
+            entry = participant
+            search_keys = ["speaker_internal_id", "tournament_id"]
+            update_keys = ["internal_name", "role"]
+            add_database_entry(db_name, entry, search_keys, update_keys)
+
         count = len(adjudicators)
         return render_template("import/adjudicator-format.html", speakers=adjudicators, count=count, tournament=tournament)
     else:
@@ -362,32 +437,43 @@ def import_adjudicators():
 def check_speakers():
     """Check that speaker names are mapped correctly"""
 
-    global adjudicator_name_format
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+
     if request.method == "POST":
         # Ensure the format was chosen
         if not request.form.get("format"):
             return apology("must specify name format", 400)
+        db.execute(f"UPDATE tournaments SET adjudicator_name_format = ? WHERE id = ?",
+                   request.form.get("format"), tournament["id"])
 
-        adjudicator_name_format = request.form.get("format")
-
-        global speaker_name_format
         # Assign first, middle and last name to the speakers and adjudicators and clean up ids
-        global speakers
-        for speaker in speakers:
-            speaker = split_name_by_format(speaker, speaker_name_format)
-        global adjudicators
-        for speaker in adjudicators:
-            speaker = split_name_by_format(speaker, adjudicator_name_format)
+        participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
+                                  tournament["id"])
+        for participant in participants:
+            if participant["role"] == "speaker":
+                participant = split_name_by_format(participant, tournament["speaker_name_format"])
+                db.execute(f"UPDATE tournament_participants SET first_name = ?, last_name = ?, middle_name = ? WHERE id = ?",
+                           participant["first_name"], participant["last_name"], participant["middle_name"], participant["id"])
+            if participant["role"] == "adjudicator" or participant["role"] == "ca":
+                participant = split_name_by_format(participant, tournament["adjudicator_name_format"])
+                db.execute(f"UPDATE tournament_participants SET first_name = ?, last_name = ?, middle_name = ? WHERE id = ?",
+                           participant["first_name"], participant["last_name"], participant["middle_name"], participant["id"])
 
-        speakers = speakers + adjudicators
-
-        return render_template("import/speaker-check.html", speakers=speakers)
+        participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
+                                  tournament["id"])
+        return render_template("import/speaker-check.html", speakers=participants)
 
     else:
-        if len(speakers) > 0:
-            return render_template("import/speaker-check.html", speakers=speakers)
+        participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
+                                  tournament["id"])
+        if len(participants) > 0:
+            return render_template("import/speaker-check.html", speakers=participants)
         else:
-            return apology("something went wrong", 400)
+            return apology("no participants", 400)
 
 
 @app.route("/import/speaker/edit", methods=["GET", "POST"])
@@ -395,24 +481,29 @@ def check_speakers():
 def edit_speakers():
     """Confirm speaker import"""
 
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+
     if request.method == "POST":
-        # Setup a list of speakers to be removed
-        global swings
-        swings = []
+        participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
+                                  tournament["id"])
 
         # Assign first, middle and last name add internal id
-        for speaker in speakers:
+        for participant in participants:
             if "internal_id" in speaker:
-                if request.form.get(str(speaker["internal_id"])+"-swing"):
+                if request.form.get(str(participant["internal_id"])+"-swing"):
                     # Change swing name to swing in Russian
-                    speaker["last_name"] = "Свингов"
-                    speaker["first_name"] = "Свинг"
-                    speaker["middle_name"] = "Свингович"
-                    swings.append(speaker["internal_id"])
+                    db.execute(f"UPDATE tournament_participants SET first_name = 'Свинг', last_name = 'Свингов', middle_name = 'Свингович', role = 'swing' WHERE id = ?",
+                               participant["id"])
             else:
-                speaker["last_name"] = request.form.get(str(speaker["internal_id"])+"-last-name")
-                speaker["first_name"] = request.form.get(str(speaker["internal_id"])+"-first-name")
-                speaker["middle_name"] = request.form.get(str(speaker["internal_id"])+"-middle-name")
+                participant["last_name"] = request.form.get(str(participant["internal_id"])+"-last-name")
+                participant["first_name"] = request.form.get(str(participant["internal_id"])+"-first-name")
+                participant["middle_name"] = request.form.get(str(participant["internal_id"])+"-middle-name")
+                db.execute(f"UPDATE tournament_participants SET first_name = ?, last_name = ?, middle_name = ? WHERE id = ?",
+                           participant["first_name"], participant["last_name"], participant["middle_name"], participant["id"])
 
         return redirect("/import/speaker/confirm")
 
@@ -479,7 +570,7 @@ def add_speakers():
             entry = participant
             search_keys = ["speaker_id", "speaker_internal_id", "tournament_id"]
             update_keys = ["internal_name", "role"]
-            trash_variable = add_database_entry(db_name, entry, search_keys, update_keys)
+            add_database_entry(db_name, entry, search_keys, update_keys)
 
             # Add speaker categories
             global speaker_categories
@@ -594,7 +685,7 @@ def import_rounds():
     global tournament
     global domain
     global slug
-    rounds = lookup_data(domain, slug, "rounds")
+    rounds = lookup_data(tournament["domain"], tournament["slug"], "rounds")
 
     # Ensure the rounds are imported
     if rounds == None:
@@ -621,7 +712,7 @@ def import_rounds():
 
     # Get break categories
     global break_categories
-    break_categories = lookup_data(domain, slug, "break-categories")
+    break_categories = lookup_data(tournament["domain"], tournament["slug"], "break-categories")
     for break_category in break_categories:
         break_category["internal_id"] = break_category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
 
