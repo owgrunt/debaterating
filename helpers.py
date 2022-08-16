@@ -201,23 +201,11 @@ def get_update_query(update_keys,query_type):
     return update_query
 
 
-# def get_update_query(update_keys):
-#     i = 0
-#     for key in update_keys:
-#         if i == 0:
-#             update_query = key
-#             i = 1
-#         else:
-#             update_query = update_query + ", " + key
-#     return update_query
-
-
 def get_update_values(update_keys, entry):
     update_values = []
     for key in update_keys:
         if isinstance(entry[key], list):
-            update_text = f"{{" + ",".join(entry[key]) + f"}}"
-            update_values.append(update_text)
+            update_values.append(f"{{" + ",".join(entry[key]) + f"}}")
         else:
             update_values.append(entry[key])
     return update_values
