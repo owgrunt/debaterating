@@ -496,8 +496,8 @@ def edit_speakers():
 
         # Assign first, middle and last name add internal id
         for participant in participants:
-            if "internal_id" in speaker:
-                if request.form.get(str(participant["internal_id"])+"-swing"):
+            if "speaker_internal_id" in participant:
+                if request.form.get(str(participant["speaker_internal_id"])+"-swing"):
                     # Change swing name to swing in Russian
                     db.execute(f"UPDATE tournament_participants SET first_name = 'Свинг', last_name = 'Свингов', middle_name = 'Свингович', role = 'swing' WHERE id = ?",
                                participant["id"])
