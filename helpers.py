@@ -190,11 +190,22 @@ def get_update_query(update_keys):
     i = 0
     for key in update_keys:
         if i == 0:
-            update_query = key
+            update_query = key + " = ?"
             i = 1
         else:
-            update_query = update_query + ", " + key
+            update_query = update_query + ", " + key + " = ?"
     return update_query
+
+
+# def get_update_query(update_keys):
+#     i = 0
+#     for key in update_keys:
+#         if i == 0:
+#             update_query = key
+#             i = 1
+#         else:
+#             update_query = update_query + ", " + key
+#     return update_query
 
 
 def get_update_values(update_keys, entry):
