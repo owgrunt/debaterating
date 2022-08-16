@@ -155,7 +155,7 @@ CREATE INDEX adjudication_by_debate ON adjudications (debate_id);
 CREATE TABLE speaker_categories (
     id SERIAL PRIMARY KEY,
     tournament_id INTEGER NOT NULL,
-    internal_id INTEGER NOT NULL,
+    internal_id INTEGER NOT NULL, -- this is the internal id of the category, not the speaker
     name TEXT NOT NULL,
     achievement TEXT NOT NULL,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE
