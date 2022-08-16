@@ -518,17 +518,25 @@ def edit_speakers():
 @login_required
 def confirm_speakers():
     """Confirm speaker import"""
+
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+
     # Check if the speaker is already in the database
-    global speakers
-    for speaker in speakers:
-        if speaker["middle_name"] != "":
+    participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
+                              tournament["id"])
+    for participant in participants:
+        if participant["middle_name"] != "":
             candidates = db.execute("SELECT * FROM speakers WHERE last_name = ? AND first_name = ? AND (middle_name = ? OR middle_name IS NULL)",
-                                    speaker["last_name"], speaker["first_name"], speaker["middle_name"])
+                                    participant["last_name"], participant["first_name"], participant["middle_name"])
         else:
             candidates = db.execute("SELECT * FROM speakers WHERE last_name = ? AND first_name = ?",
-                                    speaker["last_name"], speaker["first_name"])
+                                    participant["last_name"], participant["first_name"])
         if len(candidates) > 0:
-            speaker["candidates"] = candidates
+            participant["candidates"] = candidates
 
     return render_template("import/speaker-confirm.html", speakers=speakers)
 
