@@ -585,7 +585,8 @@ def add_speakers():
             add_database_entry(db_name, entry, search_keys, update_keys)
 
             # Add speaker categories
-            global speaker_categories
+            speaker_categories = db.execute(f"SELECT * FROM speaker_categories WHERE tournament_id = ?",
+                                            tournament["id"])
             if "categories" in speaker:
                 for instance in speaker["categories"]:
                     category = {}
