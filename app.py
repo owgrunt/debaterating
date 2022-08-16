@@ -577,7 +577,7 @@ def add_speakers():
                 speaker["id"] = add_database_entry(db_name, entry, search_keys, update_keys, forego_search=True)
             else:
                 speaker["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
-
+            # TODO speaker ID is required here, 
             # Add speaker id to tournament participant
             db_name = "tournament_participants"
             search_keys = ["internal_id", "tournament_id"]
