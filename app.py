@@ -545,9 +545,18 @@ def confirm_speakers():
 @login_required
 def add_speakers():
     """Add speakers to the database"""
+
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+
+    # Check if the speaker is already in the database
+    speakers = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
+                              tournament["id"])
+
     if request.method == "POST":
-        global tournament
-        global speakers
         for speaker in speakers:
             # If speaker is in the db, connect general speaker id with tournament speaker id
             if request.form.get(str(speaker["internal_id"])+"-id"):
