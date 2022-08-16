@@ -538,7 +538,7 @@ def confirm_speakers():
         if len(candidates) > 0:
             participant["candidates"] = candidates
 
-    return render_template("import/speaker-confirm.html", speakers=speakers)
+    return render_template("import/speaker-confirm.html", speakers=participants)
 
 
 @app.route("/import/speaker/add", methods=["GET", "POST"])
