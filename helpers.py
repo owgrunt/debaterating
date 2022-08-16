@@ -131,16 +131,9 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
     # If entry is in the db, edit it
     elif len(candidates) == 1:
         # Prepare query and list to update the entry
-        i = 0
-        update_values = []
-        for key in update_keys:
-            if i == 0:
-                update_query = key + " = ?"
-                i = 1
-            else:
-                update_query = update_query + ", " + key + " = ?"
-            update_values.append(entry[key])
-        update_values = update_values + search_values
+        update_query = get_update_query(update_keys, "update")
+        update_values = get_update_values(update_keys, entry)
+
         # Update the entry
         db.execute(f"UPDATE {type} SET {update_query} WHERE {search_query}",
                     *update_values)
@@ -151,7 +144,7 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
         if not forego_search:
             update_keys = update_keys + search_keys
 
-        update_query = get_update_query(update_keys)
+        update_query = get_update_query(update_keys, "insert")
         update_values = get_update_values(update_keys, entry)
 
         add_questions = "?"
@@ -186,14 +179,18 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
     return database_record[0]["id"]
 
 
-def get_update_query(update_keys):
+def get_update_query(update_keys,query_type):
     i = 0
     for key in update_keys:
         if i == 0:
-            update_query = key + " = ?"
+            update_query = key
+            if query_type == "update":
+                update_query = update_query + " = ?"
             i = 1
         else:
-            update_query = update_query + ", " + key + " = ?"
+            update_query = update_query + ", " + key
+            if query_type == "update":
+                update_query = update_query + " = ?"
     return update_query
 
 
