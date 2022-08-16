@@ -365,10 +365,10 @@ def import_speakers():
             db_name = "tournament_participants"
             participant["tournament_id"] = tournament["id"]
             participant["internal_name"] = participant["name"]
-            participant["speaker_internal_id"] = participant["id"]
+            participant["internal_id"] = participant["id"]
 
             entry = participant
-            search_keys = ["speaker_internal_id", "tournament_id"]
+            search_keys = ["internal_id", "tournament_id"]
             update_keys = ["internal_name", "role", "team_name"]
             if "categories" in participant:
                 if len(participant["categories"]) > 0:
@@ -419,10 +419,10 @@ def import_adjudicators():
             db_name = "tournament_participants"
             participant["tournament_id"] = tournament["id"]
             participant["internal_name"] = participant["name"]
-            participant["speaker_internal_id"] = participant["id"]
+            participant["internal_id"] = participant["id"]
 
             entry = participant
-            search_keys = ["speaker_internal_id", "tournament_id"]
+            search_keys = ["internal_id", "tournament_id"]
             update_keys = ["internal_name", "role"]
             add_database_entry(db_name, entry, search_keys, update_keys)
 
@@ -496,8 +496,8 @@ def edit_speakers():
 
         # Assign first, middle and last name add internal id
         for participant in participants:
-            if "speaker_internal_id" in participant:
-                if request.form.get(str(participant["speaker_internal_id"])+"-swing"):
+            if "internal_id" in participant:
+                if request.form.get(str(participant["internal_id"])+"-swing"):
                     # Change swing name to swing in Russian
                     db.execute(f"UPDATE tournament_participants SET first_name = 'Свинг', last_name = 'Свингов', middle_name = 'Свингович', role = 'swing' WHERE id = ?",
                                participant["id"])
@@ -576,10 +576,10 @@ def add_speakers():
             participant["speaker_id"] = speaker["id"]
             participant["role"] = speaker["role"]
             participant["internal_name"] = speaker["name"]
-            participant["speaker_internal_id"] = speaker["internal_id"]
+            participant["internal_id"] = speaker["internal_id"]
 
             entry = participant
-            search_keys = ["speaker_id", "speaker_internal_id", "tournament_id"]
+            search_keys = ["speaker_id", "internal_id", "tournament_id"]
             update_keys = ["internal_name", "role"]
             add_database_entry(db_name, entry, search_keys, update_keys)
 
