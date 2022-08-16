@@ -131,9 +131,16 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
     # If entry is in the db, edit it
     elif len(candidates) == 1:
         # Prepare query and list to update the entry
-        update_query = get_update_query(update_keys, "update")
-        update_values = get_update_values(update_keys, entry)
-
+        i = 0
+        update_values = []
+        for key in update_keys:
+            if i == 0:
+                update_query = key + " = ?"
+                i = 1
+            else:
+                update_query = update_query + ", " + key + " = ?"
+            update_values.append(entry[key])
+        update_values = update_values + search_values
         # Update the entry
         db.execute(f"UPDATE {type} SET {update_query} WHERE {search_query}",
                     *update_values)
