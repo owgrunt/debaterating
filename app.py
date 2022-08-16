@@ -588,7 +588,6 @@ def add_speakers():
 
             # Add speaker categories
             if speaker["categories"] is not None:
-                
                 for instance in speaker["categories"]:
                     category = {}
                     db_name = "speakers_in_categories"
