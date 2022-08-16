@@ -576,9 +576,9 @@ def add_speakers():
             if speaker["middle_name"] != "":
                 update_keys.append("middle_name")
             if forego_search:
-                speaker["id"] = add_database_entry(db_name, entry, search_keys, update_keys, forego_search=True)
+                speaker["speaker_id"] = add_database_entry(db_name, entry, search_keys, update_keys, forego_search=True)
             else:
-                speaker["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+                speaker["speaker_id"] = add_database_entry(db_name, entry, search_keys, update_keys)
             # TODO speaker ID is required here, maybe add last_tournament_id to speaker entry to avoid search
             # Add speaker id to tournament participant
             db_name = "tournament_participants"
