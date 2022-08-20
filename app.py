@@ -934,7 +934,7 @@ def import_debates():
                     entry = result
                     search_keys = ["debate_id", "tournament_id", "team_id"]
                     update_keys = ["side", "score"]
-                    result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+                    add_database_entry(db_name, entry, search_keys, update_keys)
 
                     # Get speeches
                     global speakers
