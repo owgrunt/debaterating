@@ -1082,7 +1082,7 @@ def debates_success():
             if debate["round_id"] == round["id"]:
                 round["debates"].append(debate)
         for debate in round["debates"]:
-            debate["speeches"] = []
+            for speech in speeches:
                 if speech["debate_id"] == debate["id"]:
                     position = speech["position"]
                     debate[position] = speech["score"]
