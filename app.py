@@ -842,6 +842,7 @@ def import_debates():
             search_keys = ["internal_id", "tournament_id"]
             update_keys = ["round_id"]
             debate["id"] = add_database_entry(db_name, debate, search_keys, update_keys)
+            # TODO need to put select debate["id"] here if I remove it in add_database_entry
 
             # Import judges
             if "adjudicators" in debate:
