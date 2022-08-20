@@ -41,11 +41,12 @@ onload="autoNotify()"
         <div class="section">
             {{ rounds }}
         </div>
+        {% for round in rounds %}
         <div class="section">
             <table>
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>ID дебатов</th>
                         <th>Краткое название</th>
                         <th>Название</th>
                         <th>Этап</th>
@@ -56,7 +57,7 @@ onload="autoNotify()"
                     </tr>
                 </thead>
                 <tbody>
-                    {% for round in rounds %}
+                    {% for debate in round["debates"] %}
                         <tr>
                             <td>
                                 {{ round["seq"] }}
@@ -91,5 +92,6 @@ onload="autoNotify()"
                 </tbody>
             </table>
         </div>
+        {% endfor %}
     </div>
 {% endblock %}
