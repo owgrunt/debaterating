@@ -353,7 +353,10 @@ def import_speakers():
             update_keys = ["name"]
             add_database_entry(db_name, entry, search_keys, update_keys)
             # Add speakers' internal ids to be able to easily connect speaker ids to the team in the future
-            for speaker in team
+            team_speakers = []
+            for speaker in team:
+                team_speakers.append(speaker[id])
+            
 
 
     if speakers != None:
