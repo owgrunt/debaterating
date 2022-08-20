@@ -1069,14 +1069,27 @@ def debates_success():
     # Get rounds
     rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ?",
                        tournament["id"])
+    debates = db.execute(f"SELECT * FROM debates WHERE tournament_id = ?",
+                         tournament["id"])
+    speeches = db.execute(f"SELECT * FROM speeches WHERE tournament_id = ?",
+                          tournament["id"])
+    team_performances = db.execute(f"SELECT * FROM team_performances WHERE tournament_id = ?",
+                          tournament["id"])
 
-    # Get debates
-    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ?",
-                       tournament["id"])
-
-    # Get speeches
-    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ?",
-                       tournament["id"])
+    for round in rounds:
+        round["debates"] = []
+        for debate in debates:
+            if debate["round_id"] == round["id"]:
+                round["debates"].append(debate)
+        for debate in round["debates"]:
+            debate["speeches"] = []
+            for speech in speeches:
+                if speech["debate_id"] == debate["id"]:
+                    debate["speeches"].append(speech)
+            debate["team_performances"] = []
+            for performance in team_performances:
+                if performance["debate_id"] == debate["id"]:
+                    debate["team_performances"].append(performance)
 
     return render_template("import/debate-success.html", rounds=rounds)
 
