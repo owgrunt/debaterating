@@ -69,6 +69,9 @@ onload="autoNotify()"
                     {% for debate in round["debates"] %}
                         <tr>
                             <td>
+                                {{ debate["id"] }}
+                            </td>
+                            <td>
                                 {{ debate["og"] }}
                             </td>
                             <td>
