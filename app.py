@@ -1090,6 +1090,8 @@ def debates_success():
             for performance in team_performances:
                 if performance["debate_id"] == debate["id"]:
                     debate["team_performances"].append(performance)
+            for performance in debate["team_performances"]:
+                
 
     return render_template("import/debate-success.html", rounds=rounds)
 
