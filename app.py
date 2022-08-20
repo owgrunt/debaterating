@@ -1213,7 +1213,15 @@ def calculate_elo():
 @login_required
 def calculate_speaker_scores():
     """Calculate new average speaker scores, record best speakers"""
-    global speakers
+
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+
+    # Update new speaker ELO
+    speakers = db.execute("SELECT * FROM tournament_participants WHERE tournament_id = ?", tournament[id])
     for speaker in speakers:
         if speaker["role"] == "speaker":
             new_average = db.execute("SELECT avg(score) FROM speeches WHERE speaker_id = ?",
@@ -1224,7 +1232,6 @@ def calculate_speaker_scores():
                         speaker["new_average"], speaker["id"])
 
     # Get best speaker(s)
-    global tournament
     tournament_id = tournament["id"]
     best_speakers = db.execute(open("sql_get_best_speaker.sql").read().replace("xxxxxx", str(tournament_id)))
     if len(best_speakers) < 1:
