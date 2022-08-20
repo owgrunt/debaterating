@@ -46,46 +46,65 @@ onload="autoNotify()"
             <table>
                 <thead>
                     <tr>
-                        <th>ID дебатов</th>
-                        <th>Краткое название</th>
-                        <th>Название</th>
-                        <th>Этап</th>
-                        <th>Категория брейка</th>
-                        <th>Достижение</th>
-                        <th>Тема</th>
-                        <th>Инфослайд</th>
+                        <th rowspan="2">ID дебатов</th>
+                        <th colspan="3">OG</th>
+                        <th colspan="3">OO</th>
+                        <th colspan="3">CG</th>
+                        <th colspan="3">CO</th>
+                    </tr>
+                    <tr>
+                        <th>Очки команды</th>
+                        <th>ПМ</th>
+                        <th>ЗПМ</th>
+                        <th>Очки команды</th>
+                        <th>ЛО</th>
+                        <th>ЗЛО</th>
+                        <th>Очки команды</th>
+                        <th>ЧП</th>
+                        <th>СП</th>
+                        <th>Очки команды</th>
+                        <th>ЧО</th>
+                        <th>СО</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for debate in round["debates"] %}
                         <tr>
                             <td>
-                                {{ round["seq"] }}
+                                {{ round["og"] }}
                             </td>
                             <td>
-                                {{ round["short_name"] }}
+                                {{ round["1"] }}
                             </td>
                             <td>
-                                {{ round["name"] }}
+                                {{ round["3"] }}
                             </td>
                             <td>
-                                {% if round["stage"] == "E" %}
-                                    брейковый
-                                {% else %}
-                                    отборочный
-                                {% endif %}
+                                {{ round["oo"] }}
                             </td>
                             <td>
-                                {{ round["break_category"] }}
+                                {{ round["2"] }}
                             </td>
                             <td>
-                                {{ round["achievement"] }}
+                                {{ round["4"] }}
                             </td>
                             <td>
-                                {{ round["motion"] }}
+                                {{ round["cg"] }}
                             </td>
                             <td>
-                                {{ round["info_slide"] }}
+                                {{ round["5"] }}
+                            </td>
+                            <td>
+                                {{ round["7"] }}
+                            </td>
+                            <td>
+                                {{ round["co"] }}
+                            </td>
+                            <td>
+                                {{ round["6"] }}
+                            </td>
+                            <td>
+                                {{ round["8"] }}
                             </td>
                         </tr>
                     {% endfor %}
