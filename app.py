@@ -800,7 +800,7 @@ def import_debates():
             if "break_category" in round:
                 update_keys.append("break_category")
             round["tournament_id"] = tournament["id"]
-            round["id"] = add_database_entry(db_name, round, search_keys, update_keys)
+            add_database_entry(db_name, round, search_keys, update_keys)
 
     # Prepare for link cleanup in the future
     domain = tournament["domain"]
