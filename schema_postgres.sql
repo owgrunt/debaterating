@@ -50,6 +50,7 @@ CREATE TABLE teams (
     swing INTEGER NOT NULL DEFAULT 0,
     speaker_one_id INTEGER,
     speaker_two_id INTEGER,
+    speaker_internal_ids INTEGER[],
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(speaker_one_id) REFERENCES speakers(id),
     FOREIGN KEY(speaker_two_id) REFERENCES speakers(id)
