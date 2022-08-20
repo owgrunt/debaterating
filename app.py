@@ -1199,7 +1199,6 @@ def calculate_elo():
                 db.execute("UPDATE speakers SET rating = ? WHERE id = ? AND rating = ?",
                            new_rating, update["speaker"], update["initial_rating"])
 
-        all_updated_ratings = all_updated_ratings + updated_ratings
 
         # Apparently, zero rating adjustments don't get recorded for an unknown reason, but I'm too lazy to fix it the right way
         db.execute(f"UPDATE speeches SET rating_change = 0 WHERE rating_change is NULL")
@@ -1218,30 +1217,10 @@ def elo_success():
         return apology("more than one tournaments being imported", 400)
     tournament = tournament[0]
 
-    # Get rounds
-    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ?",
+    # Update participants' elo
+    tournament_participants = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? AND role = 'speaker'",
                        tournament["id"])
-    debates = db.execute(f"SELECT * FROM debates WHERE tournament_id = ?",
-                         tournament["id"])
-    speeches = db.execute(f"SELECT * FROM speeches WHERE tournament_id = ?",
-                          tournament["id"])
-    team_performances = db.execute(f"SELECT * FROM team_performances WHERE tournament_id = ?",
-                          tournament["id"])
-
-    for round in rounds:
-        round["debates"] = []
-        for debate in debates:
-            if debate["round_id"] == round["id"]:
-                round["debates"].append(debate)
-        for debate in round["debates"]:
-            for speech in speeches:
-                if speech["debate_id"] == debate["id"]:
-                    position = speech["position"]
-                    debate[str(position)] = speech["score"]
-            for performance in team_performances:
-                if performance["debate_id"] == debate["id"]:
-                    side = performance["side"]
-                    debate[side] = performance["score"]
+    for participant in tournament_participants:
 
     return render_template("import/elo.html", rounds=rounds)
 
