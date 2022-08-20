@@ -1204,15 +1204,12 @@ def calculate_elo():
         # Apparently, zero rating adjustments don't get recorded for an unknown reason, but I'm too lazy to fix it the right way
         db.execute(f"UPDATE speeches SET rating_change = 0 WHERE rating_change is NULL")
 
-    updated_count = len(all_updated_ratings)
-
-    return render_template("import/elo.html", all_updated_ratings=all_updated_ratings, updated_count=updated_count)
-    return redirect("/import/debate/success")
+    return redirect("/import/elo/success")
 
 
-@app.route("/import/debate/success", methods=["GET", "POST"])
+@app.route("/import/elo/success", methods=["GET", "POST"])
 @login_required
-def debates_success():
+def elo_success():
     """Show the rounds that have been added to the database"""
 
     # Get tournament
