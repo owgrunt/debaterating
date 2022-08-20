@@ -601,7 +601,7 @@ def add_speakers():
                             category["category_id"] = global_category["id"]
                             search_keys = ["speaker_id", "tournament_id", "internal_id"]
                             update_keys = ["category_id"]
-                            category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+                            add_database_entry(db_name, entry, search_keys, update_keys)
 
         # Record average speaker ELO at the tournament
         tournament_id = tournament["id"]
@@ -665,7 +665,7 @@ def import_teams():
         db_name = "teams"
         search_keys = ["internal_id", "tournament_id"]
         update_keys = ["swing", "speaker_one_id", "speaker_two_id"]
-        team["id"] = add_database_entry(db_name, team, search_keys, update_keys)
+        add_database_entry(db_name, team, search_keys, update_keys)
 
     return redirect("/import/team/success")
 
@@ -798,7 +798,7 @@ def import_debates():
                 db_name = "break_categories"
                 search_keys = ["internal_id", "tournament_id"]
                 update_keys = ["name"]
-                break_category["id"] = add_database_entry(db_name, break_category, search_keys, update_keys)
+                add_database_entry(db_name, break_category, search_keys, update_keys)
 
         for round in rounds:
             # Get data from the form
