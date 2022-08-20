@@ -1344,7 +1344,12 @@ def get_best_adjudicator():
 def import_best_adjudicator():
     """Record best adjudicator(s) in the db"""
 
-    global tournament
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+    
     if request.method == "POST":
         best_adjudicators = []
         # Get data from form 1
