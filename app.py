@@ -891,7 +891,6 @@ def import_debates():
 
             # Get results
             results = lookup_link(debate["url"] + "/ballots")
-            # results = lookup_link(debate["url"] + "/ballots")[0]["result"]["sheets"][0]["teams"]
             # Get to the team result
             if results is None:
                 if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/2/pairings/20":
