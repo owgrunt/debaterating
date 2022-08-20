@@ -706,11 +706,14 @@ def import_rounds():
         return apology("more than one tournaments being imported", 400)
     tournament = tournament[0]
 
+    # Prepare for link cleanup
+    domain = tournament["domain"]
+    slug = tournament["slug"]
+
     # Get break categories
     break_categories = lookup_data(tournament["domain"], tournament["slug"], "break-categories")
-    replacement_text = "https://" + tournament["domain"] + "/api/v1/tournaments/" + tournament["slug"] + "/break-categories/"
     for break_category in break_categories:
-        break_category["internal_id"] = break_category["url"].replace(replacement_text, "")
+        break_category["internal_id"] = break_category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
         break_category["tournament_id"] = tournament["id"]
         if break_category["is_general"] == True:
             break_category["general"] = 1
@@ -822,7 +825,7 @@ def import_debates():
                 update_keys.append("info_slide")
             add_database_entry(db_name, round, search_keys, update_keys)
 
-    # Prepare for link cleanup in the future
+    # Prepare for link cleanup
     domain = tournament["domain"]
     slug = tournament["slug"]
 
