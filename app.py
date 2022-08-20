@@ -769,8 +769,20 @@ def import_rounds():
 @login_required
 def import_debates():
     """Import debates"""
-    global rounds
-    global break_categories
+
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+
+    # Get break_categories
+    break_categories = db.execute(f"SELECT * FROM break_categories WHERE tournament_id = ?",
+                       tournament["id"])
+
+    # Get rounds
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ?",
+                       tournament["id"])
 
     if request.method == "POST":
         for break_category in break_categories:
