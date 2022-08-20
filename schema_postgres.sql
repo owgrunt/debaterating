@@ -45,11 +45,11 @@ CREATE UNIQUE INDEX tournament_id ON tournaments (id);
 CREATE TABLE teams (
     id SERIAL PRIMARY KEY,
     tournament_id INTEGER NOT NULL,
-    internal_id INTEGER,
+    internal_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     swing INTEGER NOT NULL DEFAULT 0,
-    speaker_one_id INTEGER NOT NULL,
-    speaker_two_id INTEGER NOT NULL,
+    speaker_one_id INTEGER,
+    speaker_two_id INTEGER,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(speaker_one_id) REFERENCES speakers(id),
     FOREIGN KEY(speaker_two_id) REFERENCES speakers(id)
