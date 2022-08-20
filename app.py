@@ -1070,6 +1070,14 @@ def debates_success():
     rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ?",
                        tournament["id"])
 
+    # Get debates
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ?",
+                       tournament["id"])
+
+    # Get speeches
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ?",
+                       tournament["id"])
+
     return render_template("import/debate-success.html", rounds=rounds)
 
 
