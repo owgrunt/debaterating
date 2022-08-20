@@ -655,7 +655,18 @@ def import_teams():
         return apology("teams not imported", 400)
 
     for team in teams:
-        for speaker in 
+        team_speakers = []
+        for speaker in team["speaker_internal_ids"]:
+            tournament_participant = db.execute(f"SELECT speaker_id, role FROM tournament_participants WHERE tournament_id = ? AND internal_id = ?",
+                                    tournament["id"], speaker)[0]
+            team_speakers.append(tournament_participant["speaker_id"])
+            if tournament_participant["role"] == "swing":
+                team["swing"] = 1
+        team["speaker_one_id"] = team_speakers[0]
+        team["speaker_two_id"] = team_speakers[1]
+
+        
+
 
     global speakers
     for team in teams:
