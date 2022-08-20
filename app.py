@@ -893,14 +893,8 @@ def import_debates():
             results = lookup_link(debate["url"] + "/ballots")
             # Get to the team result
             if results is None:
-                if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/2/pairings/20":
-                    if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/3/pairings/25":
-                        if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/5/pairings/58":
-                            if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/6/pairings/62":
-                                if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/6/pairings/61":
-                                    if debate["url"] != "https://onlayn.herokuapp.com/api/v1/tournaments/winterdebate2021/rounds/7/pairings/63":
-                                        return apology(f"tabmaster needs to publish ballots", 400)
-            elif not results == []:
+                return apology(f"tabmaster needs to publish ballots", 400)
+            else:
                 results = results[0]["result"]["sheets"][0]["teams"]
                 # Check if this is a final
                 if round["stage"] == "E":
