@@ -655,6 +655,7 @@ def import_teams():
         return apology("teams not imported", 400)
 
     for team in teams:
+        team["tournament_id"] = tournament["id"]
         team_speakers = []
         for speaker in team["speaker_internal_ids"]:
             tournament_participant = db.execute(f"SELECT speaker_id, role FROM tournament_participants WHERE tournament_id = ? AND internal_id = ?",
@@ -665,52 +666,60 @@ def import_teams():
         team["speaker_one_id"] = team_speakers[0]
         team["speaker_two_id"] = team_speakers[1]
 
-        
-
-
-    global speakers
-    for team in teams:
-        """Clean team data"""
-        team_speakers = team["speakers"]
-        # Rename the id and name vars
-        team["internal_id"] = team["id"]
-        team["name"] = team["long_name"]
-        # Record speakers' tabbycat ids in team dict
-        team["speaker_one_internal_id"] = team_speakers[0]["id"]
-        if len(team_speakers) > 1:
-            team["speaker_two_internal_id"] = team_speakers[1]["id"]
-        else:
-            team["speaker_two_internal_id"] = team["speaker_one_internal_id"]
-        # Check if the team has any swing speakers
-        if team["speaker_one_internal_id"] in swings or team["speaker_two_internal_id"] in swings:
-            team["swing"] = 1
-            team["name"] = "SWING"
-        else:
-            team["swing"] = 0
-        # Assign db id to speakers in the team
-        for speaker in speakers:
-            if "id" in speaker:
-                if speaker["internal_id"] == team["speaker_one_internal_id"]:
-                    team["speaker_one_id"] = speaker["id"]
-                if speaker["internal_id"] == team["speaker_two_internal_id"]:
-                    team["speaker_two_id"] = speaker["id"]
-        # Remove unnecessary vars
-        del team["url"], team["reference"], team["short_reference"], team["code_name"], team["short_name"], team["long_name"], team["emoji"], team["speakers"]
-        # Check that ids have been assigned
-        if "speaker_one_id" not in team or "speaker_two_id" not in team:
-            internal_id = team["internal_id"]
-            return apology(f"speaker ids have not been assigned for team internal_id {internal_id}", 400)
-
         # Import team data into the db
         db_name = "teams"
         search_keys = ["internal_id", "tournament_id"]
-        update_keys = ["name", "swing", "speaker_one_id", "speaker_two_id"]
-        team["tournament_id"] = tournament["id"]
+        update_keys = ["speaker_one_id", "speaker_two_id"]
+        if "swing" in team:
+            update_keys.append("swing")
         team["id"] = add_database_entry(db_name, team, search_keys, update_keys)
 
-        # Check if the previous step was successful
-        if not team["id"]:
-            return apology("the id for a new team not found in db", 400)
+
+
+
+    # global speakers
+    # for team in teams:
+    #     """Clean team data"""
+    #     team_speakers = team["speakers"]
+    #     # Rename the id and name vars
+    #     team["internal_id"] = team["id"]
+    #     team["name"] = team["long_name"]
+    #     # Record speakers' tabbycat ids in team dict
+    #     team["speaker_one_internal_id"] = team_speakers[0]["id"]
+    #     if len(team_speakers) > 1:
+    #         team["speaker_two_internal_id"] = team_speakers[1]["id"]
+    #     else:
+    #         team["speaker_two_internal_id"] = team["speaker_one_internal_id"]
+    #     # Check if the team has any swing speakers
+    #     if team["speaker_one_internal_id"] in swings or team["speaker_two_internal_id"] in swings:
+    #         team["swing"] = 1
+    #         team["name"] = "SWING"
+    #     else:
+    #         team["swing"] = 0
+    #     # Assign db id to speakers in the team
+    #     for speaker in speakers:
+    #         if "id" in speaker:
+    #             if speaker["internal_id"] == team["speaker_one_internal_id"]:
+    #                 team["speaker_one_id"] = speaker["id"]
+    #             if speaker["internal_id"] == team["speaker_two_internal_id"]:
+    #                 team["speaker_two_id"] = speaker["id"]
+    #     # Remove unnecessary vars
+    #     del team["url"], team["reference"], team["short_reference"], team["code_name"], team["short_name"], team["long_name"], team["emoji"], team["speakers"]
+    #     # Check that ids have been assigned
+    #     if "speaker_one_id" not in team or "speaker_two_id" not in team:
+    #         internal_id = team["internal_id"]
+    #         return apology(f"speaker ids have not been assigned for team internal_id {internal_id}", 400)
+
+    #     # Import team data into the db
+    #     db_name = "teams"
+    #     search_keys = ["internal_id", "tournament_id"]
+    #     update_keys = ["name", "swing", "speaker_one_id", "speaker_two_id"]
+    #     team["tournament_id"] = tournament["id"]
+    #     team["id"] = add_database_entry(db_name, team, search_keys, update_keys)
+
+    #     # Check if the previous step was successful
+    #     if not team["id"]:
+    #         return apology("the id for a new team not found in db", 400)
 
     return redirect("/import/team/success")
 
