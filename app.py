@@ -1053,8 +1053,19 @@ def import_debates():
 @app.route("/import/debate/success", methods=["GET", "POST"])
 @login_required
 def debates_success():
-    """Show the speakers that have been added to the database"""
-    return render_template("import/debate-success.html", speakers=speakers, tournament=tournament, teams=teams, rounds=rounds)
+    """Show the rounds that have been added to the database"""
+
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+
+    # Get rounds
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ?",
+                       tournament["id"])
+
+    return render_template("import/debate-success.html", rounds=rounds)
 
 
 @app.route("/import/elo", methods=["GET", "POST"])
