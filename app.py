@@ -1298,7 +1298,7 @@ def calculate_speaker_scores():
         id = speaker["id"]
         db.execute(f"UPDATE speakers SET ranking_by_speaks = {ranking_by_speaks}, ranking_by_rating = {ranking_by_rating} WHERE id = {id}")
 
-    speakers = db.execute(f"SELECT * FROM speakers RIGHT JOIN tournament_participants)
+    speakers = db.execute(f"SELECT * FROM speakers RIGHT JOIN tournament_participants ON )
 
     return render_template("import/speaker-scores.html", speakers=speakers)
 
