@@ -104,7 +104,7 @@ CREATE TABLE speeches (
     speaker_id INTEGER NOT NULL,
     debate_id INTEGER NOT NULL,
     score INTEGER,
-    rating_change INTEGER,
+    rating_change INTEGER DEFAULT 0,
     position INTEGER NOT NULL,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(speaker_id) REFERENCES speakers(id),
