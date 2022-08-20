@@ -1217,12 +1217,11 @@ def elo_success():
         return apology("more than one tournaments being imported", 400)
     tournament = tournament[0]
 
-    # Update participants' elo
-    tournament_participants = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? AND role = 'speaker'",
-                       tournament["id"])
-    for participant in tournament_participants:
+    # Get speeches
+    speeches = db.execute(f"SELECT * FROM speeches WHERE tournament_id = ?",
+                          tournament["id"])
 
-    return render_template("import/elo.html", rounds=rounds)
+    return render_template("import/elo.html", speeches=speeches)
 
 @app.route("/import/speaker-scores", methods=["GET", "POST"])
 @login_required
