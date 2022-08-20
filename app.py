@@ -587,6 +587,12 @@ def add_speakers():
             else:
                 speaker["speaker_id"] = add_database_entry(db_name, entry, search_keys, update_keys)
             # TODO speaker ID is required here, maybe add last_tournament_id to speaker entry to avoid search
+
+            # Check that the speaker's ELO is correct
+            if speaker["role"] == "speaker":
+                db.execute("UPDATE speakers SET rating = 1500 + subquery.sum FROM (SELECT sum(rating_change) FROM speeches WHERE speaker_id = ?) AS subquery WHERE id = ?",
+                           speaker["speaker_id"], speaker["speaker_id"])
+
             # Add speaker id to tournament participant
             db_name = "tournament_participants"
             search_keys = ["internal_id", "tournament_id"]
@@ -608,12 +614,6 @@ def add_speakers():
                             search_keys = ["speaker_id", "tournament_id", "internal_id"]
                             update_keys = ["category_id"]
                             category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
-
-        # Check that speakers' ELO is correct
-        for participant in tournament_participants:
-            if participant["role"] == "speaker":
-                db.execute("UPDATE speakers SET rating = 1500 + subquery.sum FROM (SELECT sum(rating_change) FROM speeches WHERE speaker_id = ?) AS subquery WHERE id = ?",
-                           participant["speaker_id"], participant["speaker_id"])
 
         # Record average speaker ELO at the tournament
         tournament_id = tournament["id"]
