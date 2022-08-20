@@ -947,7 +947,7 @@ def import_debates():
                             speech["score"] = int(speech["score"])
                             # Get speaker's db id
                             speech["speaker_internal_id"] = speech["speaker"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speakers/", "")
-                            speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = ? AND tournament_id = ?"
+                            speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = ? AND tournament_id = ?",
                                                               speech["speaker_internal_id"], tournament["id"])[0]["speaker_id"]
                             # Assign position
                             if i == 0:
