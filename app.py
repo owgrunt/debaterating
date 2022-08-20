@@ -861,7 +861,7 @@ def import_debates():
                 db_name = "adjudications"
                 search_keys = ["speaker_id", "tournament_id", "debate_id"]
                 update_keys = ["role"]
-                adjudicator["id"] = add_database_entry(db_name, adjudicator, search_keys, update_keys)
+                add_database_entry(db_name, adjudicator, search_keys, update_keys)
 
                 if "panellists" in debate["adjudicators"]:
                     for panellist in debate["adjudicators"]["panellists"]:
@@ -874,7 +874,7 @@ def import_debates():
                         db_name = "adjudications"
                         search_keys = ["speaker_id", "tournament_id", "debate_id"]
                         update_keys = ["role"]
-                        adjudicator["id"] = add_database_entry(db_name, adjudicator, search_keys, update_keys)
+                        add_database_entry(db_name, adjudicator, search_keys, update_keys)
 
                 if "trainees" in debate["adjudicators"]:
                     for trainee in debate["adjudicators"]["trainees"]:
@@ -887,7 +887,7 @@ def import_debates():
                         db_name = "adjudications"
                         search_keys = ["speaker_id", "tournament_id", "debate_id"]
                         update_keys = ["role"]
-                        adjudicator["id"] = add_database_entry(db_name, adjudicator, search_keys, update_keys)
+                        add_database_entry(db_name, adjudicator, search_keys, update_keys)
 
             # Get results
             results = lookup_link(debate["url"] + "/ballots")
