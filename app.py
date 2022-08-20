@@ -947,9 +947,8 @@ def import_debates():
                             speech["score"] = int(speech["score"])
                             # Get speaker's db id
                             speech["speaker_internal_id"] = speech["speaker"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speakers/", "")
-                            speaker_internal_id = speech["speaker_internal_id"]
-                            tournament_id = tournament["id"]
-                            speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {speaker_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
+                            speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = ? AND tournament_id = ?"
+                                                              speech["speaker_internal_id"], tournament["id"])[0]["speaker_id"]
                             # Assign position
                             if i == 0:
                                 if result["side"] == "og":
@@ -980,11 +979,11 @@ def import_debates():
                             entry = speech
                             search_keys = ["debate_id", "tournament_id", "speaker_id", "position"]
                             update_keys = ["score"]
-                            result["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+                            add_database_entry(db_name, entry, search_keys, update_keys)
                     # For elimination rounds
                     else:
                         team_entry = db.execute("SELECT * FROM teams WHERE tournament_id = ? AND id = ?",
-                                                   tournament["id"], result["team_id"])
+                                                tournament["id"], result["team_id"])
                         speaker_one_id = team_entry[0]["speaker_one_id"]
                         speaker_two_id = team_entry[0]["speaker_two_id"]
                         team_speakers = [speaker_one_id, speaker_two_id]
