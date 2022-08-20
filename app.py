@@ -1126,12 +1126,12 @@ def calculate_elo():
                                "round": round_id,
                                "debate": team_performances[i]["debate_id"],
                                "initial_rating": team_performances[i]["speaker_one_rating"],
-                               "rating_adjustment": 0}
+                               "rating_change": 0}
                 speaker_two = {"speaker": team_performances[i]["speaker_two"],
                                "round": round_id,
                                "debate": team_performances[i]["debate_id"],
                                "initial_rating": team_performances[i]["speaker_two_rating"],
-                               "rating_adjustment": 0}
+                               "rating_change": 0}
                 updated_ratings.extend([speaker_one, speaker_two])
 
         # Create a set of unique debates in this round
@@ -1167,35 +1167,35 @@ def calculate_elo():
                         victors_expected_score = 1 / denominator
                         # Calculate how much the rating will be adjusted
                         expectation_deviation = 1 - victors_expected_score
-                        rating_adjustment_float = k_factor * expectation_deviation
-                        rating_adjustment = round(rating_adjustment_float)
+                        rating_change_float = k_factor * expectation_deviation
+                        rating_change = round(rating_change_float)
                         # Adjust the ratings
                         k = 0
                         for update in updated_ratings:
                             if update["speaker"] == team_performances[i]["speaker_one"]:
-                                update["rating_adjustment"] = update["rating_adjustment"] + rating_adjustment
+                                update["rating_change"] = update["rating_change"] + rating_change
                                 k = k + 1
                             if update["speaker"] == team_performances[i]["speaker_two"]:
-                                update["rating_adjustment"] = update["rating_adjustment"] + rating_adjustment
+                                update["rating_change"] = update["rating_change"] + rating_change
                                 k = k + 1
                             if update["speaker"] == team_performances[j]["speaker_one"]:
-                                update["rating_adjustment"] = update["rating_adjustment"] - rating_adjustment
+                                update["rating_change"] = update["rating_change"] - rating_change
                                 k = k + 1
                             if update["speaker"] == team_performances[j]["speaker_two"]:
-                                update["rating_adjustment"] = update["rating_adjustment"] - rating_adjustment
+                                update["rating_change"] = update["rating_change"] - rating_change
                                 k = k + 1
                         if k != 4:
                             return apology("scores not updated", 400)
 
         # Update the database
         for update in updated_ratings:
-            if update["rating_adjustment"] != 0:
+            if update["rating_change"] != 0:
                 # Add rating change to the speech database
                 db.execute("UPDATE speeches SET rating_change = ? WHERE speaker_id = ? AND debate_id = ?",
-                           update["rating_adjustment"], update["speaker"], update["debate"])
+                           update["rating_change"], update["speaker"], update["debate"])
 
                 # Change the rating in the speaker database
-                db.execute("UPDATE speakers SET rating = subquery.sum FROM (SELECT sum(rating_adjustment) FROM speeches WHERE speaker_id = ?) AS subquery WHERE id = ?",
+                db.execute("UPDATE speakers SET rating = subquery.sum FROM (SELECT sum(rating_change) FROM speeches WHERE speaker_id = ?) AS subquery WHERE id = ?",
                            update["speaker"], update["speaker"])
 
 
