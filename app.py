@@ -641,8 +641,12 @@ def speakers_success():
 @login_required
 def import_teams():
     """Get teams"""
-
-    global teams
+    
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
 
     # Ensure the teams are imported
     if teams == None:
