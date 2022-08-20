@@ -591,7 +591,7 @@ def add_speakers():
                 for instance in speaker["categories"]:
                     category = {}
                     db_name = "speakers_in_categories"
-                    category["speaker_id"] = speaker["id"]
+                    category["speaker_id"] = speaker["speaker_id"]
                     category["tournament_id"] = tournament["id"]
                     category["internal_id"] = int(instance)
                     for global_category in speaker_categories:
