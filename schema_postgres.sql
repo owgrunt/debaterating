@@ -91,6 +91,7 @@ CREATE TABLE debates (
     round_id INTEGER NOT NULL,
     internal_id INTEGER NOT NULL,
     average_rating INTEGER,
+    achievement TEXT,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(round_id) REFERENCES rounds(id) ON DELETE CASCADE
 );
