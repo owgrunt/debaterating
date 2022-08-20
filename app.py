@@ -1207,7 +1207,46 @@ def calculate_elo():
     updated_count = len(all_updated_ratings)
 
     return render_template("import/elo.html", all_updated_ratings=all_updated_ratings, updated_count=updated_count)
+    return redirect("/import/debate/success")
 
+
+@app.route("/import/debate/success", methods=["GET", "POST"])
+@login_required
+def debates_success():
+    """Show the rounds that have been added to the database"""
+
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+
+    # Get rounds
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ?",
+                       tournament["id"])
+    debates = db.execute(f"SELECT * FROM debates WHERE tournament_id = ?",
+                         tournament["id"])
+    speeches = db.execute(f"SELECT * FROM speeches WHERE tournament_id = ?",
+                          tournament["id"])
+    team_performances = db.execute(f"SELECT * FROM team_performances WHERE tournament_id = ?",
+                          tournament["id"])
+
+    for round in rounds:
+        round["debates"] = []
+        for debate in debates:
+            if debate["round_id"] == round["id"]:
+                round["debates"].append(debate)
+        for debate in round["debates"]:
+            for speech in speeches:
+                if speech["debate_id"] == debate["id"]:
+                    position = speech["position"]
+                    debate[str(position)] = speech["score"]
+            for performance in team_performances:
+                if performance["debate_id"] == debate["id"]:
+                    side = performance["side"]
+                    debate[side] = performance["score"]
+
+    return render_template("import/elo.html", rounds=rounds)
 
 @app.route("/import/speaker-scores", methods=["GET", "POST"])
 @login_required
