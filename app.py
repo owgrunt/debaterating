@@ -1349,7 +1349,7 @@ def import_best_adjudicator():
     if len(tournament) != 1:
         return apology("more than one tournaments being imported", 400)
     tournament = tournament[0]
-    
+
     if request.method == "POST":
         best_adjudicators = []
         # Get data from form 1
@@ -1383,6 +1383,19 @@ def import_best_adjudicator():
         no_adjudicator = True
 
     return render_template("import/best-adjudicator-success.html", best_adjudicators=best_adjudicators, no_adjudicator=no_adjudicator)
+
+
+@app.route("/import/success", methods=["GET", "POST"])
+@login_required
+def import_complete():
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+
+    db.execute("UPDATE tournaments SET import_complete = 1 WHERE import_complete = 0")
+    
+
 
 
 @app.route("/speakers", methods=["GET", "POST"])
