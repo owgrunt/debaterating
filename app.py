@@ -1022,7 +1022,7 @@ def import_debates():
                             entry = speech
                             search_keys = ["debate_id", "tournament_id", "speaker_id"]
                             update_keys = ["position"]
-                            speech["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+                            add_database_entry(db_name, entry, search_keys, update_keys)
 
                             # Add achievement to the database
                             if round["stage"] == "E":
@@ -1036,7 +1036,7 @@ def import_debates():
                                 entry = speech
                                 search_keys = ["tournament_id", "speaker_id"]
                                 update_keys = ["type", "name", "break_category", "debate_id"]
-                                speech["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+                                add_database_entry(db_name, entry, search_keys, update_keys)
 
                                 if round["final"] and result["win"]:
                                     speech["name"] = "победитель"
@@ -1045,7 +1045,7 @@ def import_debates():
                                     entry = speech
                                     search_keys = ["tournament_id", "type", "speaker_id"]
                                     update_keys = ["name", "break_category"]
-                                    speech["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+                                    add_database_entry(db_name, entry, search_keys, update_keys)
 
     return redirect("/import/debate/success")
 
