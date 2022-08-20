@@ -831,7 +831,7 @@ def import_debates():
 
     for round in rounds:
         # Get debates (pairings)
-        debates = lookup_link(round["_links"]["pairing"])
+        debates = lookup_link(f"https://{domain}/api/v1/tournaments/{slug}/rounds/"])
         if debates == None:
             offending_link = round["_links"]["pairing"]
             return apology(f"pairings not imported: {offending_link}", 400)
