@@ -350,7 +350,7 @@ def import_speakers():
             # Add speakers' internal ids to be able to easily connect speaker ids to the team in the future
             team["speaker_internal_ids"] = []
             for speaker in team:
-                team["speaker_internal_ids"] = team["speaker_internal_ids"] + [int(speaker["id"])]
+                team["speaker_internal_ids"].append(speaker["id"])
 
             entry = team
             search_keys = ["internal_id", "tournament_id"]
