@@ -735,8 +735,8 @@ def import_rounds():
             round["motion"] = lookup_link(round["url"])["motions"][0]["text"]
             round["info_slide"] = lookup_link(round["url"])["motions"][0]["info_slide"]
         except (KeyError, TypeError, ValueError):
-            round["motion"] = ""
-            round["info_slide"] = ""
+            round["motion"] = None
+            round["info_slide"] = None
         round["internal_id"] = round["id"]
         round["short_name"] = round["abbreviation"]
         if "break_category" in round:
@@ -752,7 +752,7 @@ def import_rounds():
             update_keys.append("motion")
         if round["info_slide"] != None:
             update_keys.append("info_slide")
-        if "break_category" in round:
+        if round["break_category"] != None:
             update_keys.append("break_category")
         round["tournament_id"] = tournament["id"]
         add_database_entry(db_name, round, search_keys, update_keys)
