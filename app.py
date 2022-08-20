@@ -710,6 +710,7 @@ def import_rounds():
     break_categories = lookup_data(tournament["domain"], tournament["slug"], "break-categories")
     for break_category in break_categories:
         break_category["internal_id"] = break_category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
+        break_category["tournament_id"] = tournament["id"]
         if break_category["is_general"] == True:
             break_category["general"] = 1
         else:
@@ -717,10 +718,11 @@ def import_rounds():
 
         # Import break category data into the db
         db_name = "break_categories"
+        entry = break_category
         search_keys = ["internal_id", "tournament_id"]
         update_keys = ["name", "general"]
         break_category["tournament_id"] = tournament["id"]
-        break_category["id"] = add_database_entry(db_name, break_category, search_keys, update_keys)
+        break_category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
     # Import round data
     rounds = lookup_data(tournament["domain"], tournament["slug"], "rounds")
@@ -766,12 +768,12 @@ def import_debates():
                 break_category["name"] = request.form.get(str(break_category["internal_id"])+"-break-category-other")
             else:
                 break_category["name"] = request.form.get(str(break_category["internal_id"])+"-break-category")
+            break_category["tournament_id"] = tournament["id"]
 
-            # Import break categories data into the db
+            # Update break categories data in the db
             db_name = "break_categories"
             search_keys = ["internal_id", "tournament_id"]
             update_keys = ["name"]
-            break_category["tournament_id"] = tournament["id"]
             break_category["id"] = add_database_entry(db_name, break_category, search_keys, update_keys)
 
         for round in rounds:
