@@ -699,14 +699,14 @@ def teams_success():
 @login_required
 def import_rounds():
     """Get rounds"""
-    # Cleanup round data
-    global rounds
-    rounds = []
+
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
 
     # Import round data
-    global tournament
-    global domain
-    global slug
     rounds = lookup_data(tournament["domain"], tournament["slug"], "rounds")
 
     # Ensure the rounds are imported
