@@ -1327,10 +1327,14 @@ def calculate_speaker_scores():
 def get_best_adjudicator():
     """Get best adjudicator(s)"""
 
-    global tournament
-    id = tournament["id"]
-    adjudicators = db.execute(f"SELECT tp.*, s.first_name, s.last_name FROM tournament_participants tp INNER JOIN speakers s ON tp.speaker_id = s.id WHERE tournament_id = ? AND role = ?",
-                              id, "adjudicator")
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+
+    adjudicators = db.execute(f"SELECT tp.*, s.first_name, s.last_name FROM tournament_participants tp INNER JOIN speakers s ON tp.speaker_id = s.id WHERE tournament_id = ? AND role = 'adjudicator'",
+                              tournament["id"])
 
     return render_template("import/best-adjudicator.html", adjudicators=adjudicators)
 
