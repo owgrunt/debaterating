@@ -1390,11 +1390,12 @@ def import_best_adjudicator():
 def import_complete():
     # Get tournament
     tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
-    if len(tournament) != 1:
+    if len(tournament) > 1:
         return apology("more than one tournaments being imported", 400)
 
     db.execute("UPDATE tournaments SET import_complete = 1 WHERE import_complete = 0")
-    
+
+    return render_template("import/success.html")
 
 
 

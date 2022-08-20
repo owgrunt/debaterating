@@ -24,53 +24,9 @@ onload="autoNotify()"
     <!-- <div>{{ adjudicators }}</div> -->
     <div class="container">
         <div class="section">
-            <form action="/import/best-adjudicator/success" method="post" class="row g-3">
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label for="1" class="form-label">Лучший судья 1</label>
-                        <select class="form-select" id="1" name="1">
-                            <option selected value="no">нет</option>
-                            {% for adjudicator in adjudicators %}
-                                <option value="{{ adjudicator["speaker_id"] }}">{{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="2" class="form-label">Лучший судья 2</label>
-                        <select class="form-select" id="2" name="2">
-                            <option selected value="no">нет</option>
-                            {% for adjudicator in adjudicators %}
-                                <option value="{{ adjudicator["speaker_id"] }}">{{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="3" class="form-label">Лучший судья 3</label>
-                        <select class="form-select" id="3" name="3">
-                            <option selected value="no">нет</option>
-                            {% for adjudicator in adjudicators %}
-                                <option value="{{ adjudicator["speaker_id"] }}">{{ adjudicator["first_name"] }} {{ adjudicator["last_name"] }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="d-flex justify-content-center">
-                        <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker-scores" role="button">Назад</a>
-                        <button class="btn btn-primary" type="submit" id="submit">Продолжить</button>
-                        <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <script>
-                            document.addEventListener('submit', function()
-                            {
-                                document.querySelector('#submit').setAttribute("disabled", "");
-                                document.querySelector('#spinner').style.display = 'block';
-                            });
-                        </script>
-                    </div>
-                </div>
-            </form>
+            <div class="d-flex justify-content-center">
+                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/" role="button">Ура!</a>
+            </div>
         </div>
     </div>
 {% endblock %}
