@@ -1085,7 +1085,7 @@ def debates_success():
             for speech in speeches:
                 if speech["debate_id"] == debate["id"]:
                     position = speech["position"]
-                    debate[position] = speech["score"]
+                    debate[str(position)] = speech["score"]
             for performance in team_performances:
                 if performance["debate_id"] == debate["id"]:
                     side = performance["side"]
