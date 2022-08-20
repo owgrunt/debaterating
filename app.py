@@ -590,6 +590,7 @@ def add_speakers():
 
             # Check that the speaker's ELO is correct
             if speaker["role"] == "speaker":
+                speeches = db.execute
                 db.execute("UPDATE speakers SET rating = 1500 + subquery.sum FROM (SELECT sum(rating_change) FROM speeches WHERE speaker_id = ?) AS subquery WHERE id = ?",
                            speaker["speaker_id"], speaker["speaker_id"])
 
