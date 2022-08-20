@@ -1195,9 +1195,8 @@ def calculate_elo():
                            update["rating_adjustment"], update["speaker"], update["debate"])
 
                 # Change the rating in the speaker database
-                new_rating = update["initial_rating"] + update["rating_adjustment"]
-                db.execute("UPDATE speakers SET rating = ? WHERE id = ? AND rating = ?",
-                           new_rating, update["speaker"], update["initial_rating"])
+                db.execute("UPDATE speakers SET rating = subquery.sum FROM (SELECT sum(rating_adjustment) FROM speeches WHERE speaker_id = ?) AS subquery WHERE id = ?",
+                           update["speaker"], update["speaker"])
 
 
         # Apparently, zero rating adjustments don't get recorded for an unknown reason, but I'm too lazy to fix it the right way
