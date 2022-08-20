@@ -609,7 +609,13 @@ def add_speakers():
                             update_keys = ["category_id"]
                             category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
 
-        # Record average speaker rating at the tournament
+        # Check that speakers' ELO is correct
+        for participant in tournament_participants:
+            if participant["role"] == "speaker":
+                db.execute("UPDATE speakers SET rating = 1500 + subquery.sum FROM (SELECT sum(rating_change) FROM speeches WHERE speaker_id = ?) AS subquery WHERE id = ?",
+                           participant["speaker_id"], participant["speaker_id"])
+
+        # Record average speaker ELO at the tournament
         tournament_id = tournament["id"]
         average_rating = db.execute(f"SELECT avg(rating) as av FROM speakers INNER JOIN tournament_participants ON speakers.id = tournament_participants.speaker_id WHERE tournament_participants.tournament_id = {tournament_id}")[0]["av"]
         average_rating = round(average_rating)
