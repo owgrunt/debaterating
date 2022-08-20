@@ -342,7 +342,17 @@ def import_speakers():
     # Import team data to show team name in the next screen. The same list will be used further in team import
     teams = lookup_data(tournament["domain"], tournament["slug"], "teams")
     for team in teams:
-        
+            # Add team to the DB
+            db_name = "teams"
+            team["tournament_id"] = tournament["id"]
+            team["name"] = team["long_name"]
+            team["internal_id"] = team["id"]
+
+            entry = team
+            search_keys = ["internal_id", "tournament_id"]
+            update_keys = ["name"]
+            add_database_entry(db_name, entry, search_keys, update_keys)
+
 
     if speakers != None:
         for participant in speakers:
@@ -374,8 +384,7 @@ def import_speakers():
             if "categories" in participant:
                 if len(participant["categories"]) > 0:
                     update_keys.append("categories")
-            # TODO Check if add_database_entry still needs a select at the end. If not, remove it and add select in other places where it's necessary
-            participant["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+            add_database_entry(db_name, entry, search_keys, update_keys)
 
         count = len(speakers)
         return render_template("import/speaker-format.html", speakers=speakers, count=count, tournament=tournament)
