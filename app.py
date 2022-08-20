@@ -1083,15 +1083,13 @@ def debates_success():
                 round["debates"].append(debate)
         for debate in round["debates"]:
             debate["speeches"] = []
-            for speech in speeches:
                 if speech["debate_id"] == debate["id"]:
-                    debate["speeches"].append(speech)
-            debate["team_performances"] = []
+                    position = speech["position"]
+                    debate[position] = speech["score"]
             for performance in team_performances:
                 if performance["debate_id"] == debate["id"]:
-                    debate["team_performances"].append(performance)
-            for performance in debate["team_performances"]:
-                
+                    side = performance["side"]
+                    debate[side] = performance["score"]
 
     return render_template("import/debate-success.html", rounds=rounds)
 
