@@ -747,7 +747,7 @@ def import_rounds():
             if round["break_category"] is not None:
                 round["break_category_internal_id"] = round["break_category"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
                 round["break_category"] = db.execute(f"SELECT id FROM break_categories WHERE tournament_id = ? AND internal_id = ?",
-                                                     tournament["id"], round["break_category_internal_id"])
+                                                     tournament["id"], round["break_category_internal_id"])[0]["id"]
         round["tournament_id"] = tournament["id"]
 
         # Import round data into the db
