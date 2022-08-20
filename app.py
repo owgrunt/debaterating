@@ -375,10 +375,6 @@ def import_speakers():
                     update_keys.append("categories")
             # TODO Check if add_database_entry still needs a select at the end. If not, remove it and add select in other places where it's necessary
             participant["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
-            # if "categories" in participant:
-            #     if len(participant["categories"]) > 0:
-            #         query = "UPDATE tournament_participants SET categories = '" + f"{{" + ",".join(participant["categories"]) + f"}}' WHERE id = " + str(participant["id"])
-            #         db.execute(query)
 
         count = len(speakers)
         return render_template("import/speaker-format.html", speakers=speakers, count=count, tournament=tournament)
