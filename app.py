@@ -347,16 +347,16 @@ def import_speakers():
             team["tournament_id"] = tournament["id"]
             team["name"] = team["long_name"]
             team["internal_id"] = team["id"]
+            # Add speakers' internal ids to be able to easily connect speaker ids to the team in the future
+            team["speaker_internal_ids"] = []
+            for speaker in team:
+                team["speaker_internal_ids"].append(speaker[id])
 
             entry = team
             search_keys = ["internal_id", "tournament_id"]
-            update_keys = ["name"]
+            update_keys = ["name", "speaker_internal_ids"]
             add_database_entry(db_name, entry, search_keys, update_keys)
-            # Add speakers' internal ids to be able to easily connect speaker ids to the team in the future
-            team_speakers = []
-            for speaker in team:
-                team_speakers.append(speaker[id])
-            
+
 
 
     if speakers != None:
