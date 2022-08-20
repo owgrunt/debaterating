@@ -92,20 +92,6 @@ def logout():
     # Redirect user to login form
     return redirect("/")
 
-
-tournament = {}
-slug = ""
-domain = ""
-speakers = []
-adjudicators = []
-speaker_name_format = ""
-adjudicator_name_format = ""
-swings = []
-teams = []
-rounds = []
-break_categories = []
-speaker_categories = []
-
 @app.route("/import", methods=["GET", "POST"])
 @login_required
 def start_import():
@@ -950,7 +936,6 @@ def import_debates():
                     add_database_entry(db_name, entry, search_keys, update_keys)
 
                     # Get speeches
-                    global speakers
                     if "speeches" in result:
                         i = 0
                         for speech in result["speeches"]:
