@@ -77,7 +77,6 @@ CREATE TABLE rounds (
     short_name TEXT NOT NULL,
     seq INTEGER NOT NULL,
     break_category INTEGER,
-    break_category_internal_id INTEGER,
     stage TEXT NOT NULL,
     motion TEXT,
     info_slide TEXT,
