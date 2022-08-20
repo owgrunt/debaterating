@@ -80,6 +80,7 @@ CREATE TABLE rounds (
     stage TEXT NOT NULL,
     motion TEXT,
     info_slide TEXT,
+    achievement TEXT,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(break_category) REFERENCES break_categories(id) ON DELETE CASCADE
 );
