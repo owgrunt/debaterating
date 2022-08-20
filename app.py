@@ -340,8 +340,9 @@ def import_speakers():
     speakers = lookup_data(tournament["domain"], tournament["slug"], "speakers")
 
     # Import team data to show team name in the next screen. The same list will be used further in team import
-    teams = []
     teams = lookup_data(tournament["domain"], tournament["slug"], "teams")
+    for team in teams:
+        
 
     if speakers != None:
         for participant in speakers:
