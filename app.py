@@ -1111,8 +1111,6 @@ def calculate_elo():
         return apology("more than one tournaments being imported", 400)
     tournament = tournament[0]
 
-    all_updated_ratings = []
-
     # Get the list of rounds
     rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
                         tournament["id"])
