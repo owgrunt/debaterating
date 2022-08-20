@@ -1225,11 +1225,11 @@ def calculate_speaker_scores():
     for speaker in speakers:
         if speaker["role"] == "speaker":
             new_average = db.execute("SELECT avg(score) FROM speeches WHERE speaker_id = ?",
-                                     speaker["id"])[0]["avg"]
+                                     speaker["speaker_id"])[0]["avg"]
             if new_average != None:
                 speaker["new_average"] = round(new_average, 2)
                 db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
-                        speaker["new_average"], speaker["id"])
+                        speaker["new_average"], speaker["speaker_id"])
 
     # Get best speaker(s)
     tournament_id = tournament["id"]
