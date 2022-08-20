@@ -706,6 +706,11 @@ def import_rounds():
         return apology("more than one tournaments being imported", 400)
     tournament = tournament[0]
 
+    # Get break categories
+    break_categories = lookup_data(tournament["domain"], tournament["slug"], "break-categories")
+    for break_category in break_categories:
+        break_category["internal_id"] = break_category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
+
     # Import round data
     rounds = lookup_data(tournament["domain"], tournament["slug"], "rounds")
 
@@ -729,12 +734,6 @@ def import_rounds():
         else:
             # Connect the break category in the db
             round["break_category_internal_id"] = round["break_category"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
-
-    # Get break categories
-    global break_categories
-    break_categories = lookup_data(tournament["domain"], tournament["slug"], "break-categories")
-    for break_category in break_categories:
-        break_category["internal_id"] = break_category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
 
     if len(rounds) > 0:
         return render_template("import/round-check.html", rounds=rounds, break_categories=break_categories)
