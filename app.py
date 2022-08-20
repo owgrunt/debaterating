@@ -722,12 +722,10 @@ def import_rounds():
         search_keys = ["internal_id", "tournament_id"]
         update_keys = ["name", "general"]
         break_category["tournament_id"] = tournament["id"]
-        break_category["id"] = add_database_entry(db_name, entry, search_keys, update_keys)
+        add_database_entry(db_name, entry, search_keys, update_keys)
 
     # Import round data
     rounds = lookup_data(tournament["domain"], tournament["slug"], "rounds")
-
-    # Ensure the rounds are imported
     if rounds == None:
         return apology("rounds not imported", 400)
 
@@ -739,14 +737,25 @@ def import_rounds():
         except (KeyError, TypeError, ValueError):
             round["motion"] = ""
             round["info_slide"] = ""
-        # Clean data
         round["internal_id"] = round["id"]
         round["short_name"] = round["abbreviation"]
-        if not round["break_category"]:
-            round["break_category_internal_id"] = ""
-        else:
-            # Connect the break category in the db
-            round["break_category_internal_id"] = round["break_category"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
+        if "break_category" in round:
+            if round["break_category"] is not None:
+                round["break_category_internal_id"] = round["break_category"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
+                round["break_category"] =
+
+        # Import round data into the db
+        db_name = "rounds"
+        search_keys = ["internal_id", "tournament_id"]
+        update_keys = ["name", "short_name", "seq", "stage"]
+        if round["motion"] != None:
+            update_keys.append("motion")
+        if round["info_slide"] != None:
+            update_keys.append("info_slide")
+        if "break_category" in round:
+            update_keys.append("break_category")
+        round["tournament_id"] = tournament["id"]
+        add_database_entry(db_name, round, search_keys, update_keys)
 
     if len(rounds) > 0:
         return render_template("import/round-check.html", rounds=rounds, break_categories=break_categories)
