@@ -1335,7 +1335,9 @@ def add_speaker():
             return render_template("admin/add-speaker-success.html", speaker=speaker)
 
     else:
-        return render_template("admin/add-speaker.html")
+        societies = db.execute(f"SELECT * FROM societies")
+
+        return render_template("admin/add-speaker.html", societies=societies)
 
 
 @app.route("/add-society", methods=["GET", "POST"])
