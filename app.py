@@ -1377,10 +1377,17 @@ def import_society_speakers():
     """Import society's speakers"""
 
     if request.method == "POST":
-        society = {}
-        society["id"] = request.form.get("id")
-        society["speakers"] = request.form.get("speakers")
-        society["speakers"] = society["speakers"].split(",")
+        society_id = request.form.get("id")
+        speakers = request.form.get("speakers").split(",")
+        speakers_updated = []
+        speakers_not_updated = []
+        for speaker_id in speakers:
+            candidates = db.execute(f"SELECT * FROM speakers WHERE id = {speaker_id}")
+            if len(candidates) != 1:
+                speakers_not_updated.append(speaker_id)
+            else:
+                db.execute(f"UPDATE speakers SET society_id = {society_id} WHERE id = {speaker_id}")
+                speakers_updated.append(speaker_id)
     else:
         societies = db.execute(f"SELECT * FROM societies")
 
