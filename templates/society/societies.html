@@ -45,7 +45,7 @@
                     $(document).ready(function () {
                         var table = $('#speakers').DataTable( {
                             columnDefs: [
-                                { orderable: false, visible: false, targets: 0 },
+                                { orderable: false, targets: 0 },
                                 { orderable: false, targets: 1 },
                                 { orderable: false, targets: 2 }
                             ],
@@ -60,24 +60,6 @@
                                 }
                             }
                         } );
-
-                        $('#speakers').on('order.dt', function () {
-                            let order = table.order();
-                            var column = table.column(0);
-                            var column1 = table.column(1);
-
-                            if (order[0][0] == 3) {
-                                // Toggle the visibility
-                                column.visible(true);
-                                column1.visible(false);
-                            }
-                            else {
-                                // Toggle the visibility
-                                column.visible(false);
-                                column1.visible(true);
-                            }
-
-                        });
                     });
                 </script>
             </div>
