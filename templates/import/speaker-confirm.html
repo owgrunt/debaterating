@@ -62,7 +62,12 @@ onload="autoNotify()"
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ speaker["internal_id"] }}-society" name="{{ speaker["internal_id"] }}-society" placeholder="Добавь ID клуба" type="number">
+                                        <select class="form-select" id="{{ speaker["internal_id"] }}-society" name="{{ speaker["internal_id"] }}-society">
+                                            <option selected disabled>Выбери клуб</option>
+                                            {% for society in societies %}
+                                                <option value="{{ society["id"] }}" {% if society["id"] == speaker["society_id"] %}selected{% endif %}>{{ society["name"] }}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
                                 </td>
                             </tr>
