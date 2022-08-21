@@ -1294,6 +1294,26 @@ def import_complete():
     return render_template("import/success.html", tournament=tournament)
 
 
+@app.route("/recalculate-elo", methods=["GET", "POST"])
+@login_required
+def recalculate_elo():
+    """Recalculate ELO for all tournaments values"""
+
+    if request.method == "POST":
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+
+    # Get the list of rounds
+    rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
+                        tournament["id"])
+    calculate_elo(rounds, tournament)
+
+    return redirect("/import/elo/success")
+
+
 
 @app.route("/speakers", methods=["GET", "POST"])
 @login_required
