@@ -7,7 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from urllib.parse import urlparse
 
-from helpers import apology, login_required, lookup_data, lookup_tournament, lookup_link, add_database_entry, split_name_by_format, calculate_elo, update_rankings, has_yo
+from helpers import apology, login_required, lookup_data, lookup_tournament, lookup_link, add_database_entry, split_name_by_format, calculate_elo, update_rankings, execute_insert, has_yo
 
 from datetime import datetime
 from operator import itemgetter
@@ -1357,6 +1357,7 @@ def add_society():
         if len(candidates) != 0:
             return apology("society already exists", 400)
         else:
+            execute_insert("societies", update_keys)
             if len(society["city"]) < 1:
                 db.execute(f"INSERT INTO societies (name, short_name) VALUES (?, ?)",
                            society["name"], society["short_name"])
