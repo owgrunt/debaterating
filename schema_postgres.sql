@@ -9,7 +9,7 @@ CREATE TABLE societies (
     short_name TEXT NOT NULL,
     city TEXT,
     rating INTEGER,
-    link TEXT
+    page TEXT
 );
 CREATE UNIQUE INDEX society_id ON societies (id);
 CREATE TABLE speakers (
