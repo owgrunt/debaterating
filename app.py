@@ -641,7 +641,7 @@ def speakers_success():
         return apology("more than one tournaments being imported", 400)
     tournament = tournament[0]
     # Get speakers
-    speakers = db.execute(f"SELECT * FROM speakers RIGHT JOIN tournament_participants ON tournament_participants.speaker_id = speakers.id WHERE tournament_participants.tournament_id = ?",
+    speakers = db.execute(f"SELECT * FROM speakers RIGHT JOIN tournament_participants ON tournament_participants.speaker_id = speakers.id WHERE tournament_participants.tournament_id = ? AND tournament_participants.role != 'convener'",
                               tournament["id"])
     return render_template("import/speaker-success.html", speakers=speakers, tournament=tournament)
 
