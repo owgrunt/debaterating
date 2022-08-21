@@ -1306,7 +1306,7 @@ def add_speaker():
     """Add a single speaker"""
 
     if request.method == "POST":
-        speaker =
+        speaker = {}
         speaker["last_name"] = request.form.get("last-name")
         speaker["first_name"] = request.form.get("first-name")
         speaker["middle_name"] = request.form.get("middle-name")
