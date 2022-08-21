@@ -1391,6 +1391,16 @@ def speaker_list():
     return render_template("speakers.html", speakers=speakers)
 
 
+@app.route("/societieties", methods=["GET", "POST"])
+@login_required
+def speaker_list():
+    """Show speaker ranking"""
+
+    speakers = db.execute("SELECT * FROM speakers ORDER BY speaker_score DESC")
+
+    return render_template("speakers.html", speakers=speakers)
+
+
 @app.route("/tournaments", methods=["GET", "POST"])
 @login_required
 def tournament_list():
