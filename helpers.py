@@ -337,22 +337,24 @@ def calculate_elo(rounds, tournament):
         db.execute(f"UPDATE speeches SET rating_change = 0 WHERE rating_change is NULL")
     return
 
-def rank_by_rating(type):
+def rank_by_rating(ranking_type):
+    speakers = db.execute("SELECT id, speaker_score, rating FROM speakers")
 
-    # Set up the new global ranking by speaker scores
-    db_speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
-    i = 1
-    previous_score = 101
-    current_ranking = 0
-    for speaker in db_speakers:
-        if speaker["speaker_score"] < previous_score:
-            current_ranking = i
-            previous_score = speaker["speaker_score"]
-        speaker["ranking_by_speaks"] = current_ranking
-        i = i + 1
+    if ranking_type == "speaker_score" or ranking_type == "both":
+        # Set up the new global ranking by speaker scores
+        speakers = sorted(speakers, key=itemgetter("speaker_score"), reverse=True)
+        i = 1
+        previous_score = 101
+        current_ranking = 0
+        for speaker in speakers:
+            if speaker["speaker_score"] < previous_score:
+                current_ranking = i
+                previous_score = speaker["speaker_score"]
+            speaker["ranking_by_speaks"] = current_ranking
+            i = i + 1
 
     # Set up the new global ranking by rating
-    db_speakers = sorted(db_speakers, key=itemgetter("rating"), reverse=True)
+    speakers = sorted(speakers, key=itemgetter("rating"), reverse=True)
     i = 1
     previous_score = 10000
     current_ranking = 0
