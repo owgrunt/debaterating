@@ -1310,7 +1310,16 @@ def add_speaker():
         speaker["last_name"] = request.form.get("last-name")
         speaker["first_name"] = request.form.get("first-name")
         speaker["middle_name"] = request.form.get("middle-name")
-        db.execute(f"UPDATE tournament_participants SET first_name = ?, last_name = ?, middle_name = ? WHERE id = ?",
+        if len(speaker["middle_name"]) < 1:
+            candidates = db.execute(f"SELECT * FROM speakers WHERE last-name = ? AND first-name = ?",
+                       speaker["last_name"], speaker["first_name"])
+        else:
+            candidates = db.execute(f"SELECT * FROM speakers WHERE last-name = ? AND first-name = ? AND middle-name = ?",
+                       speaker["last_name"], speaker["first_name"], speaker["middle_name"])
+        if len(candidates) != 0:
+            return apology("speaker already exists", 400)
+        else:
+            db.execute(f"UPDATE tournament_participants SET first_name = ?, last_name = ?, middle_name = ? WHERE id = ?",
                     speaker["first_name"], speaker["last_name"], speaker["middle_name"])
 
         return render_template("admin/add-speaker-success.html")
