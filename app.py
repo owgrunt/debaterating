@@ -216,18 +216,22 @@ def add_tournament():
             if request.form.get(f"convener-{i}"):
                 conveners.append(request.form.get(f"convener-{i}"))
 
-        for convener in conveners:
-            # Add convener as tournament participant
-            db_name = "tournament_participants"
-            participant = {}
-            participant["tournament_id"] = tournament["id"]
-            participant["speaker_id"] = convener
-            participant["role"] = "convener"
+        for convener_id in conveners:
+            candidates = db.execute(f"SELECT * FROM speakers WHERE id = {convener_id}")
+            if len(candidates) != 1:
+                return apology(f"convener id {convener_id} not found", 400)
+            else:
+                # Add convener as tournament participant
+                participant = candidates[0]
+                db_name = "tournament_participants"
+                participant["tournament_id"] = tournament["id"]
+                participant["speaker_id"] = convener_id
+                participant["role"] = "convener"
 
-            entry = participant
-            search_keys = ["speaker_id", "tournament_id"]
-            update_keys = ["role"]
-            add_database_entry(db_name, entry, search_keys, update_keys)
+                entry = participant
+                search_keys = ["speaker_id", "tournament_id"]
+                update_keys = ["role"]
+                add_database_entry(db_name, entry, search_keys, update_keys)
 
         return redirect("/import/speaker/categories")
 
