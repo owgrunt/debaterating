@@ -1401,9 +1401,17 @@ def society_list():
 def society():
     """Show society's speakers"""
 
-    speakers = db.execute("SELECT * FROM speakers ORDER BY speaker_score DESC")
+    if not request.args.get("id"):
+            return apology("must provide society id", 400)
 
-    return render_template("tournaments.html", speakers=speakers)
+    id = request.args.get("id")
+
+    society = db.execute(f"SELECT * FROM societies WHERE id = {id}")[0]
+
+    speakers = db.execute(f"SELECT * FROM speakers WHERE society_id = ? ORDER BY speaker_score DESC",
+                          society["id"])
+
+    return render_template("society.html", speakers=speakers, society=society)
 
 
 @app.route("/tournament", methods=["GET", "POST"])
