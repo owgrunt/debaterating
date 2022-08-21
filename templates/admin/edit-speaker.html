@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Добавить дебатёра
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Добавить дебатёра</h2>
+    <div class="container">
+        <div class="section">
+            <form action="/add-speaker" method="post">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Фамилия</th>
+                            <th>Имя</th>
+                            <th>Отчество</th>
+                            <th>Клуб</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="last-name" name="last-name" type="text" required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="first-name" name="first-name" type="text" required>
+                                    </div>
+
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="middle-name" name="middle-name" type="text">
+                                    </div>
+                                </td>
+                                <td>
+                                    Клуб
+                                </td>
+                            </tr>
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">Добавить</button>
+                    <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <script>
+                        document.addEventListener('submit', function()
+                        {
+                            document.querySelector('#submit').setAttribute("disabled", "");
+                            document.querySelector('#spinner').style.display = 'block';
+                        });
+                    </script>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
