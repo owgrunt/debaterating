@@ -5,37 +5,25 @@
 {% endblock %}
 
 {% block main %}
-    <h2 class="mb-5 mt-2">Рейтинг спикеров</h2>
+    <h2 class="mb-5 mt-2">Клубы</h2>
     <div class="container-md">
         <div class="row">
             <div class="col" style="text-align: left">
                 <table id="speakers" class="table table-striped" style="width:100%">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>#</th>
-                            <th>Спикер</th>
+                            <th>Клуб</th>
                             <th>ELO</th>
-                            <th>Спик</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for speaker in speakers %}
+                        {% for society in societies %}
                             <tr>
                                 <td>
-                                    {{ speaker["ranking_by_rating"] }}
+                                    <a href="/society?id={{ society["id"] }}">{{ society["name"] }}</a>
                                 </td>
                                 <td>
-                                    {{ speaker["ranking_by_speaks"] }}
-                                </td>
-                                <td>
-                                    <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</a>
-                                </td>
-                                <td>
-                                    {{ speaker["rating"] }}
-                                </td>
-                                <td>
-                                    {{ speaker["speaker_score"] }}
+                                    {{ society["rating"] }}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -44,12 +32,6 @@
                 <script>
                     $(document).ready(function () {
                         var table = $('#speakers').DataTable( {
-                            columnDefs: [
-                                { orderable: false, targets: 0 },
-                                { orderable: false, targets: 1 },
-                                { orderable: false, targets: 2 }
-                            ],
-                            order: [[3, 'desc']],
                             language: {
                                 url: '//cdn.datatables.net/plug-ins/1.12.0/i18n/ru.json',
                                 paginate: {
