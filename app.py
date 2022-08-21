@@ -1377,7 +1377,9 @@ def import_society_speakers():
     """Import society's speakers"""
 
     if request.method == "POST":
-        return
+        society = {}
+        society["id"] = request.form.get("id")
+        society["speakers"] = request.form.get("speakers")
     else:
         societies = db.execute(f"SELECT * FROM societies")
 
