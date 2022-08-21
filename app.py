@@ -1311,10 +1311,10 @@ def add_speaker():
         speaker["first_name"] = request.form.get("first-name")
         speaker["middle_name"] = request.form.get("middle-name")
         if len(speaker["middle_name"]) < 1:
-            candidates = db.execute(f"SELECT * FROM speakers WHERE last-name = ? AND first-name = ?",
+            candidates = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ?",
                        speaker["last_name"], speaker["first_name"])
         else:
-            candidates = db.execute(f"SELECT * FROM speakers WHERE last-name = ? AND first-name = ? AND middle-name = ?",
+            candidates = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ? AND middle_name = ?",
                        speaker["last_name"], speaker["first_name"], speaker["middle_name"])
         if len(candidates) != 0:
             return apology("speaker already exists", 400)
@@ -1326,13 +1326,13 @@ def add_speaker():
                 db.execute(f"INSERT INTO speakers (last_name, first_name, middle_name) VALUES (?, ?, ?)",
                            speaker["last_name"], speaker["first_name"], speaker["middle_name"])
             if len(speaker["middle_name"]) < 1:
-                speaker = db.execute(f"SELECT id FROM speakers WHERE last-name = ? AND first-name = ?",
-                                speaker["last_name"], speaker["first_name"])
+                speaker = db.execute(f"SELECT id FROM speakers WHERE last_name = ? AND first_name = ?",
+                                speaker["last_name"], speaker["first_name"])[0]
             else:
-                speaker = db.execute(f"SELECT id FROM speakers WHERE last-name = ? AND first-name = ? AND middle-name = ?",
-                                speaker["last_name"], speaker["first_name"], speaker["middle_name"])
+                speaker = db.execute(f"SELECT id FROM speakers WHERE last_name = ? AND first_name = ? AND middle_name = ?",
+                                speaker["last_name"], speaker["first_name"], speaker["middle_name"])[0]
 
-            return render_template("admin/add-speaker-success.html", speaker_id=speaker_id)
+            return render_template("admin/add-speaker-success.html", speaker=speaker)
 
     else:
         return render_template("admin/add-speaker.html")

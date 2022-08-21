@@ -25,6 +25,7 @@ onload="autoNotify()"
         <div class="section">{{ speaker["last_name"] }} {{ speaker["first_name"] }} {{ speaker["middle_name"] }}, ID {{ speaker["id"] }}</div>
         <div class="section">
             <div class="d-flex justify-content-center">
+                <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/add-speaker" role="button">Добавить ещё дебатёра</a>
                 <a class="btn btn-primary mt-2 mb-2 mx-1" href="/speaker?id={{ speaker["id"] }}" role="button" id="next">Ура!</a>
             </div>
         </div>
