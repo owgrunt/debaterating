@@ -7,7 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from urllib.parse import urlparse
 
-from helpers import apology, login_required, lookup_data, lookup_tournament, lookup_link, add_database_entry, split_name_by_format, has_yo
+from helpers import apology, login_required, lookup_data, lookup_tournament, lookup_link, add_database_entry, split_name_by_format, calculate_elo, has_yo
 
 from datetime import datetime
 from operator import itemgetter
@@ -1089,7 +1089,7 @@ def debates_success():
 
 @app.route("/import/elo", methods=["GET", "POST"])
 @login_required
-def calculate_elo():
+def update_elo():
     """Calculate and update new ELO values"""
 
     # Get tournament
@@ -1101,97 +1101,7 @@ def calculate_elo():
     # Get the list of rounds
     rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
                         tournament["id"])
-    # Make ELO calculation for all the rounds in a sequence
-    for round_instance in rounds:
-        round_id = round_instance["id"]
-        team_performances = db.execute(open("sql_get_team_performances.sql").read().replace("xxxxxx", str(tournament["id"])).replace("yyyyyy", str(round_id)))
-
-        # Set the k-factor constant
-        k_factor = 32
-
-        # Set up a list of dict with all the speakers to have their ratings adjusted
-        updated_ratings = []
-        for i in range(len(team_performances)):
-            if team_performances[i]["swing"] != 1:
-                speaker_one = {"speaker": team_performances[i]["speaker_one"],
-                               "round": round_id,
-                               "debate": team_performances[i]["debate_id"],
-                               "initial_rating": team_performances[i]["speaker_one_rating"],
-                               "rating_change": 0}
-                speaker_two = {"speaker": team_performances[i]["speaker_two"],
-                               "round": round_id,
-                               "debate": team_performances[i]["debate_id"],
-                               "initial_rating": team_performances[i]["speaker_two_rating"],
-                               "rating_change": 0}
-                updated_ratings.extend([speaker_one, speaker_two])
-
-        # Create a set of unique debates in this round
-        debates_in_round = set()
-        for performance in team_performances:
-            debates_in_round.add(performance["debate_id"])
-        # Calculate the average speaker rating in the debate
-        for debate in debates_in_round:
-            total_rating = 0
-            speakers_in_debate = 0
-            for speaker in updated_ratings:
-                if speaker["debate"] == debate:
-                    total_rating = total_rating + speaker["initial_rating"]
-                    speakers_in_debate = speakers_in_debate + 1
-            average_rating = round(total_rating/speakers_in_debate)
-            # Update the debate entry with the average rating
-            db.execute(f"UPDATE debates SET average_rating = {average_rating} WHERE id = {debate}")
-
-        # Update ratings for the round
-        for i in range(len(team_performances)):
-            # Iterate through all the other team_performances in the round
-            for j in range(len(team_performances)):
-                # Check for teams in the same debate and not swings
-                if team_performances[i]["debate_id"] == team_performances[j]["debate_id"] and team_performances[i]["swing"] != 1 and team_performances[j]["swing"] != 1 and team_performances[i]["speaker_one"] != team_performances[i]["speaker_two"] and team_performances[j]["speaker_one"] != team_performances[j]["speaker_two"]:
-                    # Only change score if team i won
-                    if team_performances[i]["score"] > team_performances[j]["score"]:
-                        # Calculate initial team ratings
-                        victor_rating = ( team_performances[i]["speaker_one_rating"] + team_performances[i]["speaker_two_rating"] ) / 2
-                        loser_rating = ( team_performances[j]["speaker_one_rating"] + team_performances[j]["speaker_two_rating"] ) / 2
-                        # Calculate victor's expected score
-                        modified_difference = (loser_rating - victor_rating) / 400
-                        denominator = 1 + pow(10, modified_difference)
-                        victors_expected_score = 1 / denominator
-                        # Calculate how much the rating will be adjusted
-                        expectation_deviation = 1 - victors_expected_score
-                        rating_change_float = k_factor * expectation_deviation
-                        rating_change = round(rating_change_float)
-                        # Adjust the ratings
-                        k = 0
-                        for update in updated_ratings:
-                            if update["speaker"] == team_performances[i]["speaker_one"]:
-                                update["rating_change"] = update["rating_change"] + rating_change
-                                k = k + 1
-                            if update["speaker"] == team_performances[i]["speaker_two"]:
-                                update["rating_change"] = update["rating_change"] + rating_change
-                                k = k + 1
-                            if update["speaker"] == team_performances[j]["speaker_one"]:
-                                update["rating_change"] = update["rating_change"] - rating_change
-                                k = k + 1
-                            if update["speaker"] == team_performances[j]["speaker_two"]:
-                                update["rating_change"] = update["rating_change"] - rating_change
-                                k = k + 1
-                        if k != 4:
-                            return apology("scores not updated", 400)
-
-        # Update the database
-        for update in updated_ratings:
-            if update["rating_change"] != 0:
-                # Add rating change to the speech database
-                db.execute("UPDATE speeches SET rating_change = ? WHERE speaker_id = ? AND debate_id = ?",
-                           update["rating_change"], update["speaker"], update["debate"])
-
-                # Change the rating in the speaker database
-                db.execute("UPDATE speakers SET rating = 1500 + subquery.sum FROM (SELECT sum(rating_change) FROM speeches WHERE speaker_id = ?) AS subquery WHERE id = ?",
-                           update["speaker"], update["speaker"])
-
-
-        # Apparently, zero rating adjustments don't get recorded for an unknown reason, but I'm too lazy to fix it the right way
-        db.execute(f"UPDATE speeches SET rating_change = 0 WHERE rating_change is NULL")
+    calculate_elo(rounds)
 
     return redirect("/import/elo/success")
 
