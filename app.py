@@ -519,6 +519,9 @@ def confirm_speakers():
         return apology("more than one tournaments being imported", 400)
     tournament = tournament[0]
 
+    # Get societies
+    societies = db.execute("SELECT * FROM societies")
+
     # Check if the speaker is already in the database
     participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
                               tournament["id"])
@@ -532,7 +535,7 @@ def confirm_speakers():
         if len(candidates) > 0:
             participant["candidates"] = candidates
 
-    return render_template("import/speaker-confirm.html", speakers=participants)
+    return render_template("import/speaker-confirm.html", speakers=participants, societies=societies)
 
 
 @app.route("/import/speaker/add", methods=["GET", "POST"])
@@ -1326,7 +1329,7 @@ def add_speaker():
             if len(speaker["society_id"]) > 0:
                 update_keys.append("society_id")
             execute_insert("speakers", speaker, update_keys)
-            
+
             if len(speaker["middle_name"]) < 1:
                 speaker = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ?",
                                 speaker["last_name"], speaker["first_name"])[0]
