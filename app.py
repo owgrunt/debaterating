@@ -1380,7 +1380,7 @@ def import_society_speakers():
         society = {}
         society["id"] = request.form.get("id")
         society["speakers"] = request.form.get("speakers")
-        split
+        society["speakers"] = society["speakers"].split(",")
     else:
         societies = db.execute(f"SELECT * FROM societies")
 
