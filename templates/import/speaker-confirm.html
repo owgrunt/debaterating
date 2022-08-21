@@ -62,7 +62,7 @@ onload="autoNotify()"
                                 </td>
                                 <td>
                                     <div>
-                                        <select class="form-select" id="{{ speaker["internal_id"] }}-society" name="{{ speaker["internal_id"] }}-society">
+                                        <select class="form-select" id="{{ speaker["internal_id"] }}-society-id" name="{{ speaker["internal_id"] }}-society-id">
                                             <option selected disabled>Выбери клуб</option>
                                             {% for society in societies %}
                                                 <option value="{{ society["id"] }}" {% if society["id"] == speaker["society_id"] %}selected{% endif %}>{{ society["name"] }}</option>
