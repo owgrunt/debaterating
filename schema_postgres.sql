@@ -7,7 +7,7 @@ CREATE TABLE societies (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     short_name TEXT NOT NULL,
-    city TEXT NOT NULL
+    city TEXT
 );
 CREATE UNIQUE INDEX society_id ON societies (id);
 CREATE TABLE speakers (
