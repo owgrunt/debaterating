@@ -230,7 +230,9 @@ def add_tournament():
 
                 entry = participant
                 search_keys = ["speaker_id", "tournament_id"]
-                update_keys = ["role"]
+                update_keys = ["role", "first_name", "last_name"]
+                if participant["middle_name"] is not None:
+                    update_keys.append("middle_name")
                 add_database_entry(db_name, entry, search_keys, update_keys)
 
         return redirect("/import/speaker/categories")
