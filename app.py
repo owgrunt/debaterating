@@ -629,7 +629,7 @@ def speakers_success():
     # Get speakers
     speakers = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
                               tournament["id"])
-    return render_template("import/speaker-success.html", speakers=speakers, tournament=tournament, teams=teams)
+    return render_template("import/speaker-success.html", speakers=speakers, tournament=tournament)
 
 
 @app.route("/import/team", methods=["GET", "POST"])
