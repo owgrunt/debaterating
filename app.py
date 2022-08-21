@@ -1301,14 +1301,15 @@ def recalculate_elo():
 
     if request.method == "POST":
         # Get tournaments
-        tournaments = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
-        if len(tournament) != 1:
-            return apology("more than one tournaments being imported", 400)
+        tournaments = db.execute("SELECT * FROM tournaments ORDER BY date")
+        if len(tournament) < 1:
+            return apology("no tournaments found", 400)
 
-        # Get the list of rounds
-        rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
-                            tournament["id"])
-        calculate_elo(rounds, tournament)
+        for tournament in tournaments:
+            # Get the list of rounds
+            rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
+                                tournament["id"])
+            calculate_elo(rounds, tournament)
 
         return render_template("admin/recalculate-elo-success.html")
 
