@@ -1411,7 +1411,7 @@ def society():
     speakers = db.execute(f"SELECT * FROM speakers WHERE society_id = ? ORDER BY speaker_score DESC",
                           society["id"])
 
-    return render_template("society.html", speakers=speakers, society=society)
+    return render_template("society/society.html", speakers=speakers, society=society)
 
 
 @app.route("/tournament", methods=["GET", "POST"])
