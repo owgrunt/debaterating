@@ -534,6 +534,9 @@ def confirm_speakers():
                                     participant["last_name"], participant["first_name"])
         if len(candidates) > 0:
             participant["candidates"] = candidates
+        if len(candidates) == 1:
+            if candidates[0]["society_id"] is not None:
+                
 
     return render_template("import/speaker-confirm.html", speakers=participants, societies=societies)
 
