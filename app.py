@@ -1404,11 +1404,11 @@ def society_list():
 @app.route("/society", methods=["GET", "POST"])
 @login_required
 def society():
-    """Show speaker ranking"""
+    """Show society's speakers"""
 
-    tournaments = db.execute("SELECT * FROM tournaments WHERE import_complete = 1 ORDER BY date DESC")
+    speakers = db.execute("SELECT * FROM speakers ORDER BY speaker_score DESC")
 
-    return render_template("tournaments.html", tournaments=tournaments)
+    return render_template("tournaments.html", speakers=speakers)
 
 
 @app.route("/tournament", methods=["GET", "POST"])
