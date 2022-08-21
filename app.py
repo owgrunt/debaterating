@@ -17,7 +17,7 @@ import subprocess
 app = Flask(__name__)
 
 # Ensure templates are auto-reloaded
-# app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # Configure session to use filesystem (instead of signed cookies)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
@@ -1381,7 +1381,7 @@ def import_complete():
 
     db.execute("UPDATE tournaments SET import_complete = 1 WHERE import_complete = 0")
 
-    return render_template("import/success.html")
+    return render_template("import/success.html", tournament=tournament)
 
 
 
