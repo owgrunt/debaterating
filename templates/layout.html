@@ -65,20 +65,22 @@
         {% endif %}
 
         <main class="container-fluid py-5 text-center">
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"><div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-              </div>
-              <div class="offcanvas-body">
-                <div class="list-group">
-                    <a class="list-group-item list-group-item-action" href="/import">Импорт</a>
-                    <a class="list-group-item list-group-item-action" href="/recalculate-elo">Пересчитать ELO</a>
-                    <a class="list-group-item list-group-item-action" href="/add-speaker">Добавить спикера</a>
-                    <a class="list-group-item list-group-item-action" href="/add-society">Добавить клуб</a>
-                    <a class="list-group-item list-group-item-action" href="/logout">Log Out</a>
+            {% if session["user_id"] %}
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"><div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Меню администратора</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-              </div>
-            </div>
+                <div class="offcanvas-body">
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action" href="/import">Импорт турнира</a>
+                        <a class="list-group-item list-group-item-action" href="/recalculate-elo">Пересчитать ELO</a>
+                        <a class="list-group-item list-group-item-action" href="/add-speaker">Добавить спикера</a>
+                        <a class="list-group-item list-group-item-action" href="/add-society">Добавить клуб</a>
+                        <a class="list-group-item list-group-item-action" href="/logout">Log Out</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
 
             {% block main %}{% endblock %}
         </main>
