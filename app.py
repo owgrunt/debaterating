@@ -1305,6 +1305,10 @@ def recalculate_elo():
         if len(tournament) < 1:
             return apology("no tournaments found", 400)
 
+        # Set everyone's ELO to 1500
+        db.execute("UPDATE speakers SET rating = 1500")
+
+        # Recalculate ELO
         for tournament in tournaments:
             # Get the list of rounds
             rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
@@ -1313,7 +1317,8 @@ def recalculate_elo():
 
         return render_template("admin/recalculate-elo-success.html")
 
-
+    else:
+        return render_template("admin/recalculate-elo.html")
 
 @app.route("/speakers", methods=["GET", "POST"])
 @login_required
