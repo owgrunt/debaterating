@@ -580,7 +580,7 @@ def add_speakers():
                 sum_rating = db.execute(f"SELECT sum(rating_change) FROM speeches WHERE speaker_id = ?", speaker["speaker_id"])[0]["sum"]
                 if sum_rating is not None:
                     sum_rating = sum_rating + 1500
-                    db.execute("UPDATE speakers SET rating = ? WHERE id = ?", speaker["speaker_id"])
+                    db.execute("UPDATE speakers SET rating = ? WHERE id = ?", sum_rating, speaker["speaker_id"])
 
             # Add speaker id to tournament participant
             db_name = "tournament_participants"
