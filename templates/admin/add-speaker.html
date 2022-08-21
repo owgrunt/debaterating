@@ -37,7 +37,14 @@
                                     </div>
                                 </td>
                                 <td>
-                                    Клуб
+                                    <div>
+                                        <select class="form-select" id="society" name="society" required>
+                                            <option selected disabled>Клуб</option>
+                                            {% for society in societies %}
+                                                <option value="{{ society["id"] }}">{{ society["name"] }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </td>
                             </tr>
                     </tbody>
