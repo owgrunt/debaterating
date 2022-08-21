@@ -1225,7 +1225,7 @@ def calculate_speaker_scores():
         return apology("more than one tournaments being imported", 400)
     tournament = tournament[0]
 
-    # Update new speaker ELO
+    # Update new speaker score
     speakers = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?", tournament["id"])
     for speaker in speakers:
         if speaker["role"] == "speaker":
@@ -1234,7 +1234,7 @@ def calculate_speaker_scores():
             if new_average != None:
                 speaker["new_average"] = round(new_average, 2)
                 db.execute("UPDATE speakers SET speaker_score = ? WHERE id = ?",
-                        speaker["new_average"], speaker["speaker_id"])
+                           speaker["new_average"], speaker["speaker_id"])
 
     # Get best speaker(s)
     tournament_id = tournament["id"]
