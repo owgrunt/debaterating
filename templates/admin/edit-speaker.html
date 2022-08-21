@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Проверка спикеров - Импорт
+{% endblock %}
+
+{% block audio %}
+onload="autoNotify()"
+{% endblock %}
+
+{% block main %}
+    <audio id="notifypop"> <!--Source the audio file. -->
+        <source src="/static/notification_sound.ogg" type="audio/ogg">
+        <source src="/static/notification_sound.mpeg" type="audio/mpeg">
+    </audio>
+    <script>
+        var popupsound = document.getElementById("notifypop");
+
+        function autoNotify() {
+        popupsound.play(); //play the audio file
+        }
+    </script>
+    <h2 class="mb-5 mt-2">Проверьте правильность определения ФИО всех участников</h2>
+    <div class="container">
+        <div class="section">
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker/format" role="button">Назад</a>
+        </div>
+        <div class="section">
+            <form action="/import/speaker/edit" method="post">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Оригинал имени</th>
+                            <th>Фамилия</th>
+                            <th>Имя</th>
+                            <th>Отчество</th>
+                            <th>Команда</th>
+                            <th>Свинг</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for speaker in speakers %}
+                            <tr>
+                                <td>
+                                    {{ speaker["internal_name"] }}
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ speaker["internal_id"] }}-last-name" name="{{ speaker["internal_id"] }}-last-name" value="{{ speaker["last_name"] }}" type="text" required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ speaker["internal_id"] }}-first-name" name="{{ speaker["internal_id"] }}-first-name" value="{{ speaker["first_name"] }}" type="text" required>
+                                    </div>
+
+                                </td>
+                                <td>
+                                    <div>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ speaker["internal_id"] }}-middle-name" name="{{ speaker["internal_id"] }}-middle-name" value="{{ speaker["middle_name"] }}" type="text">
+                                    </div>
+                                </td>
+                                <td>
+                                    {{ speaker["team_name"] }}
+                                </td>
+                                <td>
+                                    <div class="form-check-inline text-center">
+                                        <input class="form-check-input" type="checkbox" id="{{ speaker["internal_id"] }}-swing" name="{{ speaker["internal_id"] }}-swing" value="True">
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-center">
+                    <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker/format" role="button">Назад</a>
+                    <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">Продолжить</button>
+                    <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <script>
+                        document.addEventListener('submit', function()
+                        {
+                            document.querySelector('#submit').setAttribute("disabled", "");
+                            document.querySelector('#spinner').style.display = 'block';
+                        });
+                    </script>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
