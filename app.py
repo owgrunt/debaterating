@@ -463,7 +463,7 @@ def check_speakers():
                 db.execute(f"UPDATE tournament_participants SET first_name = ?, last_name = ?, middle_name = ? WHERE id = ?",
                            participant["first_name"], participant["last_name"], participant["middle_name"], participant["id"])
 
-        participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
+        participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ? AND role != 'convener'",
                                   tournament["id"])
         if len(participants) > 0:
             return render_template("import/speaker-check.html", speakers=participants)
@@ -471,7 +471,7 @@ def check_speakers():
             return apology("no participants", 400)
 
     else:
-        participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
+        participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ? AND role != 'convener'",
                                   tournament["id"])
         if len(participants) > 0:
             return render_template("import/speaker-check.html", speakers=participants)
@@ -491,7 +491,7 @@ def edit_speakers():
     tournament = tournament[0]
 
     if request.method == "POST":
-        participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
+        participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ? AND role != 'convener'",
                                   tournament["id"])
 
         # Assign first, middle and last name add internal id
@@ -529,7 +529,7 @@ def confirm_speakers():
     societies = db.execute("SELECT * FROM societies")
 
     # Check if the speaker is already in the database
-    participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
+    participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ? AND role != 'convener'",
                               tournament["id"])
     for participant in participants:
         if participant["middle_name"] != "":
@@ -559,7 +559,7 @@ def add_speakers():
     tournament = tournament[0]
 
     # Get tournament participants
-    speakers = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ?",
+    speakers = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ? AND role != 'convener'",
                               tournament["id"])
     # Get speaker_categories
     speaker_categories = db.execute(f"SELECT * FROM speaker_categories WHERE tournament_id = ?",
@@ -620,7 +620,7 @@ def add_speakers():
 
         # Record average speaker ELO at the tournament
         tournament_id = tournament["id"]
-        average_rating = db.execute(f"SELECT avg(rating) as av FROM speakers INNER JOIN tournament_participants ON speakers.id = tournament_participants.speaker_id WHERE tournament_participants.tournament_id = {tournament_id}")[0]["av"]
+        average_rating = db.execute(f"SELECT avg(rating) as av FROM speakers INNER JOIN tournament_participants ON speakers.id = tournament_participants.speaker_id WHERE tournament_participants.tournament_id = {tournament_id} AND tournament_participants.role ='speaker'")[0]["av"]
         average_rating = round(average_rating)
         db.execute(f"UPDATE tournaments SET average_rating = {average_rating} WHERE id = {tournament_id}")
 
