@@ -1319,8 +1319,12 @@ def add_speaker():
         if len(candidates) != 0:
             return apology("speaker already exists", 400)
         else:
-            db.execute(f"UPDATE tournament_participants SET first_name = ?, last_name = ?, middle_name = ? WHERE id = ?",
-                    speaker["first_name"], speaker["last_name"], speaker["middle_name"])
+            if len(speaker["middle_name"]) < 1:
+                db.execute(f"INSERT INTO speakers (last_name, first_name) VALUES (?, ?)",
+                           speaker["last_name"], speaker["first_name"])
+            else:
+                db.execute(f"INSERT INTO speakers (last_name, first_name, middle_name) VALUES (?, ?, ?)",
+                           speaker["last_name"], speaker["first_name"], speaker["middle_name"])
 
         return render_template("admin/add-speaker-success.html")
 
