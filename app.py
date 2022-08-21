@@ -1341,7 +1341,7 @@ def add_speaker():
 @app.route("/add-society", methods=["GET", "POST"])
 @login_required
 def add_society():
-    """Add a single speaker"""
+    """Add a society"""
 
     if request.method == "POST":
         society = {}
