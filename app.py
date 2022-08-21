@@ -1101,7 +1101,7 @@ def update_elo():
     # Get the list of rounds
     rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
                         tournament["id"])
-    calculate_elo(rounds)
+    calculate_elo(rounds, tournament)
 
     return redirect("/import/elo/success")
 
