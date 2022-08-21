@@ -1325,8 +1325,14 @@ def add_speaker():
             else:
                 db.execute(f"INSERT INTO speakers (last_name, first_name, middle_name) VALUES (?, ?, ?)",
                            speaker["last_name"], speaker["first_name"], speaker["middle_name"])
+            if len(speaker["middle_name"]) < 1:
+                speaker = db.execute(f"SELECT id FROM speakers WHERE last-name = ? AND first-name = ?",
+                                speaker["last_name"], speaker["first_name"])
+            else:
+                speaker = db.execute(f"SELECT id FROM speakers WHERE last-name = ? AND first-name = ? AND middle-name = ?",
+                                speaker["last_name"], speaker["first_name"], speaker["middle_name"])
 
-        return render_template("admin/add-speaker-success.html")
+            return render_template("admin/add-speaker-success.html", speaker_id=speaker_id)
 
     else:
         return render_template("admin/add-speaker.html")
