@@ -1398,7 +1398,7 @@ def society_list():
 
     societieties = db.execute("SELECT * FROM societieties ORDER BY rating DESC")
 
-    return render_template("speakers.html", societieties=societieties)
+    return render_template("societieties.html", societieties=societieties)
 
 
 @app.route("/society", methods=["GET", "POST"])
