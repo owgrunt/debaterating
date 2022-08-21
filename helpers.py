@@ -336,3 +336,5 @@ def calculate_elo(rounds, tournament):
         # Apparently, zero rating adjustments don't get recorded for an unknown reason, but I'm too lazy to fix it the right way
         db.execute(f"UPDATE speeches SET rating_change = 0 WHERE rating_change is NULL")
     return
+
+def rank_by_rating(speakers)
