@@ -1400,7 +1400,7 @@ def speaker_list():
 def tournament_list():
     """Show speaker ranking"""
 
-    tournaments = db.execute("SELECT * FROM tournaments ORDER BY date DESC")
+    tournaments = db.execute("SELECT * FROM tournaments WHERE import_complete = 1 ORDER BY date DESC")
 
     return render_template("tournaments.html", tournaments=tournaments)
 
