@@ -147,19 +147,7 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
         if not forego_search:
             update_keys = update_keys + search_keys
 
-        update_query = get_update_query(update_keys, "insert")
-        update_values = get_update_values(update_keys, entry)
-
-        add_questions = "?"
-        i = 0
-        for value in update_values:
-            if i == 0:
-                i = 1
-            else:
-                add_questions = add_questions + ", ?"
-        # Add
-        db.execute(f"INSERT INTO {type} ({update_query}) VALUES ({add_questions})",
-                    *update_values)
+        execute_insert(type, update_keys)
 
     # Search db for newly added entry
     if not forego_search:
@@ -182,7 +170,7 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
     return database_record[0]["id"]
 
 
-def execute_insert():
+def execute_insert(type, update_keys):
     update_query = get_update_query(update_keys, "insert")
     update_values = get_update_values(update_keys, entry)
 
