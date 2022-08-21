@@ -8,8 +8,7 @@ CREATE TABLE societies (
     name TEXT NOT NULL,
     short_name TEXT NOT NULL,
     city TEXT,
-    rating INTEGER,
-    ranking INTEGER
+    rating INTEGER
 );
 CREATE UNIQUE INDEX society_id ON societies (id);
 CREATE TABLE speakers (

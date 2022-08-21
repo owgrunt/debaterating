@@ -1394,11 +1394,11 @@ def speaker_list():
 @app.route("/societieties", methods=["GET", "POST"])
 @login_required
 def society_list():
-    """Show speaker ranking"""
+    """Show societieties"""
 
-    speakers = db.execute("SELECT * FROM speakers ORDER BY speaker_score DESC")
+    societieties = db.execute("SELECT * FROM societieties ORDER BY rating DESC")
 
-    return render_template("speakers.html", speakers=speakers)
+    return render_template("speakers.html", societieties=societieties)
 
 
 @app.route("/society", methods=["GET", "POST"])
