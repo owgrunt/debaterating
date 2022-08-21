@@ -1388,6 +1388,7 @@ def import_society_speakers():
             else:
                 db.execute(f"UPDATE speakers SET society_id = {society_id} WHERE id = {speaker_id}")
                 speakers_updated.append(speaker_id)
+        return render_template("admin/add-society-speakers.html", speakers_updated=speakers_updated, speakers_not_updated=speakers_not_updated, society_id=society_id)
     else:
         societies = db.execute(f"SELECT * FROM societies")
 
