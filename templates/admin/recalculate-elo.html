@@ -8,6 +8,11 @@
     <h2 class="mb-5 mt-2">Пересчитать ELO за все турниры</h2>
     <div class="container">
         <div class="section">
+            <p>Для всех спикеров будет установлен начальный ELO в 1500 очков.</p>
+            <p>Затем будет расчитан ELO за каждый добавленный турнир в порядке дат, указанных при созданнии турнира.</p>
+            <p>Операция может занять много времени.</p>
+        </div>
+        <div class="section">
             <form action="/recalculate-elo" method="post">
                 <div class="d-flex justify-content-center">
                     <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">
