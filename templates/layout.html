@@ -40,25 +40,15 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
+                    <ul class="navbar-nav me-auto mt-2">
+                        <li class="nav-item"><a class="nav-link" href="/speakers">Спикеры</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/tournaments">Турниры</a></li>
+                    </ul>
                     {% if session["user_id"] %}
-                        <ul class="navbar-nav me-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/speakers">Спикеры</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/tournaments">Турниры</a></li>
-                        </ul>
                         <ul class="navbar-nav ms-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/import">Импорт</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/recalculate-elo">Пересчитать ELO</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/add-speaker">Добавить спикера</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/add-society">Добавить клуб</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
                             <li class="nav-item">
-                                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+                                <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Меню администратора</button>
                             </li>
-                        </ul>
-                    {% else %}
-                        <ul class="navbar-nav me-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/speakers">Спикеры</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/tournaments">Турниры</a></li>
                         </ul>
                     {% endif %}
                 </div>
