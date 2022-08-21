@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Дебатёр добавлен
+    Клуб добавлен
 {% endblock %}
 
 {% block audio %}
@@ -20,13 +20,13 @@ onload="autoNotify()"
         popupsound.play(); //play the audio file
         }
     </script>
-    <h2 class="mb-5 mt-2">Дебатёр добавлен</h2>
+    <h2 class="mb-5 mt-2">Клуб добавлен</h2>
     <div class="container">
-        <div class="section">{{ speaker["last_name"] }} {{ speaker["first_name"] }} {{ speaker["middle_name"] }}, ID {{ speaker["id"] }}</div>
+        <div class="section">Название: {{ society["name"] }}, Сокращение: {{ society["short_name"] }}, Город: {{ society["city"] }}, ID {{ society["id"] }}</div>
         <div class="section">
             <div class="d-flex justify-content-center">
                 <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/add-speaker" role="button">Добавить ещё дебатёра</a>
-                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/speaker?id={{ speaker["id"] }}" role="button" id="next">Ура!</a>
+                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/society?id={{ society["id"] }}" role="button" id="next">Ура!</a>
             </div>
         </div>
     </div>

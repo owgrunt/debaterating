@@ -1338,6 +1338,44 @@ def add_speaker():
         return render_template("admin/add-speaker.html")
 
 
+@app.route("/add-society", methods=["GET", "POST"])
+@login_required
+def add_society():
+    """Add a single speaker"""
+
+    if request.method == "POST":
+        society = {}
+        society["name"] = request.form.get("name")
+        society["short_name"] = request.form.get("short-name")
+        society["city"] = request.form.get("city")
+        if len(society["city"]) < 1:
+            candidates = db.execute(f"SELECT * FROM societies WHERE name = ? AND short_name = ?",
+                                    society["name"], society["short_name"])
+        else:
+            candidates = db.execute(f"SELECT * FROM societies WHERE name = ? AND short_name = ? AND city = ?",
+                                    society["name"], society["short_name"], society["city"])
+        if len(candidates) != 0:
+            return apology("society already exists", 400)
+        else:
+            if len(society["middle_name"]) < 1:
+                db.execute(f"INSERT INTO societies (name, short_name) VALUES (?, ?)",
+                           society["name"], society["short_name"])
+            else:
+                db.execute(f"INSERT INTO societies (name, short_name, city) VALUES (?, ?, ?)",
+                           society["name"], society["short_name"], society["city"])
+            if len(society["middle_name"]) < 1:
+                society = db.execute(f"SELECT * FROM societies WHERE name = ? AND short_name = ?",
+                                     society["name"], society["short_name"])[0]
+            else:
+                society = db.execute(f"SELECT * FROM societies WHERE name = ? AND short_name = ? AND city = ?",
+                                     society["name"], society["short_name"], society["city"])[0]
+
+            return render_template("admin/add-society-success.html", society=society)
+
+    else:
+        return render_template("admin/add-society.html")
+
+
 
 """ Info Pages """
 
