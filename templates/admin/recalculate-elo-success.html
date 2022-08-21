@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    ELO - Импорт
+    ELO Пересчитано - Администратор
 {% endblock %}
 
 {% block audio %}
@@ -24,45 +24,8 @@ onload="autoNotify()"
     <div class="container">
         <div class="section">
             <div class="d-flex justify-content-center">
-                <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/debate/success" role="button">Назад</a>
-                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/import/speaker-scores" role="button" id="next">Продолжить</a>
-                <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                <script>
-                    document.querySelector('#next').addEventListener('click', function()
-                    {
-                        document.querySelector('#next').setAttribute("class", "btn btn-primary mt-2 mb-2 mx-1 disabled");
-                        document.querySelector('#spinner').style.display = 'block';
-                    });
-                </script>
+                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/speakers" role="button" id="next">Ура!</a>
             </div>
-        </div>
-        <div class="section">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID игры</th>
-                        <th>ID спикера</th>
-                        <th>Изменение рейтинга</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for instance in speeches %}
-                        <tr>
-                            <td>
-                                {{ instance["debate_id"] }}
-                            </td>
-                            <td>
-                                {{ instance["speaker_id"] }}
-                            </td>
-                            <td>
-                                {{ instance["rating_change"] }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
         </div>
     </div>
 {% endblock %}

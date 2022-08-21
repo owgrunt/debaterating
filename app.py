@@ -1302,7 +1302,7 @@ def recalculate_elo():
     if request.method == "POST":
         # Get tournaments
         tournaments = db.execute("SELECT * FROM tournaments ORDER BY date")
-        if len(tournament) < 1:
+        if len(tournaments) < 1:
             return apology("no tournaments found", 400)
 
         # Set everyone's ELO to 1500
