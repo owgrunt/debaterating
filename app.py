@@ -1348,22 +1348,18 @@ def add_society():
         society["name"] = request.form.get("name")
         society["short_name"] = request.form.get("short-name")
         society["city"] = request.form.get("city")
-        if len(society["city"]) < 1:
-            candidates = db.execute(f"SELECT * FROM societies WHERE name = ? AND short_name = ?",
-                                    society["name"], society["short_name"])
-        else:
-            candidates = db.execute(f"SELECT * FROM societies WHERE name = ? AND short_name = ? AND city = ?",
-                                    society["name"], society["short_name"], society["city"])
+        society["link"] = request.form.get("link")
+        candidates = db.execute(f"SELECT * FROM societies WHERE name = ? AND short_name = ?",
+                                society["name"], society["short_name"])
         if len(candidates) != 0:
             return apology("society already exists", 400)
         else:
-            execute_insert("societies", update_keys)
-            if len(society["city"]) < 1:
-                db.execute(f"INSERT INTO societies (name, short_name) VALUES (?, ?)",
-                           society["name"], society["short_name"])
-            else:
-                db.execute(f"INSERT INTO societies (name, short_name, city) VALUES (?, ?, ?)",
-                           society["name"], society["short_name"], society["city"])
+            update_keys = ["name", "short_name"]
+            if len(society["city"]) > 0:
+                update_keys.append("city")
+            if len(society["city"]) > 0:
+                update_keys.append("city")
+            execute_insert("societies", society, update_keys)
             society = db.execute(f"SELECT * FROM societies WHERE name = ? AND short_name = ?",
                                  society["name"], society["short_name"])[0]
 

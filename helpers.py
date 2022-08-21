@@ -147,7 +147,7 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
         if not forego_search:
             update_keys = update_keys + search_keys
 
-        execute_insert(type, update_keys)
+        execute_insert(type, entry, update_keys)
 
     # Search db for newly added entry
     if not forego_search:
@@ -170,7 +170,7 @@ def add_database_entry(type, entry, search_keys, update_keys, forego_search=Fals
     return database_record[0]["id"]
 
 
-def execute_insert(type, update_keys):
+def execute_insert(type, entry, update_keys):
     update_query = get_update_query(update_keys, "insert")
     update_values = get_update_values(update_keys, entry)
 
