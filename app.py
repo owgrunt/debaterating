@@ -1320,12 +1320,13 @@ def add_speaker():
         if len(candidates) != 0:
             return apology("speaker already exists", 400)
         else:
-            if len(speaker["middle_name"]) < 1:
-                db.execute(f"INSERT INTO speakers (last_name, first_name) VALUES (?, ?)",
-                           speaker["last_name"], speaker["first_name"])
-            else:
-                db.execute(f"INSERT INTO speakers (last_name, first_name, middle_name) VALUES (?, ?, ?)",
-                           speaker["last_name"], speaker["first_name"], speaker["middle_name"])
+            update_keys = ["last_name", "first_name"]
+            if len(speaker["middle_name"]) > 0:
+                update_keys.append("middle_name")
+            if len(speaker["society_id"]) > 0:
+                update_keys.append("society_id")
+            execute_insert("speakers", speaker, update_keys)
+            
             if len(speaker["middle_name"]) < 1:
                 speaker = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ?",
                                 speaker["last_name"], speaker["first_name"])[0]
