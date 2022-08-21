@@ -1306,22 +1306,12 @@ def add_speaker():
     """Add a single speaker"""
 
     if request.method == "POST":
-        # Get tournaments
-        tournaments = db.execute("SELECT * FROM tournaments ORDER BY date")
-        if len(tournaments) < 1:
-            return apology("no tournaments found", 400)
-
-        # Set everyone's ELO to 1500
-        db.execute("UPDATE speakers SET rating = 1500")
-
-        # Recalculate ELO
-        for tournament in tournaments:
-            # Get the list of rounds
-            rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
-                                tournament["id"])
-            calculate_elo(rounds, tournament)
-
-        update_rankings("rating")
+        speaker =
+        speaker["last_name"] = request.form.get("last-name")
+        speaker["first_name"] = request.form.get("first-name")
+        speaker["middle_name"] = request.form.get("middle-name")
+        db.execute(f"UPDATE tournament_participants SET first_name = ?, last_name = ?, middle_name = ? WHERE id = ?",
+                    speaker["first_name"], speaker["last_name"], speaker["middle_name"])
 
         return render_template("admin/add-speaker-success.html")
 
