@@ -1371,6 +1371,19 @@ def add_society():
         return render_template("admin/add-society.html")
 
 
+@app.route("/society-speakers", methods=["GET", "POST"])
+@login_required
+def import_society_speakers():
+    """Import society's speakers"""
+
+    if request.method == "POST":
+
+    else:
+        societies = db.execute(f"SELECT * FROM societies")
+
+        return render_template("society/society-speakers.html", societies=societies)
+
+
 
 """ Info Pages """
 
