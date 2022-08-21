@@ -1363,12 +1363,8 @@ def add_society():
             else:
                 db.execute(f"INSERT INTO societies (name, short_name, city) VALUES (?, ?, ?)",
                            society["name"], society["short_name"], society["city"])
-            if len(society["city"]) < 1:
-                society = db.execute(f"SELECT * FROM societies WHERE name = ? AND short_name = ?",
-                                     society["name"], society["short_name"])[0]
-            else:
-                society = db.execute(f"SELECT * FROM societies WHERE name = ? AND short_name = ? AND city = ?",
-                                     society["name"], society["short_name"], society["city"])[0]
+            society = db.execute(f"SELECT * FROM societies WHERE name = ? AND short_name = ?",
+                                 society["name"], society["short_name"])[0]
 
             return render_template("admin/add-society-success.html", society=society)
 
