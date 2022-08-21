@@ -21,32 +21,28 @@
                     <tbody>
                             <tr>
                                 <td>
-                                    {{ speaker["internal_name"] }}
-                                </td>
-                                <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="last-name" name="{{ speaker["internal_id"] }}-last-name" value="{{ speaker["last_name"] }}" type="text" required>
+                                        <input autocomplete="off" class="form-control mx-auto" id="last-name" name="last-name" type="text" required>
                                     </div>
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="first-name" name="{{ speaker["internal_id"] }}-first-name" value="{{ speaker["first_name"] }}" type="text" required>
+                                        <input autocomplete="off" class="form-control mx-auto" id="first-name" name="first-name" type="text" required>
                                     </div>
 
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="middle-name" name="{{ speaker["internal_id"] }}-middle-name" value="{{ speaker["middle_name"] }}" type="text">
+                                        <input autocomplete="off" class="form-control mx-auto" id="middle-name" name="middle-name" type="text">
                                     </div>
                                 </td>
                                 <td>
-                                    {{ speaker["team_name"] }}
+                                    Клуб
                                 </td>
                             </tr>
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-center">
-                    <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker/format" role="button">Назад</a>
                     <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">Продолжить</button>
                     <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
                         <span class="visually-hidden">Loading...</span>

@@ -1266,6 +1266,11 @@ def import_complete():
     return render_template("import/success.html", tournament=tournament)
 
 
+
+"""Admin Actions"""
+
+
+
 @app.route("/recalculate-elo", methods=["GET", "POST"])
 @login_required
 def recalculate_elo():
@@ -1288,11 +1293,46 @@ def recalculate_elo():
             calculate_elo(rounds, tournament)
 
         update_rankings("rating")
-        
+
         return render_template("admin/recalculate-elo-success.html")
 
     else:
         return render_template("admin/recalculate-elo.html")
+
+
+@app.route("/add-speaker", methods=["GET", "POST"])
+@login_required
+def add_speaker():
+    """Add a single speaker"""
+
+    if request.method == "POST":
+        # Get tournaments
+        tournaments = db.execute("SELECT * FROM tournaments ORDER BY date")
+        if len(tournaments) < 1:
+            return apology("no tournaments found", 400)
+
+        # Set everyone's ELO to 1500
+        db.execute("UPDATE speakers SET rating = 1500")
+
+        # Recalculate ELO
+        for tournament in tournaments:
+            # Get the list of rounds
+            rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
+                                tournament["id"])
+            calculate_elo(rounds, tournament)
+
+        update_rankings("rating")
+
+        return render_template("admin/add-speaker-success.html")
+
+    else:
+        return render_template("admin/add-speaker.html")
+
+
+
+""" Info Pages """
+
+
 
 @app.route("/speakers", methods=["GET", "POST"])
 @login_required
