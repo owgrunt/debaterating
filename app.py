@@ -1357,13 +1357,13 @@ def add_society():
         if len(candidates) != 0:
             return apology("society already exists", 400)
         else:
-            if len(society["middle_name"]) < 1:
+            if len(society["city"]) < 1:
                 db.execute(f"INSERT INTO societies (name, short_name) VALUES (?, ?)",
                            society["name"], society["short_name"])
             else:
                 db.execute(f"INSERT INTO societies (name, short_name, city) VALUES (?, ?, ?)",
                            society["name"], society["short_name"], society["city"])
-            if len(society["middle_name"]) < 1:
+            if len(society["city"]) < 1:
                 society = db.execute(f"SELECT * FROM societies WHERE name = ? AND short_name = ?",
                                      society["name"], society["short_name"])[0]
             else:
