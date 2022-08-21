@@ -337,7 +337,7 @@ def calculate_elo(rounds, tournament):
         db.execute(f"UPDATE speeches SET rating_change = 0 WHERE rating_change is NULL")
     return
 
-def rank_by_rating(ranking_type):
+def update_rankings(ranking_type):
     speakers = db.execute("SELECT id, speaker_score, rating FROM speakers")
 
     if ranking_type == "speaker_score" or ranking_type == "both":
@@ -352,22 +352,31 @@ def rank_by_rating(ranking_type):
                 previous_score = speaker["speaker_score"]
             speaker["ranking_by_speaks"] = current_ranking
             i = i + 1
-
-    # Set up the new global ranking by rating
-    speakers = sorted(speakers, key=itemgetter("rating"), reverse=True)
-    i = 1
-    previous_score = 10000
-    current_ranking = 0
-    for speaker in db_speakers:
-        if speaker["rating"] < previous_score:
-            current_ranking = i
-            previous_score = speaker["rating"]
-        speaker["ranking_by_rating"] = current_ranking
-        i = i + 1
+    if ranking_type == "rating" or ranking_type == "both":
+        # Set up the new global ranking by rating
+        speakers = sorted(speakers, key=itemgetter("rating"), reverse=True)
+        i = 1
+        previous_score = 10000
+        current_ranking = 0
+        for speaker in speakers:
+            if speaker["rating"] < previous_score:
+                current_ranking = i
+                previous_score = speaker["rating"]
+            speaker["ranking_by_rating"] = current_ranking
+            i = i + 1
 
     # Create a sql query
-    for speaker in db_speakers:
-        ranking_by_speaks = speaker["ranking_by_speaks"]
-        ranking_by_rating = speaker["ranking_by_rating"]
-        id = speaker["id"]
-        db.execute(f"UPDATE speakers SET ranking_by_speaks = {ranking_by_speaks}, ranking_by_rating = {ranking_by_rating} WHERE id = {id}")
+    for speaker in speakers:
+        if ranking_type == "both":
+            db.execute(f"UPDATE speakers SET ranking_by_speaks = ?, ranking_by_rating = ? WHERE id = ?",
+                       speaker["ranking_by_speaks"], speaker["ranking_by_rating"], speaker["id"])
+        elif ranking_type == "speaker_score":
+            db.execute(f"UPDATE speakers SET ranking_by_speaks = ? WHERE id = ?",
+                       speaker["ranking_by_speaks"], speaker["id"])
+        elif ranking_type == "rating":
+            db.execute(f"UPDATE speakers SET ranking_by_rating = ? WHERE id = ?",
+                       speaker["ranking_by_rating"], speaker["id"])
+        else:
+            return apology("incorrect arguments for rank_by_rating", 400)
+
+    return

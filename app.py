@@ -7,7 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from urllib.parse import urlparse
 
-from helpers import apology, login_required, lookup_data, lookup_tournament, lookup_link, add_database_entry, split_name_by_format, calculate_elo, has_yo
+from helpers import apology, login_required, lookup_data, lookup_tournament, lookup_link, add_database_entry, split_name_by_format, calculate_elo, update_rankings, has_yo
 
 from datetime import datetime
 from operator import itemgetter
@@ -1181,36 +1181,8 @@ def calculate_speaker_scores():
             update_keys = ["name"]
             add_database_entry(db_name, entry, search_keys, update_keys)
 
-    # Set up the new global ranking by speaker scores
-    db_speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
-    i = 1
-    previous_score = 101
-    current_ranking = 0
-    for speaker in db_speakers:
-        if speaker["speaker_score"] < previous_score:
-            current_ranking = i
-            previous_score = speaker["speaker_score"]
-        speaker["ranking_by_speaks"] = current_ranking
-        i = i + 1
-
-    # Set up the new global ranking by rating
-    db_speakers = sorted(db_speakers, key=itemgetter("rating"), reverse=True)
-    i = 1
-    previous_score = 10000
-    current_ranking = 0
-    for speaker in db_speakers:
-        if speaker["rating"] < previous_score:
-            current_ranking = i
-            previous_score = speaker["rating"]
-        speaker["ranking_by_rating"] = current_ranking
-        i = i + 1
-
-    # Create a sql query
-    for speaker in db_speakers:
-        ranking_by_speaks = speaker["ranking_by_speaks"]
-        ranking_by_rating = speaker["ranking_by_rating"]
-        id = speaker["id"]
-        db.execute(f"UPDATE speakers SET ranking_by_speaks = {ranking_by_speaks}, ranking_by_rating = {ranking_by_rating} WHERE id = {id}")
+    # Update global rankings by speaker scores and ELO
+    update_rankings("both")
 
     speakers = db.execute(f"SELECT * FROM speakers RIGHT JOIN tournament_participants ON speakers.id = tournament_participants.speaker_id WHERE tournament_participants.tournament_id = ?", tournament["id"])
 
