@@ -1287,6 +1287,8 @@ def recalculate_elo():
                                 tournament["id"])
             calculate_elo(rounds, tournament)
 
+        update_rankings("rating")
+        
         return render_template("admin/recalculate-elo-success.html")
 
     else:
