@@ -577,7 +577,7 @@ def add_speakers():
             if speaker["middle_name"] != "":
                 update_keys.append("middle_name")
             if speaker["society_id"] is not None:
-                update_keys.append("middle_name")
+                update_keys.append("society_id")
             if forego_search:
                 speaker["speaker_id"] = add_database_entry(db_name, entry, search_keys, update_keys, forego_search=True)
             else:
