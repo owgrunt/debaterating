@@ -337,8 +337,8 @@ def calculate_elo(rounds, tournament):
         db.execute(f"UPDATE speeches SET rating_change = 0 WHERE rating_change is NULL")
     return
 
-def rank_by_rating(type)
-    
+def rank_by_rating(type):
+
     # Set up the new global ranking by speaker scores
     db_speakers = db.execute("SELECT id, first_name, last_name, middle_name, speaker_score, rating FROM speakers ORDER BY speaker_score DESC")
     i = 1
