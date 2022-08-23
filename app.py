@@ -848,6 +848,7 @@ def import_debates():
         return apology("more than one tournaments being imported", 400)
     tournament = tournament[0]
 
+    if request.method == "POST":
     # Prepare for link cleanup
     domain = tournament["domain"]
     slug = tournament["slug"]
@@ -1074,7 +1075,7 @@ def import_debates():
                                     update_keys = ["name", "break_category"]
                                     add_database_entry(db_name, entry, search_keys, update_keys)
 
-    return redirect("/import/debate/success")
+        return redirect("/import/debate/success")
 
 
 @app.route("/import/debate/success", methods=["GET", "POST"])
