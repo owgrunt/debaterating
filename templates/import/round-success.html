@@ -74,39 +74,28 @@ onload="autoNotify()"
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-short-name" name="{{ round["internal_id"] }}-short-name" value="{{ round["short_name"] }}" type="text" required>
+                                        {{ round["short_name"] }}
                                     </div>
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-name" name="{{ round["internal_id"] }}-name" value="{{ round["name"] }}" type="text" required>
+                                        {{ round["name"] }}
                                     </div>
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-motion" name="{{ round["internal_id"] }}-motion" value="{{ round["motion"] }}" type="text">
+                                        {{ round["motion"] }}
                                     </div>
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-info-slide" name="{{ round["internal_id"] }}-info-slide" value="{{ round["info_slide"] }}" type="text">
+                                        {{ round["info_slide"] }}
                                     </div>
                                 </td>
                                 <td>
-                                    {% if round["stage"] == "E" %}
-                                        <div>
-                                            <select class="form-select" id="{{ round["internal_id"] }}-achievement" name="{{ round["internal_id"] }}-achievement" required>
-                                                <option selected disabled value="">Название достижения</option>
-                                                <option value="финалист">финалист</option>
-                                                <option value="полуфиналист">полуфиналист</option>
-                                                <option value="четвертьфиналист">четвертьфиналист</option>
-                                                <option value="октофиналист">октофиналист</option>
-                                            </select>
-                                        </div>
-                                        <div class="invalid-feedback">
-                                          Please select a valid state.
-                                        </div>
-                                    {% endif %}
+                                    <div>
+                                        {{ round["achievement"] }}
+                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}
