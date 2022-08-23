@@ -837,7 +837,7 @@ def add_rounds():
         return render_template("import/round-success.html", rounds=rounds, break_categories=break_categories)
 
 
-@app.route("/import/round-success", methods=["GET", "POST"])
+@app.route("/import/debates", methods=["GET", "POST"])
 @login_required
 def import_debates():
     """Import debates"""
