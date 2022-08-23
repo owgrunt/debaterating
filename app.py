@@ -849,7 +849,7 @@ def import_debates():
     tournament = tournament[0]
 
     round = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? AND import_complete != 1 ORDER BY seq",
-                       tournament["id"])
+                       tournament["id"])[0]
 
     # Prepare for link cleanup
     domain = tournament["domain"]
