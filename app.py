@@ -867,12 +867,14 @@ def import_debates():
                 update_keys.append("break_category")
             round["tournament_id"] = tournament["id"]
             add_database_entry(db_name, round, search_keys, update_keys)
-            
+
     # Prepare for link cleanup
     domain = tournament["domain"]
     slug = tournament["slug"]
 
     # Get debates (pairings)
+    round = rounds[0]
+    db.execute(f"UPDATE rounds SET import_complete = 0 WHERE id = )
     round_id = round["internal_id"]
     debates = lookup_link(f"https://{domain}/api/v1/tournaments/{slug}/rounds/{round_id}/pairings")
     if debates == None:
