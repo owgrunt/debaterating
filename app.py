@@ -868,13 +868,17 @@ def import_debates():
             round["tournament_id"] = tournament["id"]
             add_database_entry(db_name, round, search_keys, update_keys)
 
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? AND import_complete != 1 ORDER BY seq",
+                        tournament["id"])
+
     # Prepare for link cleanup
     domain = tournament["domain"]
     slug = tournament["slug"]
 
     # Get debates (pairings)
     round = rounds[0]
-    db.execute(f"UPDATE rounds SET import_complete = 0 WHERE id = )
+    db.execute(f"UPDATE rounds SET import_complete = 0 WHERE id = ?", round["id"])
+
     round_id = round["internal_id"]
     debates = lookup_link(f"https://{domain}/api/v1/tournaments/{slug}/rounds/{round_id}/pairings")
     if debates == None:
@@ -1095,7 +1099,14 @@ def import_debates():
                                 update_keys = ["name", "break_category"]
                                 add_database_entry(db_name, entry, search_keys, update_keys)
 
-    return redirect("/import/debate/success")
+    db.execute(f"UPDATE rounds SET import_complete = 1 WHERE id = ?", round["id"])
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? AND import_complete != 1 ORDER BY seq",
+                        tournament["id"])
+    if len(rounds) == 0:
+        return redirect("/import/debate/success")
+
+    else:
+        return redirect("/import/debates")
 
 
 @app.route("/import/debate/success", methods=["GET", "POST"])
