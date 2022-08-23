@@ -834,7 +834,7 @@ def add_rounds():
                 update_keys.append("info_slide")
             add_database_entry(db_name, round, search_keys, update_keys)
 
-        return render_template("import/round-check.html", rounds=rounds, break_categories=break_categories)
+        return render_template("import/round-success.html", rounds=rounds, break_categories=break_categories)
 
 
 @app.route("/import/round-success", methods=["GET", "POST"])
