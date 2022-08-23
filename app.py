@@ -1100,7 +1100,7 @@ def import_debates():
                                 add_database_entry(db_name, entry, search_keys, update_keys)
 
     db.execute(f"UPDATE rounds SET import_complete = 1 WHERE id = ?", round["id"])
-    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? AND import_complete != 1 ORDER BY seq",
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? AND import_complete is null ORDER BY seq",
                         tournament["id"])
     if len(rounds) == 0:
         return redirect("/import/debate/success")
