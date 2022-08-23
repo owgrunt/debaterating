@@ -853,7 +853,17 @@ def import_debates():
 
     for round in rounds:
         if round["import_complete"] == 0:
-            db.execute(")
+            db.execute(f"DELETE FROM rounds where id = ?", round["id"])
+
+            # Re-Import round data into the db
+            db_name = "rounds"
+            search_keys = ["internal_id", "tournament_id"]
+            update_keys = ["name", "short_name", "achievement"]
+            if round["motion"] != "None" and round["motion"] != None:
+                update_keys.append("motion")
+            if round["info_slide"] != "None" and round["info_slide"] != None:
+                update_keys.append("info_slide")
+            add_database_entry(db_name, round, search_keys, update_keys)
     # Prepare for link cleanup
     domain = tournament["domain"]
     slug = tournament["slug"]
