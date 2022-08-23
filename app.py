@@ -780,7 +780,7 @@ def import_rounds():
 
 @app.route("/import/round-success", methods=["GET", "POST"])
 @login_required
-def import_debates():
+def add_rounds():
     """Import debates"""
 
     # Get tournament
@@ -833,6 +833,14 @@ def import_debates():
             if round["info_slide"] != "None" and round["info_slide"] != None:
                 update_keys.append("info_slide")
             add_database_entry(db_name, round, search_keys, update_keys)
+
+        return render_template("import/round-check.html", rounds=rounds, break_categories=break_categories)
+
+
+@app.route("/import/round-success", methods=["GET", "POST"])
+@login_required
+def import_debates():
+    """Import debates"""
 
     # Prepare for link cleanup
     domain = tournament["domain"]
