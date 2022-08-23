@@ -778,7 +778,7 @@ def import_rounds():
         return apology("something went wrong", 400)
 
 
-@app.route("/import/debates", methods=["GET", "POST"])
+@app.route("/import/round-success", methods=["GET", "POST"])
 @login_required
 def import_debates():
     """Import debates"""
