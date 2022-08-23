@@ -1121,7 +1121,7 @@ def debates_success():
     tournament = tournament[0]
 
     # Get rounds
-    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ?",
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? ORDER BY seq",
                        tournament["id"])
     debates = db.execute(f"SELECT * FROM debates WHERE tournament_id = ?",
                          tournament["id"])
