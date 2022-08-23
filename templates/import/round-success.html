@@ -31,9 +31,8 @@ onload="autoNotify()"
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 25%">#</th>
-                            <th style="width: 25%">Название в системе</th>
-                            <th colspan="2" style="width: 50%">Название</th>
+                            <th>#</th>
+                            <th>Название</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,22 +43,6 @@ onload="autoNotify()"
                                 </td>
                                 <td>
                                     {{ break_category["name"] }}
-                                </td>
-                                <td>
-                                    <select class="form-select" id="{{ break_category["internal_id"] }}-break-category" name="{{ break_category["internal_id"] }}-break-category">
-                                        <option value="open" selected>открытый</option>
-                                        <option value="novice">новичковый</option>
-                                        <option value="other">другой</option>
-                                    </select>
-                                </td>
-                                <td style="display: none;" id="{{ break_category["internal_id"] }}-hide">
-                                    <input autocomplete="off" class="form-control mx-auto" id="{{ break_category["internal_id"] }}-break-category-other" name="{{ break_category["internal_id"] }}-break-category-other" value="{{ break_category["name"] }}" type="text">
-                                    <script>
-                                        document.getElementById('{{ break_category["internal_id"] }}-break-category').addEventListener('change', function () {
-                                            var style = this.value == "other" ? 'block' : 'none';
-                                            document.getElementById('{{ break_category["internal_id"] }}-hide').style.display = style;
-                                        });
-                                    </script>
                                 </td>
                             </tr>
                         {% endfor %}
