@@ -868,7 +868,7 @@ def import_debates():
             round["tournament_id"] = tournament["id"]
             add_database_entry(db_name, round, search_keys, update_keys)
 
-    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? AND import_complete != 1 ORDER BY seq",
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? AND import_complete IS null ORDER BY seq",
                         tournament["id"])
 
     # Prepare for link cleanup
