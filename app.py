@@ -848,234 +848,234 @@ def import_debates():
         return apology("more than one tournaments being imported", 400)
     tournament = tournament[0]
 
-    if request.method == "POST":
+    rounds = db.execute("SELECT * FROM rounds WHERE import_complete = 0")
+
     # Prepare for link cleanup
     domain = tournament["domain"]
     slug = tournament["slug"]
 
-    for round in rounds:
-        # Get debates (pairings)
-        round_id = round["internal_id"]
-        debates = lookup_link(f"https://{domain}/api/v1/tournaments/{slug}/rounds/{round_id}/pairings")
-        if debates == None:
-            offending_link = round["_links"]["pairing"]
-            return apology(f"pairings not imported: {offending_link}", 400)
-        for debate in debates:
-            # Populate the entry before we import it into the db
-            debate["internal_id"] = debate["id"]
-            debate["round_id"] = round["id"]
-            debate["tournament_id"] = tournament["id"]
+    # Get debates (pairings)
+    round_id = round["internal_id"]
+    debates = lookup_link(f"https://{domain}/api/v1/tournaments/{slug}/rounds/{round_id}/pairings")
+    if debates == None:
+        offending_link = round["_links"]["pairing"]
+        return apology(f"pairings not imported: {offending_link}", 400)
+    for debate in debates:
+        # Populate the entry before we import it into the db
+        debate["internal_id"] = debate["id"]
+        debate["round_id"] = round["id"]
+        debate["tournament_id"] = tournament["id"]
 
-            # Import debate data into the db
-            db_name = "debates"
-            search_keys = ["internal_id", "tournament_id"]
-            update_keys = ["round_id"]
-            debate["id"] = add_database_entry(db_name, debate, search_keys, update_keys)
-            # TODO need to put select debate["id"] here if I remove it in add_database_entry
+        # Import debate data into the db
+        db_name = "debates"
+        search_keys = ["internal_id", "tournament_id"]
+        update_keys = ["round_id"]
+        debate["id"] = add_database_entry(db_name, debate, search_keys, update_keys)
+        # TODO need to put select debate["id"] here if I remove it in add_database_entry
 
-            # Import judges
-            if "adjudicators" in debate:
-                # Prepare data
-                adjudicator = {}
-                adjudicator["debate_id"] = debate["id"]
-                adjudicator["tournament_id"] = tournament["id"]
-                # Get adjudicator's db id
-                adjudicator["internal_id"] = debate["adjudicators"]["chair"].replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
-                adjudicator_internal_id = adjudicator["internal_id"]
-                tournament_id = tournament["id"]
-                adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
-                adjudicator["role"] = "chair"
+        # Import judges
+        if "adjudicators" in debate:
+            # Prepare data
+            adjudicator = {}
+            adjudicator["debate_id"] = debate["id"]
+            adjudicator["tournament_id"] = tournament["id"]
+            # Get adjudicator's db id
+            adjudicator["internal_id"] = debate["adjudicators"]["chair"].replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
+            adjudicator_internal_id = adjudicator["internal_id"]
+            tournament_id = tournament["id"]
+            adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
+            adjudicator["role"] = "chair"
 
-                # Import adjudication instance into the db
-                db_name = "adjudications"
-                search_keys = ["speaker_id", "tournament_id", "debate_id"]
-                update_keys = ["role"]
-                add_database_entry(db_name, adjudicator, search_keys, update_keys)
+            # Import adjudication instance into the db
+            db_name = "adjudications"
+            search_keys = ["speaker_id", "tournament_id", "debate_id"]
+            update_keys = ["role"]
+            add_database_entry(db_name, adjudicator, search_keys, update_keys)
 
-                if "panellists" in debate["adjudicators"]:
-                    for panellist in debate["adjudicators"]["panellists"]:
-                        adjudicator["internal_id"] = panellist.replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
-                        adjudicator_internal_id = adjudicator["internal_id"]
-                        adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
-                        adjudicator["role"] = "panellist"
+            if "panellists" in debate["adjudicators"]:
+                for panellist in debate["adjudicators"]["panellists"]:
+                    adjudicator["internal_id"] = panellist.replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
+                    adjudicator_internal_id = adjudicator["internal_id"]
+                    adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
+                    adjudicator["role"] = "panellist"
 
-                        # Import adjudication instance into the db
-                        db_name = "adjudications"
-                        search_keys = ["speaker_id", "tournament_id", "debate_id"]
-                        update_keys = ["role"]
-                        add_database_entry(db_name, adjudicator, search_keys, update_keys)
+                    # Import adjudication instance into the db
+                    db_name = "adjudications"
+                    search_keys = ["speaker_id", "tournament_id", "debate_id"]
+                    update_keys = ["role"]
+                    add_database_entry(db_name, adjudicator, search_keys, update_keys)
 
-                if "trainees" in debate["adjudicators"]:
-                    for trainee in debate["adjudicators"]["trainees"]:
-                        adjudicator["internal_id"] = trainee.replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
-                        adjudicator_internal_id = adjudicator["internal_id"]
-                        adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
-                        adjudicator["role"] = "trainee"
+            if "trainees" in debate["adjudicators"]:
+                for trainee in debate["adjudicators"]["trainees"]:
+                    adjudicator["internal_id"] = trainee.replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
+                    adjudicator_internal_id = adjudicator["internal_id"]
+                    adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
+                    adjudicator["role"] = "trainee"
 
-                        # Import adjudication instance into the db
-                        db_name = "adjudications"
-                        search_keys = ["speaker_id", "tournament_id", "debate_id"]
-                        update_keys = ["role"]
-                        add_database_entry(db_name, adjudicator, search_keys, update_keys)
+                    # Import adjudication instance into the db
+                    db_name = "adjudications"
+                    search_keys = ["speaker_id", "tournament_id", "debate_id"]
+                    update_keys = ["role"]
+                    add_database_entry(db_name, adjudicator, search_keys, update_keys)
 
-            # Get results
-            results = lookup_link(debate["url"] + "/ballots")
-            # Get to the team result
-            if results is None:
-                return apology(f"tabmaster needs to publish ballots", 400)
-            else:
-                results = results[0]["result"]["sheets"][0]["teams"]
-                # Check if this is a final
-                if round["stage"] == "E":
-                    winners = 0
-                    for result in results:
-                        if result["win"] == True:
-                            winners = winners + 1
-                    if winners == 1:
-                        round["final"] = True
-                    else:
-                        round["final"] = False
+        # Get results
+        results = lookup_link(debate["url"] + "/ballots")
+        # Get to the team result
+        if results is None:
+            return apology(f"tabmaster needs to publish ballots", 400)
+        else:
+            results = results[0]["result"]["sheets"][0]["teams"]
+            # Check if this is a final
+            if round["stage"] == "E":
+                winners = 0
                 for result in results:
-                    # Prepare data for import
-                    result["tournament_id"] = tournament["id"]
-                    result["debate_id"] = debate["id"]
-                    # Get team id from db
-                    result["team_id"] = result["team"].replace(f"https://{domain}/api/v1/tournaments/{slug}/teams/", "")
-                    result["team_id"] = db.execute("SELECT id FROM teams WHERE internal_id = ? AND tournament_id = ?",
-                                                   result["team_id"], result["tournament_id"])[0]["id"]
-                    # Check that team is there
-                    if not result["team_id"]:
-                        id = debate["id"]
-                        round_seq = round["seq"]
-                        return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
+                    if result["win"] == True:
+                        winners = winners + 1
+                if winners == 1:
+                    round["final"] = True
+                else:
+                    round["final"] = False
+            for result in results:
+                # Prepare data for import
+                result["tournament_id"] = tournament["id"]
+                result["debate_id"] = debate["id"]
+                # Get team id from db
+                result["team_id"] = result["team"].replace(f"https://{domain}/api/v1/tournaments/{slug}/teams/", "")
+                result["team_id"] = db.execute("SELECT id FROM teams WHERE internal_id = ? AND tournament_id = ?",
+                                                result["team_id"], result["tournament_id"])[0]["id"]
+                # Check that team is there
+                if not result["team_id"]:
+                    id = debate["id"]
+                    round_seq = round["seq"]
+                    return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
 
-                    # Assign points
-                    if not result["points"]:
-                        if result["win"] == True:
-                            result["score"] = 3
+                # Assign points
+                if not result["points"]:
+                    if result["win"] == True:
+                        result["score"] = 3
+                    else:
+                        result["score"] = 0
+                else:
+                    result["score"] = result["points"]
+
+                # Import result data into the db
+                db_name = "team_performances"
+                entry = result
+                search_keys = ["debate_id", "tournament_id", "team_id"]
+                update_keys = ["side", "score"]
+                add_database_entry(db_name, entry, search_keys, update_keys)
+
+                # Get speeches
+                if "speeches" in result:
+                    i = 0
+                    for speech in result["speeches"]:
+                        # Add and clean speech data
+                        speech["tournament_id"] = tournament["id"]
+                        speech["debate_id"] = debate["id"]
+                        speech["score"] = int(speech["score"])
+                        # Get speaker's db id
+                        speech["speaker_internal_id"] = speech["speaker"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speakers/", "")
+                        speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = ? AND tournament_id = ?",
+                                                            speech["speaker_internal_id"], tournament["id"])[0]["speaker_id"]
+                        # Assign position
+                        if i == 0:
+                            if result["side"] == "og":
+                                speech["position"] = "1"
+                            elif result["side"] == "oo":
+                                speech["position"] = "2"
+                            elif result["side"] == "cg":
+                                speech["position"] = "5"
+                            elif result["side"] == "co":
+                                speech["position"] = "6"
+                            else:
+                                return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
+                            i = 1
                         else:
-                            result["score"] = 0
-                    else:
-                        result["score"] = result["points"]
-
-                    # Import result data into the db
-                    db_name = "team_performances"
-                    entry = result
-                    search_keys = ["debate_id", "tournament_id", "team_id"]
-                    update_keys = ["side", "score"]
-                    add_database_entry(db_name, entry, search_keys, update_keys)
-
-                    # Get speeches
-                    if "speeches" in result:
-                        i = 0
-                        for speech in result["speeches"]:
-                            # Add and clean speech data
-                            speech["tournament_id"] = tournament["id"]
-                            speech["debate_id"] = debate["id"]
-                            speech["score"] = int(speech["score"])
-                            # Get speaker's db id
-                            speech["speaker_internal_id"] = speech["speaker"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speakers/", "")
-                            speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = ? AND tournament_id = ?",
-                                                              speech["speaker_internal_id"], tournament["id"])[0]["speaker_id"]
-                            # Assign position
-                            if i == 0:
-                                if result["side"] == "og":
-                                    speech["position"] = "1"
-                                elif result["side"] == "oo":
-                                    speech["position"] = "2"
-                                elif result["side"] == "cg":
-                                    speech["position"] = "5"
-                                elif result["side"] == "co":
-                                    speech["position"] = "6"
-                                else:
-                                    return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
-                                i = 1
+                            if result["side"] == "og":
+                                speech["position"] = "3"
+                            elif result["side"] == "oo":
+                                speech["position"] = "4"
+                            elif result["side"] == "cg":
+                                speech["position"] = "7"
+                            elif result["side"] == "co":
+                                speech["position"] = "8"
                             else:
-                                if result["side"] == "og":
-                                    speech["position"] = "3"
-                                elif result["side"] == "oo":
-                                    speech["position"] = "4"
-                                elif result["side"] == "cg":
-                                    speech["position"] = "7"
-                                elif result["side"] == "co":
-                                    speech["position"] = "8"
-                                else:
-                                    return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
+                                return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
 
-                            # Import speech data into the db
-                            db_name = "speeches"
-                            entry = speech
-                            search_keys = ["debate_id", "tournament_id", "speaker_id", "position"]
-                            update_keys = ["score"]
-                            add_database_entry(db_name, entry, search_keys, update_keys)
-                    # For elimination rounds
-                    else:
-                        team_entry = db.execute("SELECT * FROM teams WHERE tournament_id = ? AND id = ?",
-                                                tournament["id"], result["team_id"])
-                        speaker_one_id = team_entry[0]["speaker_one_id"]
-                        speaker_two_id = team_entry[0]["speaker_two_id"]
-                        team_speakers = [speaker_one_id, speaker_two_id]
-                        for i in range(len(team_speakers)):
-                            speech = {}
-                            speech["tournament_id"] = tournament["id"]
-                            speech["debate_id"] = debate["id"]
-                            speech["speaker_id"] = team_speakers[i]
-                            # Assign position
-                            if i == 0:
-                                if result["side"] == "og":
-                                    speech["position"] = "1"
-                                elif result["side"] == "oo":
-                                    speech["position"] = "2"
-                                elif result["side"] == "cg":
-                                    speech["position"] = "5"
-                                elif result["side"] == "co":
-                                    speech["position"] = "6"
-                                else:
-                                    return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
-                                i = 1
+                        # Import speech data into the db
+                        db_name = "speeches"
+                        entry = speech
+                        search_keys = ["debate_id", "tournament_id", "speaker_id", "position"]
+                        update_keys = ["score"]
+                        add_database_entry(db_name, entry, search_keys, update_keys)
+                # For elimination rounds
+                else:
+                    team_entry = db.execute("SELECT * FROM teams WHERE tournament_id = ? AND id = ?",
+                                            tournament["id"], result["team_id"])
+                    speaker_one_id = team_entry[0]["speaker_one_id"]
+                    speaker_two_id = team_entry[0]["speaker_two_id"]
+                    team_speakers = [speaker_one_id, speaker_two_id]
+                    for i in range(len(team_speakers)):
+                        speech = {}
+                        speech["tournament_id"] = tournament["id"]
+                        speech["debate_id"] = debate["id"]
+                        speech["speaker_id"] = team_speakers[i]
+                        # Assign position
+                        if i == 0:
+                            if result["side"] == "og":
+                                speech["position"] = "1"
+                            elif result["side"] == "oo":
+                                speech["position"] = "2"
+                            elif result["side"] == "cg":
+                                speech["position"] = "5"
+                            elif result["side"] == "co":
+                                speech["position"] = "6"
                             else:
-                                if result["side"] == "og":
-                                    speech["position"] = "3"
-                                elif result["side"] == "oo":
-                                    speech["position"] = "4"
-                                elif result["side"] == "cg":
-                                    speech["position"] = "7"
-                                elif result["side"] == "co":
-                                    speech["position"] = "8"
-                                else:
-                                    return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
+                                return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
+                            i = 1
+                        else:
+                            if result["side"] == "og":
+                                speech["position"] = "3"
+                            elif result["side"] == "oo":
+                                speech["position"] = "4"
+                            elif result["side"] == "cg":
+                                speech["position"] = "7"
+                            elif result["side"] == "co":
+                                speech["position"] = "8"
+                            else:
+                                return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
 
-                            # Import speech data into the db
-                            db_name = "speeches"
+                        # Import speech data into the db
+                        db_name = "speeches"
+                        entry = speech
+                        search_keys = ["debate_id", "tournament_id", "speaker_id"]
+                        update_keys = ["position"]
+                        add_database_entry(db_name, entry, search_keys, update_keys)
+
+                        # Add achievement to the database
+                        if round["stage"] == "E":
+                            # Use the speech dict because I'm lazy
+                            speech["type"] = "team"
+                            speech["name"] = round["achievement"]
+                            speech["break_category"] = round["break_category"]
+
+                            # Import achievement data into the db
+                            db_name = "achievements"
                             entry = speech
-                            search_keys = ["debate_id", "tournament_id", "speaker_id"]
-                            update_keys = ["position"]
+                            search_keys = ["tournament_id", "speaker_id"]
+                            update_keys = ["type", "name", "break_category", "debate_id"]
                             add_database_entry(db_name, entry, search_keys, update_keys)
 
-                            # Add achievement to the database
-                            if round["stage"] == "E":
-                                # Use the speech dict because I'm lazy
-                                speech["type"] = "team"
-                                speech["name"] = round["achievement"]
-                                speech["break_category"] = round["break_category"]
-
+                            if round["final"] and result["win"]:
+                                speech["name"] = "победитель"
                                 # Import achievement data into the db
                                 db_name = "achievements"
                                 entry = speech
-                                search_keys = ["tournament_id", "speaker_id"]
-                                update_keys = ["type", "name", "break_category", "debate_id"]
+                                search_keys = ["tournament_id", "type", "speaker_id"]
+                                update_keys = ["name", "break_category"]
                                 add_database_entry(db_name, entry, search_keys, update_keys)
 
-                                if round["final"] and result["win"]:
-                                    speech["name"] = "победитель"
-                                    # Import achievement data into the db
-                                    db_name = "achievements"
-                                    entry = speech
-                                    search_keys = ["tournament_id", "type", "speaker_id"]
-                                    update_keys = ["name", "break_category"]
-                                    add_database_entry(db_name, entry, search_keys, update_keys)
-
-        return redirect("/import/debate/success")
+    return redirect("/import/debate/success")
 
 
 @app.route("/import/debate/success", methods=["GET", "POST"])
