@@ -21,103 +21,89 @@ onload="autoNotify()"
         }
     </script>
     <h2 class="mb-5 mt-2">Брейки и раунды импортированы</h2>
-    <form action="/import/debates" method="post" class="needs-validation" novalidate>
-        <div class="container">
-            <div class="section">
-                <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/round-check" role="button">Назад</a>
-            </div>
-            <div class="section">
-                <h3>Виды брейка</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Название</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for break_category in break_categories %}
-                            <tr>
-                                <td>
-                                    {{ break_category["internal_id"] }}
-                                </td>
-                                <td>
-                                    {{ break_category["name"] }}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="section">
-                <h3>Раунды</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 2%">#</th>
-                            <th style="width: 4%">Категория брейка</th>
-                            <th style="width: 4%">Краткое название</th>
-                            <th style="width: 15%">Название</th>
-                            <th style="width: 30%">Тема</th>
-                            <th style="width: 30%">Инфослайд</th>
-                            <th style="width: 15%">Достижение</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for round in rounds %}
-                            <tr>
-                                <td>
-                                    {{ round["seq"] }}
-                                </td>
-                                <td>
-                                    {{ round["break_category_internal_id"] }}
-                                </td>
-                                <td>
-                                    <div>
-                                        {{ round["short_name"] }}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        {{ round["name"] }}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        {{ round["motion"] }}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        {{ round["info_slide"] }}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        {{ round["achievement"] }}
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="d-flex justify-content-center">
+    <div class="container">
+        <div class="section">
             <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/round-check" role="button">Назад</a>
-            <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">
-                Продолжить
-            </button>
-            <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <script>
-                document.addEventListener('submit', function()
-                {
-                    document.querySelector('#submit').setAttribute("disabled", "");
-                    document.querySelector('#spinner').style.display = 'block';
-                });
-            </script>
         </div>
-    </form>
+        <div class="section">
+            <h3>Виды брейка</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Название</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for break_category in break_categories %}
+                        <tr>
+                            <td>
+                                {{ break_category["internal_id"] }}
+                            </td>
+                            <td>
+                                {{ break_category["name"] }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="section">
+            <h3>Раунды</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 2%">#</th>
+                        <th style="width: 4%">Категория брейка</th>
+                        <th style="width: 4%">Краткое название</th>
+                        <th style="width: 15%">Название</th>
+                        <th style="width: 30%">Тема</th>
+                        <th style="width: 30%">Инфослайд</th>
+                        <th style="width: 15%">Достижение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for round in rounds %}
+                        <tr>
+                            <td>
+                                {{ round["seq"] }}
+                            </td>
+                            <td>
+                                {{ round["break_category_internal_id"] }}
+                            </td>
+                            <td>
+                                <div>
+                                    {{ round["short_name"] }}
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ round["name"] }}
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ round["motion"] }}
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ round["info_slide"] }}
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ round["achievement"] }}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/round-check" role="button">Назад</a>
+        <a class="btn btn-primary mt-2 mb-2 mx-1" href="/import/debates" role="button">Продолжить</a>
+    </div>
 {% endblock %}

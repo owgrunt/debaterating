@@ -842,6 +842,12 @@ def add_rounds():
 def import_debates():
     """Import debates"""
 
+    # Get tournament
+    tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+    if len(tournament) != 1:
+        return apology("more than one tournaments being imported", 400)
+    tournament = tournament[0]
+
     # Prepare for link cleanup
     domain = tournament["domain"]
     slug = tournament["slug"]
