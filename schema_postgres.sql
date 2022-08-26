@@ -109,6 +109,7 @@ CREATE TABLE speeches (
     score INTEGER,
     rating_change INTEGER DEFAULT 0,
     position INTEGER NOT NULL,
+    ironman INTEGER DEFAULT 0,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(speaker_id) REFERENCES speakers(id),
     FOREIGN KEY(debate_id) REFERENCES debates(id) ON DELETE CASCADE
