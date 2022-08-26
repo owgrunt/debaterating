@@ -52,7 +52,7 @@ onload="autoNotify()"
                                 </td>
                                 <td>
                                     <div>
-                                        <a class="btn btn-secondary" role="button" id="{{ speaker["internal_id"] }}-switch" href="#">↔</a>
+                                        <a class="btn btn-secondary" role="button" id="{{ speaker["internal_id"] }}-switch" onclick="function(){document.querySelector('#{{ speaker["internal_id"] }}-switch').setAttribute("class", "btn btn-primary");}">↔</a>
                                         <script>
                                             document.querySelector('#{{ speaker["internal_id"] }}-switch').addEventListener('click', function()
                                             {
