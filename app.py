@@ -848,7 +848,7 @@ def import_debates():
         return apology("more than one tournaments being imported", 400)
     tournament = tournament[0]
 
-    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? AND import_complete != 1 ORDER BY seq",
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? ORDER BY seq",
                        tournament["id"])
 
     for round in rounds:
