@@ -1086,11 +1086,12 @@ def import_debates():
                             else:
                                 return apology(f"team in debate {id}, round {round_seq} does not have a correct side", 400)
 
+                        speech["team_id"] = result["team_id"]
                         # Import speech data into the db
                         db_name = "speeches"
                         entry = speech
                         search_keys = ["debate_id", "tournament_id", "speaker_id"]
-                        update_keys = ["position"]
+                        update_keys = ["position", "team_id"]
                         add_database_entry(db_name, entry, search_keys, update_keys)
 
                         # Add achievement to the database
