@@ -1840,8 +1840,8 @@ def speaker():
                                 id, "speaker")
 
     if speaker["society_id"] is not None:
-        
-    return render_template("speaker/speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq, round_seq=round_seq, participations=participations, achievements=achievements, adjudications=adjudications)
+        society = db.execute(f"SELECT * FROM societies WHERE id = ?", speaker["society_id"])
+    return render_template("speaker/speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq, round_seq=round_seq, participations=participations, achievements=achievements, adjudications=adjudications, society=society)
 
 
 @app.route("/achievements", methods=["GET", "POST"])
