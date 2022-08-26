@@ -23,8 +23,19 @@ onload="autoNotify()"
     <h2 class="mb-5 mt-2">Брейки и раунды</h2>
     <form action="/import/round-success" method="post" class="needs-validation" novalidate>
         <div class="container">
-            <div class="section">
+            <div class="d-flex justify-content-center">
                 <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
+                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/import/best-adjudicator" role="button" id="next">Продолжить</a>
+                <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <script>
+                    document.querySelector('#next').addEventListener('click', function()
+                    {
+                        document.querySelector('#next').setAttribute("class", "btn btn-primary mt-2 mb-2 mx-1 disabled");
+                        document.querySelector('#spinner').style.display = 'block';
+                    });
+                </script>
             </div>
             <div class="section">
                 <h3>Виды брейка</h3>
