@@ -995,7 +995,11 @@ def import_debates():
                         # Add and clean speech data
                         speech["tournament_id"] = tournament["id"]
                         speech["debate_id"] = debate["id"]
+                        speech["team_id"] = result["team_id"]
                         speech["score"] = int(speech["score"])
+                        speech["ironman"] = 0
+                        if speech["ghost"] == True:
+                            speech["ironman"] = 1
                         # Get speaker's db id
                         speech["speaker_internal_id"] = speech["speaker"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speakers/", "")
                         speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = ? AND tournament_id = ?",
@@ -1029,7 +1033,7 @@ def import_debates():
                         db_name = "speeches"
                         entry = speech
                         search_keys = ["debate_id", "tournament_id", "speaker_id", "position"]
-                        update_keys = ["score"]
+                        update_keys = ["score", "team_id", "ironman"]
                         add_database_entry(db_name, entry, search_keys, update_keys)
                 # For elimination rounds
                 else:
