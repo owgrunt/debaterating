@@ -57,7 +57,7 @@ onload="autoNotify()"
                                             document.addEventListener('#{{ speaker["internal_id"] }}-switch', function()
                                             {
                                                 var lastName = document.getElementById('#{{ speaker["internal_id"] }}-last-name').value;
-                                                document.getElementById('#{{ speaker["internal_id"] }}-last-name').value = document.getElementById('#{{ speaker["internal_id"] }}-first-name').value;
+                                                document.getElementById('#{{ speaker["internal_id"] }}-last-name').value = "document.getElementById('#{{ speaker["internal_id"] }}-first-name').value";
                                                 document.getElementById('#{{ speaker["internal_id"] }}-first-name').value = lastName;
                                             });
                                         </script>
