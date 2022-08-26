@@ -1362,9 +1362,11 @@ def recalculate_elo():
 
     db.execute("UPDATE tournaments SET update_complete = 0")
     # Get tournaments
-    tournaments = db.execute("SELECT * FROM tournaments ORDER BY date")
-    if len(tournaments) < 1:
-        return apology("no tournaments found", 400)
+    tournaments = db.execute("SELECT * FROM tournaments WHERE update_complete = 0 ORDER BY date")
+    if len(tournaments) == 0:
+        tournaments = db.execute("SELECT * FROM tournaments WHERE update_complete = 1 ORDER BY date")
+        if len(tournaments) == 0:
+            
 
     # Set everyone's ELO to 1500
     db.execute("UPDATE speakers SET rating = 1500")
