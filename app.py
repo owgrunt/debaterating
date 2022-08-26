@@ -1496,7 +1496,7 @@ def speaker_list():
 def society_list():
     """Show societies"""
 
-    societies = db.execute("SELECT * FROM societies ORDER BY rating DESC")
+    societies = db.execute("SELECT * FROM societies ORDER BY name")
 
     return render_template("society/societies.html", societies=societies)
 
