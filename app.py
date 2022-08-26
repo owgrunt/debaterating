@@ -1360,17 +1360,20 @@ def recalculate_elo():
 def recalculate_elo():
     """Recalculate ELO for all tournaments values"""
 
-    db.execute("UPDATE tournaments SET update_complete = 0")
+
     # Get tournaments
     tournaments = db.execute("SELECT * FROM tournaments WHERE update_complete = 0 ORDER BY date")
     if len(tournaments) == 0:
         tournaments = db.execute("SELECT * FROM tournaments WHERE update_complete = 1 ORDER BY date")
         if len(tournaments) == 0:
-            
-
-    # Set everyone's ELO to 1500
-    db.execute("UPDATE speakers SET rating = 1500")
-    db.execute("UPDATE speeches SET rating_change = 0")
+            # start update
+            db.execute("UPDATE tournaments SET update_complete = 0")
+            # Set everyone's ELO to 1500
+            db.execute("UPDATE speakers SET rating = 1500")
+            db.execute("UPDATE speeches SET rating_change = 0")
+        else:
+            update_rankings("rating")
+            return render_template("admin/recalculate-elo-success.html")
 
     # Recalculate ELO
     for tournament in tournaments:
@@ -1381,9 +1384,8 @@ def recalculate_elo():
                             tournament["id"])
         calculate_elo(rounds, tournament)
 
-    update_rankings("rating")
 
-    return render_template("admin/recalculate-elo-success.html")
+
 
 
 @app.route("/add-speaker", methods=["GET", "POST"])
