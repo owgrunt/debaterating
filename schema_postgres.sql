@@ -74,7 +74,6 @@ CREATE INDEX break_categories_by_tournament ON break_categories (tournament_id);
 CREATE TABLE rounds (
     id SERIAL PRIMARY KEY,
     tournament_id INTEGER NOT NULL,
-    internal_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     short_name TEXT NOT NULL,
     seq INTEGER NOT NULL,
