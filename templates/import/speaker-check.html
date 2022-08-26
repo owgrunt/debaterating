@@ -56,7 +56,7 @@ onload="autoNotify()"
                                         <script>
                                             document.querySelector('#{{ speaker["internal_id"] }}-switch').addEventListener('click', function()
                                             {
-                                                document.querySelector('#{{ speaker["internal_id"] }}-switch').setAttribute("class", "btn btn-secondary disabled");
+                                                document.querySelector('#{{ speaker["internal_id"] }}-switch').setAttribute("class", "btn btn-primary");
                                                 var lastName = document.getElementById('#{{ speaker["internal_id"] }}-last-name').value;
                                                 document.getElementById('#{{ speaker["internal_id"] }}-last-name').value = "document.getElementById('#{{ speaker["internal_id"] }}-first-name').value";
                                                 document.getElementById('#{{ speaker["internal_id"] }}-first-name').value = lastName;
