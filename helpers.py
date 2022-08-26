@@ -295,7 +295,7 @@ def calculate_elo(rounds, tournament):
             # Iterate through all the other team_performances in the round
             for j in range(len(team_performances)):
                 # Check for teams in the same debate and not swings
-                if team_performances[i]["debate_id"] == team_performances[j]["debate_id"] and team_performances[i]["swing"] != 1 and team_performances[j]["swing"] != 1 and team_performances[i]["speaker_one"] != team_performances[i]["speaker_two"] and team_performances[j]["speaker_one"] != team_performances[j]["speaker_two"]:
+                if team_performances[i]["debate_id"] == team_performances[j]["debate_id"] and team_performances[i]["swing"] != 1 and team_performances[j]["swing"] != 1 and team_performances[i]["speaker_one"] != team_performances[i]["speaker_two"] and team_performances[j]["speaker_one"] != team_performances[j]["speaker_two"] and team_performances[i]["ironman"] != 1 and team_performances[j]["ironman"] != 1:
                     # Only change score if team i won
                     if team_performances[i]["score"] > team_performances[j]["score"]:
                         # Calculate initial team ratings
