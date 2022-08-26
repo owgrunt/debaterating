@@ -465,6 +465,9 @@ def check_speakers():
 
         participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ? AND role != 'convener'",
                                   tournament["id"])
+        for participant in participants:
+            participant["internal_id"] = str(participant["internal_id"])
+            participant["internal_id_length"] = len(participant["internal_id"])
         if len(participants) > 0:
             return render_template("import/speaker-check.html", speakers=participants)
         else:
