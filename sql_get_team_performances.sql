@@ -2,6 +2,7 @@ SELECT
    team_performances.team_id,
    team_performances.score,
    team_performances.debate_id,
+   team_performances.ironman,
    teams.swing,
    teams.speaker_one_id AS speaker_one,
    teams.speaker_two_id AS speaker_two,

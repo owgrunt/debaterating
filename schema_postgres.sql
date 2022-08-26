@@ -126,6 +126,7 @@ CREATE TABLE team_performances (
     team_id INTEGER NOT NULL,
     side TEXT NOT NULL,
     score INTEGER NOT NULL,
+    ironman INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(debate_id) REFERENCES debates(id) ON DELETE CASCADE,
     FOREIGN KEY(team_id) REFERENCES teams(id) ON DELETE CASCADE
