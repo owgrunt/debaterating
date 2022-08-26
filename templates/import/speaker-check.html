@@ -54,7 +54,7 @@ onload="autoNotify()"
                                     <div>
                                         <a class="btn btn-secondary" role="button" id="{{ speaker["internal_id"] }}-switch">↔</a>
                                         <script>
-                                            document.addEventListener('#{{ speaker["internal_id"] }}-switch', function()
+                                            document.querySelector('#{{ speaker["internal_id"] }}-switch').addEventListener('click', function()
                                             {
                                                 document.querySelector('#{{ speaker["internal_id"] }}-switch').setAttribute("class", "btn btn-secondary disabled");
                                                 var lastName = document.getElementById('#{{ speaker["internal_id"] }}-last-name').value;
