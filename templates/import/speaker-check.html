@@ -57,10 +57,8 @@ onload="autoNotify()"
                                             document.addEventListener('#{{ speaker["internal_id"] }}-switch', function()
                                             {
                                                 var lastName = querySelector('#{{ speaker["internal_id"] }}-last-name').value;
-                                                document.querySelector('#back').setAttribute("class", "btn btn-secondary mt-2 mb-2 mx-1 disabled");
-                                                document.querySelector('#back-bottom').setAttribute("class", "btn btn-secondary mt-2 mb-2 mx-1 disabled");
-                                                document.querySelector('#submit').setAttribute("class", "btn btn-primary mt-2 mb-2 mx-1 disabled");
-                                                document.querySelector('#spinner').style.display = 'block';
+                                                document.querySelector('#{{ speaker["internal_id"] }}-last-name').value = document.querySelector('#{{ speaker["internal_id"] }}-first-name').value;
+                                                document.querySelector('#{{ speaker["internal_id"] }}-first-name').value = lastName;
                                             });
                                         </script>
                                     </div>
