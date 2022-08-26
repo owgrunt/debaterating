@@ -830,7 +830,7 @@ def add_rounds():
                 update_keys.append("info_slide")
             add_database_entry(db_name, round, search_keys, update_keys)
 
-        return render_template("import/round-success.html", rounds=rounds, break_categories=break_categories)
+    return render_template("import/round-success.html", rounds=rounds, break_categories=break_categories)
 
 
 @app.route("/import/debates", methods=["GET", "POST"])
@@ -1387,7 +1387,7 @@ def recalculate_elo():
     calculate_elo(rounds, tournament)
 
     db.execute(f"UPDATE tournaments SET update_complete = 1 WHERE id = ?", tournament["id"])
-    
+
     return redirect("/recalculate-elo-success")
 
 
