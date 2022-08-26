@@ -1503,6 +1503,16 @@ def society():
     return render_template("society/society.html", speakers=speakers, society=society)
 
 
+@app.route("/tournaments", methods=["GET", "POST"])
+@login_required
+def tournament_list():
+    """Show societies"""
+
+    tournaments = db.execute("SELECT * FROM tournaments ORDER BY date DESC")
+
+    return render_template("tournament/tournaments.html", tournaments=tournaments)
+
+
 @app.route("/tournament", methods=["GET", "POST"])
 @login_required
 def tournament():
