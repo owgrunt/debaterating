@@ -54,7 +54,7 @@ onload="autoNotify()"
                                     <div>
                                         <a class="btn btn-secondary" role="button" id="switch-{{ speaker["internal_id"] }}">↔</a>
                                         <script>
-                                            document.querySelector('#{% for i in len(speaker["internal_id"]) - 1 %}\\3{{ speaker["internal_id"][i] }}{% endfor %}}-switch').addEventListener('click', function()
+                                            document.querySelector('#{% for i in str(speaker["internal_id"])|length - 1 %}\\3{{ speaker["internal_id"][i] }}{% endfor %}}-switch').addEventListener('click', function()
                                             {
                                                 document.querySelector('#switch-{{ speaker["internal_id"] }}').setAttribute("class", "btn btn-primary");
                                                 var lastName = document.querySelector('#{{ speaker["internal_id"] }}-last-name').value;
