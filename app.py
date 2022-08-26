@@ -1547,7 +1547,7 @@ def society():
 def tournament_list():
     """Show societies"""
 
-    tournaments = db.execute("SELECT * FROM tournaments ORDER BY date DESC")
+    tournaments = db.execute("SELECT * FROM tournaments WHERE import_complete = 1 ORDER BY date DESC")
 
     return render_template("tournament/tournaments.html", tournaments=tournaments)
 
