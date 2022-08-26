@@ -24,7 +24,7 @@ onload="autoNotify()"
     <form action="/import/round-success" method="post" class="needs-validation" novalidate>
         <div class="container">
             <div class="d-flex justify-content-center">
-                <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
+                <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button" id="back">Назад</a>
                 <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">Продолжить</button>
                 <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
                     <span class="visually-hidden">Loading...</span>
@@ -33,6 +33,7 @@ onload="autoNotify()"
                     document.addEventListener('submit', function()
                     {
                         document.querySelector('#submit').setAttribute("disabled", "");
+                        document.querySelector('#back').setAttribute("disabled", "");
                         document.querySelector('#spinner').style.display = 'block';
                     });
                 </script>
@@ -143,7 +144,7 @@ onload="autoNotify()"
             </div>
         </div>
         <div class="d-flex justify-content-center">
-            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button" id="back">Назад</a>
             <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">Продолжить</button>
             <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
                 <span class="visually-hidden">Loading...</span>
@@ -152,6 +153,7 @@ onload="autoNotify()"
                 document.addEventListener('submit', function()
                 {
                     document.querySelector('#submit').setAttribute("disabled", "");
+                    document.querySelector('#back').setAttribute("disabled", "");
                     document.querySelector('#spinner').style.display = 'block';
                 });
             </script>
