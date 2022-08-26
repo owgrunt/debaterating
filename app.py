@@ -879,8 +879,7 @@ def import_debates():
     round = rounds[0]
     db.execute(f"UPDATE rounds SET import_complete = 0 WHERE id = ?", round["id"])
 
-    round_id = round["internal_id"]
-    debates = lookup_link(f"https://{domain}/api/v1/tournaments/{slug}/rounds/{round_id}/pairings")
+    debates = lookup_link(f"https://{domain}/api/v1/tournaments/{slug}/rounds/{round_id}/pairings", round["seq"])
     if debates == None:
         offending_link = round["_links"]["pairing"]
         return apology(f"pairings not imported: {offending_link}", 400)
