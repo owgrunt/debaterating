@@ -29,14 +29,6 @@ onload="autoNotify()"
                 <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <script>
-                    document.addEventListener('submit', function()
-                    {
-                        document.querySelector('#submit').setAttribute("disabled", "");
-                        document.querySelector('#back').setAttribute("disabled", "");
-                        document.querySelector('#spinner').style.display = 'block';
-                    });
-                </script>
             </div>
             <div class="section">
                 <h3>Виды брейка</h3>
@@ -144,20 +136,23 @@ onload="autoNotify()"
             </div>
         </div>
         <div class="d-flex justify-content-center">
-            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button" id="back">Назад</a>
-            <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">Продолжить</button>
-            <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button" id="back-bottom">Назад</a>
+            <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit-bottom">Продолжить</button>
+            <div class="spinner-border mx-3" role="status" id="spinner-bottom" style="display: none">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <script>
-                document.addEventListener('submit', function()
-                {
-                    document.querySelector('#submit').setAttribute("disabled", "");
-                    document.querySelector('#back').setAttribute("disabled", "");
-                    document.querySelector('#spinner').style.display = 'block';
-                });
-            </script>
         </div>
+        <script>
+            document.addEventListener('submit', function()
+            {
+                document.querySelector('#submit').setAttribute("disabled", "");
+                document.querySelector('#submit-bottom').setAttribute("disabled", "");
+                document.querySelector('#back').setAttribute("class", "btn btn-secondary mt-2 mb-2 mx-1 disabled");
+                document.querySelector('#back-bottom').setAttribute("class", "btn btn-secondary mt-2 mb-2 mx-1 disabled");
+                document.querySelector('#spinner').style.display = 'block';
+                document.querySelector('#spinner-bottom').style.display = 'block';
+            });
+        </script>
         <script>
             // JavaScript for disabling form submissions if there are invalid fields
             (() => {
