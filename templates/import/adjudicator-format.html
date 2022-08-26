@@ -36,6 +36,7 @@ onload="autoNotify()"
                         document.addEventListener('submit', function()
                         {
                             document.querySelector('#back').setAttribute("class", "btn btn-secondary mt-2 mb-2 mx-1 disabled");
+                            document.querySelector('#back-bottom').setAttribute("class", "btn btn-secondary mt-2 mb-2 mx-1 disabled");
                             document.querySelector('#fio').setAttribute("class", "btn btn-primary mt-4 mx-1 mb-4 disabled");
                             document.querySelector('#iof').setAttribute("class", "btn btn-primary mt-4 mx-1 mb-4 disabled");
                             document.querySelector('#if').setAttribute("class", "btn btn-primary mt-4 mx-1 mb-4 disabled");
@@ -47,7 +48,7 @@ onload="autoNotify()"
             </div>
         </div>
         <div class="section">
-            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker/format" role="button">Назад</a>
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker/format" role="button" id="back">Назад</a>
         </div>
         <div class="section">
             {% set i = namespace(value=1) %}
@@ -61,7 +62,7 @@ onload="autoNotify()"
             {% endfor %}
         </div>
         <div class="section">
-            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/tournament/edit" role="button" id="back">Назад</a>
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/tournament/edit" role="button" id="back-bottom">Назад</a>
         </div>
     </div>
 {% endblock %}
