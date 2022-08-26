@@ -52,14 +52,13 @@ onload="autoNotify()"
                                 </td>
                                 <td>
                                     <div>
-                                        <a class="btn btn-secondary" role="button" id="switch-{{ speaker["internal_id"] }}">↔</a>
+                                        <a class="btn btn-outline-secondary" role="button" id="{{ speaker["internal_id"] }}-switch">↔</a>
                                         <script>
                                             document.querySelector('#{{ speaker["request"] }}-switch').addEventListener('click', function()
                                             {
-                                                document.querySelector('#switch-{{ speaker["internal_id"] }}').setAttribute("class", "btn btn-primary");
-                                                var lastName = document.querySelector('#{{ speaker["internal_id"] }}-last-name').value;
-                                                document.querySelector('#{{ speaker["internal_id"] }}-last-name').value = "document.getElementById('#{{ speaker["internal_id"] }}-first-name').value";
-                                                document.querySelector('#{{ speaker["internal_id"] }}-first-name').value = lastName;
+                                                var lastName = document.querySelector('#{{ speaker["request"] }}-last-name').value;
+                                                document.querySelector('#{{ speaker["request"] }}-last-name').value = document.querySelector('#{{ speaker["request"] }}-first-name').value;
+                                                document.querySelector('#{{ speaker["request"] }}-first-name').value = lastName;
                                             });
                                         </script>
                                     </div>
