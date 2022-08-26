@@ -968,6 +968,7 @@ def import_debates():
                 # Prepare data for import
                 result["tournament_id"] = tournament["id"]
                 result["debate_id"] = debate["id"]
+                result["ironman"] = 0
                 # Get team id from db
                 result["team_id"] = result["team"].replace(f"https://{domain}/api/v1/tournaments/{slug}/teams/", "")
                 result["team_id"] = db.execute("SELECT id FROM teams WHERE internal_id = ? AND tournament_id = ?",
