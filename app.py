@@ -790,7 +790,7 @@ def add_rounds():
                                   tournament["id"])
 
     # Get rounds
-    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ?",
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? ORDER BY seq",
                         tournament["id"])
 
     if request.method == "POST":
