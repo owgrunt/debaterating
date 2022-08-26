@@ -467,7 +467,9 @@ def check_speakers():
                                   tournament["id"])
         for participant in participants:
             participant["internal_id"] = str(participant["internal_id"])
-            participant["internal_id_length"] = len(participant["internal_id"])
+            participant["request"] = ""
+            for i in len(participant["internal_id"]) - 1:
+                participant["request"] = "\\3" + participant["internal_id"][i]
         if len(participants) > 0:
             return render_template("import/speaker-check.html", speakers=participants)
         else:
