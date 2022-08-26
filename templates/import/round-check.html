@@ -25,14 +25,14 @@ onload="autoNotify()"
         <div class="container">
             <div class="d-flex justify-content-center">
                 <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
-                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/import/best-adjudicator" role="button" id="next">Продолжить</a>
+                <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">Продолжить</button>
                 <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
                     <span class="visually-hidden">Loading...</span>
                 </div>
                 <script>
-                    document.querySelector('#next').addEventListener('click', function()
+                    document.addEventListener('submit', function()
                     {
-                        document.querySelector('#next').setAttribute("class", "btn btn-primary mt-2 mb-2 mx-1 disabled");
+                        document.querySelector('#submit').setAttribute("disabled", "");
                         document.querySelector('#spinner').style.display = 'block';
                     });
                 </script>
@@ -144,9 +144,7 @@ onload="autoNotify()"
         </div>
         <div class="d-flex justify-content-center">
             <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/team/success" role="button">Назад</a>
-            <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">
-                Продолжить
-            </button>
+            <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">Продолжить</button>
             <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
                 <span class="visually-hidden">Loading...</span>
             </div>
