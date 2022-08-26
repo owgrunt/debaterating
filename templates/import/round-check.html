@@ -91,28 +91,28 @@ onload="autoNotify()"
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-short-name" name="{{ round["internal_id"] }}-short-name" value="{{ round["short_name"] }}" type="text" required>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["seq"] }}-short-name" name="{{ round["seq"] }}-short-name" value="{{ round["short_name"] }}" type="text" required>
                                     </div>
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-name" name="{{ round["internal_id"] }}-name" value="{{ round["name"] }}" type="text" required>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["seq"] }}-name" name="{{ round["seq"] }}-name" value="{{ round["name"] }}" type="text" required>
                                     </div>
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-motion" name="{{ round["internal_id"] }}-motion" value="{{ round["motion"] }}" type="text">
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["seq"] }}-motion" name="{{ round["seq"] }}-motion" value="{{ round["motion"] }}" type="text">
                                     </div>
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["internal_id"] }}-info-slide" name="{{ round["internal_id"] }}-info-slide" value="{{ round["info_slide"] }}" type="text">
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ round["seq"] }}-info-slide" name="{{ round["seq"] }}-info-slide" value="{{ round["info_slide"] }}" type="text">
                                     </div>
                                 </td>
                                 <td>
                                     {% if round["stage"] == "E" %}
                                         <div>
-                                            <select class="form-select" id="{{ round["internal_id"] }}-achievement" name="{{ round["internal_id"] }}-achievement" required>
+                                            <select class="form-select" id="{{ round["seq"] }}-achievement" name="{{ round["seq"] }}-achievement" required>
                                                 <option selected disabled value="">Название достижения</option>
                                                 <option value="финалист">финалист</option>
                                                 <option value="полуфиналист">полуфиналист</option>
