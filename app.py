@@ -992,7 +992,7 @@ def import_debates():
                 db_name = "team_performances"
                 entry = result
                 search_keys = ["debate_id", "tournament_id", "team_id"]
-                update_keys = ["side", "score"]
+                update_keys = ["side", "score", "ironman"]
                 add_database_entry(db_name, entry, search_keys, update_keys)
 
                 # Get speeches
