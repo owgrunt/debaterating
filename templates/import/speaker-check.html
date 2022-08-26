@@ -52,7 +52,16 @@ onload="autoNotify()"
                                 </td>
                                 <td>
                                     <div>
-                                        <a class="btn btn-primary mt-2 mb-2 mx-1" role="button" id="{{ speaker["internal_id"] }}-switch">↔</a>
+                                        <a class="btn btn-secondary" role="button" id="{{ speaker["internal_id"] }}-switch">↔</a>
+                                        <script>
+                                            document.addEventListener('{{ speaker["internal_id"] }}-switch', function()
+                                            {
+                                                document.querySelector('#back').setAttribute("class", "btn btn-secondary mt-2 mb-2 mx-1 disabled");
+                                                document.querySelector('#back-bottom').setAttribute("class", "btn btn-secondary mt-2 mb-2 mx-1 disabled");
+                                                document.querySelector('#submit').setAttribute("class", "btn btn-primary mt-2 mb-2 mx-1 disabled");
+                                                document.querySelector('#spinner').style.display = 'block';
+                                            });
+                                        </script>
                                     </div>
                                 </td>
                                 <td>
