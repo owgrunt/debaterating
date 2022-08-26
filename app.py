@@ -1570,7 +1570,7 @@ def tournament():
     achievements = sorted(achievements, key=itemgetter("priority"))
 
     # Get rounds
-    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = {id}")
+    rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = {id} ORDER BY seq")
 
     # Get participants to show judges and conveners
     participants = db.execute(f"SELECT s.first_name, s.last_name, p.role, s.id FROM tournament_participants p INNER JOIN speakers s ON p.speaker_id = s.id WHERE tournament_id = {id}")
