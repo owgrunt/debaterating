@@ -1839,6 +1839,8 @@ def speaker():
     adjudications = db.execute("SELECT tp.*, t.name, t.short_name FROM tournament_participants tp INNER JOIN tournaments t ON tp.tournament_id = t.id WHERE speaker_id = ? AND tp.role != ? ORDER BY id DESC LIMIT 5",
                                 id, "speaker")
 
+    if speaker["society_id"] is not None:
+        
     return render_template("speaker/speaker.html", speaker=speaker, speeches=speeches, count=count, speaks_by_position=speaks_by_position, points_by_side=points_by_side, points_by_room_strength=points_by_room_strength, team_rankings=team_rankings, rankings_by_round_seq=rankings_by_round_seq, round_seq=round_seq, participations=participations, achievements=achievements, adjudications=adjudications)
 
 
