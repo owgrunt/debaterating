@@ -47,7 +47,7 @@ onload="autoNotify()"
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="last-name-{{ speaker["internal_id"] }}" name="last-name-{{ speaker["internal_id"] }}" value="{{ speaker["last_name"] }}" type="text" required>
+                                        <input autocomplete="off" class="form-control mx-auto" id="{{ speaker["internal_id"] }}-last-name" name="{{ speaker["internal_id"] }}-last-name" value="{{ speaker["last_name"] }}" type="text" required>
                                     </div>
                                 </td>
                                 <td>
@@ -57,8 +57,8 @@ onload="autoNotify()"
                                             document.querySelector('#switch-{{ speaker["internal_id"] }}').addEventListener('click', function()
                                             {
                                                 document.querySelector('#switch-{{ speaker["internal_id"] }}').setAttribute("class", "btn btn-primary");
-                                                var lastName = document.querySelector('#last-name-{{ speaker["internal_id"] }}').value;
-                                                document.querySelector('#last-name-{{ speaker["internal_id"] }}').value = "document.getElementById('#{{ speaker["internal_id"] }}-first-name').value";
+                                                var lastName = document.querySelector('#{{ speaker["internal_id"] }}-last-name').value;
+                                                document.querySelector('#{{ speaker["internal_id"] }}-last-name').value = "document.getElementById('#{{ speaker["internal_id"] }}-first-name').value";
                                                 document.querySelector('#{{ speaker["internal_id"] }}-first-name').value = lastName;
                                             });
                                         </script>
