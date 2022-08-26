@@ -23,7 +23,7 @@ onload="autoNotify()"
     <h2 class="mb-5 mt-2">Проверяем, есть ли спикер в базе</h2>
     <div class="container">
         <div class="section">
-            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import" role="button">Назад</a>
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import" role="button" id="back">Назад</a>
         </div>
         <div class="section">
             <form action="/import/speaker/add" method="post">
@@ -75,7 +75,7 @@ onload="autoNotify()"
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-center">
-                    <a class="btn btn-secondary mt-2 mx-1" href="/import" role="button">Назад</a>
+                    <a class="btn btn-secondary mt-2 mx-1" href="/import" role="button" id="back-bottom">Назад</a>
                     <button class="btn btn-primary mt-2 mx-1" type="submit" id="submit">Продолжить</button>
                     <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
                         <span class="visually-hidden">Loading...</span>
@@ -83,7 +83,9 @@ onload="autoNotify()"
                     <script>
                         document.addEventListener('submit', function()
                         {
-                            document.querySelector('#submit').setAttribute("disabled", "");
+                            document.querySelector('#back').setAttribute("class", "btn btn-secondary mt-2 mb-2 mx-1 disabled");
+                            document.querySelector('#back-bottom').setAttribute("class", "btn btn-secondary mt-2 mb-2 mx-1 disabled");
+                            document.querySelector('#submit').setAttribute("class", "btn btn-primary mt-2 mb-2 mx-1 disabled");
                             document.querySelector('#spinner').style.display = 'block';
                         });
                     </script>
