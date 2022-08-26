@@ -468,8 +468,8 @@ def check_speakers():
         for participant in participants:
             participant["internal_id"] = str(participant["internal_id"])
             participant["request"] = ""
-            for i in len(participant["internal_id"]) - 1:
-                participant["request"] = "\\3" + participant["internal_id"][i]
+            for i in range(len(participant["internal_id"])):
+                participant["request"] = participant["request"] + "\\\\3" + participant["internal_id"][i]
         if len(participants) > 0:
             return render_template("import/speaker-check.html", speakers=participants)
         else:
@@ -478,6 +478,11 @@ def check_speakers():
     else:
         participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ? AND role != 'convener'",
                                   tournament["id"])
+        for participant in participants:
+            participant["internal_id"] = str(participant["internal_id"])
+            participant["request"] = ""
+            for i in range(len(participant["internal_id"])):
+                participant["request"] = participant["request"] + "\\\\3" + participant["internal_id"][i]
         if len(participants) > 0:
             return render_template("import/speaker-check.html", speakers=participants)
         else:
