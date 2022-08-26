@@ -23,7 +23,7 @@ onload="autoNotify()"
     <h2 class="mb-5 mt-2">Проверьте правильность определения ФИО всех участников</h2>
     <div class="container">
         <div class="section">
-            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker/format" role="button" id="back">Назад</a>
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/adjudicator/format" role="button" id="back">Назад</a>
         </div>
         <div class="section">
             <form action="/import/speaker/edit" method="post">
@@ -32,6 +32,7 @@ onload="autoNotify()"
                         <tr>
                             <th>Оригинал имени</th>
                             <th>Фамилия</th>
+                            <th></th>
                             <th>Имя</th>
                             <th>Отчество</th>
                             <th>Команда</th>
@@ -51,9 +52,13 @@ onload="autoNotify()"
                                 </td>
                                 <td>
                                     <div>
+                                        <a class="btn btn-primary mt-2 mb-2 mx-1" role="button" id="{{ speaker["internal_id"] }}-switch">←→</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
                                         <input autocomplete="off" class="form-control mx-auto" id="{{ speaker["internal_id"] }}-first-name" name="{{ speaker["internal_id"] }}-first-name" value="{{ speaker["first_name"] }}" type="text" required>
                                     </div>
-
                                 </td>
                                 <td>
                                     <div>
@@ -73,7 +78,7 @@ onload="autoNotify()"
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-center">
-                    <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker/format" role="button" id="back-bottom">Назад</a>
+                    <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/adjudicator/format" role="button" id="back-bottom">Назад</a>
                     <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">Продолжить</button>
                     <div class="spinner-border mt-2 mb-2 mx-3" role="status" id="spinner" style="display: none">
                         <span class="visually-hidden">Loading...</span>
