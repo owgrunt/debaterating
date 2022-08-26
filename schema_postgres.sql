@@ -109,9 +109,11 @@ CREATE TABLE speeches (
     score INTEGER,
     rating_change INTEGER DEFAULT 0,
     position INTEGER NOT NULL,
-    ironman INTEGER DEFAULT 0,
+    ironman INTEGER NOT NULL DEFAULT 0,
+    team_id INTEGER NOT NULL,
     FOREIGN KEY(tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
     FOREIGN KEY(speaker_id) REFERENCES speakers(id),
+    FOREIGN KEY(team_id) REFERENCES teams(id) ON DELETE CASCADE,
     FOREIGN KEY(debate_id) REFERENCES debates(id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX speech_id ON speeches (id);
