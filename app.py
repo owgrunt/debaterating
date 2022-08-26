@@ -1363,6 +1363,7 @@ def recalculate_elo():
 
         # Set everyone's ELO to 1500
         db.execute("UPDATE speakers SET rating = 1500")
+        db.execute("UPDATE speeches SET rating_change = 0")
 
         # Recalculate ELO
         for tournament in tournaments:
