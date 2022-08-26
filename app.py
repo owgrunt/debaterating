@@ -1349,7 +1349,7 @@ def import_complete():
 
 @app.route("/recalculate-elo", methods=["GET", "POST"])
 @login_required
-def recalculate_elo():
+def recalculate_elo_start():
     """Recalculate ELO for all tournaments values"""
 
     return render_template("admin/recalculate-elo.html")
@@ -1364,7 +1364,7 @@ def recalculate_elo():
     # Get tournaments
     tournaments = db.execute("SELECT * FROM tournaments WHERE update_complete = 0 ORDER BY date")
     if len(tournaments) == 0:
-        tournaments = db.execute("SELECT * FROM tournaments WHERE update_complete = 1 ORDER BY date")
+        tournaments = db.execute("SELECT * FROM tournaments WHERE update_complete = 1")
         if len(tournaments) == 0:
             # start update
             db.execute("UPDATE tournaments SET update_complete = 0")
@@ -1374,18 +1374,19 @@ def recalculate_elo():
             tournaments = db.execute("SELECT * FROM tournaments WHERE update_complete = 0 ORDER BY date")
         else:
             update_rankings("rating")
+            db.execute("UPDATE tournaments SET update_complete = NULL")
             return render_template("admin/recalculate-elo-success.html")
 
     # Recalculate ELO
-    for tournament in tournaments:
-        tournament_average_rating(tournament)
+    tournament = tournaments[0]
+    tournament_average_rating(tournament)
 
-        # Get the list of rounds
-        rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
-                            tournament["id"])
-        calculate_elo(rounds, tournament)
+    # Get the list of rounds
+    rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
+                        tournament["id"])
+    calculate_elo(rounds, tournament)
 
-
+    return redirect("/recalculate-elo-success")
 
 
 
