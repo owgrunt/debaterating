@@ -52,16 +52,16 @@ onload="autoNotify()"
                                 </td>
                                 <td>
                                     <div>
-                                        <a class="btn btn-secondary" role="button" id="{{ speaker["internal_id"] }}-switch" onclick="function(){document.querySelector('#{{ speaker["internal_id"] }}-switch').setAttribute("class", "btn btn-primary");}">↔</a>
-                                        <!-- <script>
-                                            document.querySelector('#{{ speaker["internal_id"] }}-switch').addEventListener('click', function()
+                                        <a class="btn btn-secondary" role="button" id="switch-{{ speaker["internal_id"] }}">↔</a>
+                                        <script>
+                                            document.querySelector('#switch-{{ speaker["internal_id"] }}').addEventListener('click', function()
                                             {
-                                                document.querySelector('#{{ speaker["internal_id"] }}-switch').setAttribute("class", "btn btn-primary");
-                                                var lastName = document.getElementById('#{{ speaker["internal_id"] }}-last-name').value;
-                                                document.getElementById('#{{ speaker["internal_id"] }}-last-name').value = "document.getElementById('#{{ speaker["internal_id"] }}-first-name').value";
-                                                document.getElementById('#{{ speaker["internal_id"] }}-first-name').value = lastName;
+                                                document.querySelector('#switch-{{ speaker["internal_id"] }}').setAttribute("class", "btn btn-primary");
+                                                var lastName = document.querySelector('#{{ speaker["internal_id"] }}-last-name').value;
+                                                document.querySelector('#{{ speaker["internal_id"] }}-last-name').value = "document.getElementById('#{{ speaker["internal_id"] }}-first-name').value";
+                                                document.querySelector('#{{ speaker["internal_id"] }}-first-name').value = lastName;
                                             });
-                                        </script> -->
+                                        </script>
                                     </div>
                                 </td>
                                 <td>
