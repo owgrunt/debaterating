@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block main %}
-    <h2 class="mb-5 mt-2">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</h2>
-    
+    <h2 class="mb-3 mt-2">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</h2>
+    <h5 class="mb-5 mt-2"><a href="/society?id={{ society["id"] }}">{{ society["name"] }}</a></h2>
     <div class="container">
         <div class="row mt-3">
             <div class="col-sm-12 col-md-6">
-                <h4>Спикер #{{ speaker["ranking_by_speaks"] }} по спикерским, средний: {{ speaker["speaker_score"] }}</h4>
+                <h5>Спикер #{{ speaker["ranking_by_speaks"] }} по спикерским, средний: {{ speaker["speaker_score"] }}</h5>
                 <canvas id="speaksChart"></canvas>
                 <script>
                     const labels_speaks = [
@@ -71,7 +71,7 @@
             </div>
 
             <div class="col-sm-12 col-md-6">
-                <h4>Спикер #{{ speaker["ranking_by_rating"] }}по ELO, рейтинг: {{ speaker["rating"] }}</h4>
+                <h5>Спикер #{{ speaker["ranking_by_rating"] }} по ELO, рейтинг: {{ speaker["rating"] }}</h5>
                 <canvas id="ratingChart"></canvas>
                 <script>
                     const labels_rating = [
