@@ -870,6 +870,12 @@ def import_debates():
     rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? AND import_complete IS null ORDER BY seq",
                         tournament["id"])
 
+    if len(rounds) == 0:
+        db.execute(f"UPDATE rounds SET import_complete = NULL WHERE tournament_id = ?",
+                   tournament["id"])
+        rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ? AND import_complete IS null ORDER BY seq",
+                            tournament["id"])
+
     # Prepare for link cleanup
     domain = tournament["domain"]
     slug = tournament["slug"]
