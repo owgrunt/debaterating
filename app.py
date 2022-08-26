@@ -1371,6 +1371,7 @@ def recalculate_elo():
             # Set everyone's ELO to 1500
             db.execute("UPDATE speakers SET rating = 1500")
             db.execute("UPDATE speeches SET rating_change = 0")
+            tournaments = db.execute("SELECT * FROM tournaments WHERE update_complete = 0 ORDER BY date")
         else:
             update_rankings("rating")
             return render_template("admin/recalculate-elo-success.html")
