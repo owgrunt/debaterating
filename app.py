@@ -1000,6 +1000,13 @@ def import_debates():
                         speech["ironman"] = 0
                         if speech["ghost"] == True:
                             speech["ironman"] = 1
+                            result["ironman"] = 1
+                            # Set team_performances to ironman
+                            db_name = "team_performances"
+                            entry = result
+                            search_keys = ["debate_id", "tournament_id", "team_id"]
+                            update_keys = ["ironman"]
+                            add_database_entry(db_name, entry, search_keys, update_keys)
                         # Get speaker's db id
                         speech["speaker_internal_id"] = speech["speaker"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speakers/", "")
                         speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = ? AND tournament_id = ?",
