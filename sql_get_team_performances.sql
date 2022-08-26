@@ -23,6 +23,8 @@ WHERE
 AND
     debates.round_id = yyyyyy
 AND
-    debates.round_id = yyyyyy
+    teams.swing != 1
+AND
+    team_performances.ironman != 1
 ORDER BY
     team_performances.debate_id ASC;
