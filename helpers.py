@@ -261,7 +261,7 @@ def calculate_elo(rounds, tournament):
         # Set up a list of dict with all the speakers to have their ratings adjusted
         updated_ratings = []
         for i in range(len(team_performances)):
-            if team_performances[i]["swing"] != 1:
+            if team_performances[i]["swing"] != 1 and team_performances[i]["ironman"] != 1:
                 speaker_one = {"speaker": team_performances[i]["speaker_one"],
                                "round": round_id,
                                "debate": team_performances[i]["debate_id"],
