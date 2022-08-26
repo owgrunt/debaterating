@@ -750,7 +750,6 @@ def import_rounds():
         except (KeyError, TypeError, ValueError):
             round["motion"] = None
             round["info_slide"] = None
-        round["internal_id"] = round["id"]
         round["short_name"] = round["abbreviation"]
         if "break_category" in round:
             if round["break_category"] is not None:
@@ -761,8 +760,8 @@ def import_rounds():
 
         # Import round data into the db
         db_name = "rounds"
-        search_keys = ["internal_id", "tournament_id"]
-        update_keys = ["name", "short_name", "seq", "stage"]
+        search_keys = ["seq", "tournament_id"]
+        update_keys = ["name", "short_name", "stage"]
         if round["motion"] != None:
             update_keys.append("motion")
         if round["info_slide"] != None:
@@ -791,11 +790,11 @@ def add_rounds():
 
     # Get break_categories
     break_categories = db.execute(f"SELECT * FROM break_categories WHERE tournament_id = ?",
-                       tournament["id"])
+                                  tournament["id"])
 
     # Get rounds
     rounds = db.execute(f"SELECT * FROM rounds WHERE tournament_id = ?",
-                       tournament["id"])
+                        tournament["id"])
 
     if request.method == "POST":
         for break_category in break_categories:
