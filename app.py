@@ -1382,10 +1382,12 @@ def recalculate_elo():
     tournament_average_rating(tournament)
 
     # Get the list of rounds
-    rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
+    rounds = db.execute(f"SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
                         tournament["id"])
     calculate_elo(rounds, tournament)
 
+    db.execute(f"UPDATE tournaments SET update_complete = 1 WHERE id = ?", tournament["id"])
+    
     return redirect("/recalculate-elo-success")
 
 
