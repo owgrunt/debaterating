@@ -816,16 +816,16 @@ def add_rounds():
 
         for round in rounds:
             # Get data from the form
-            round["name"] = request.form.get(str(round["internal_id"])+"-name")
-            round["short_name"] = request.form.get(str(round["internal_id"])+"-short-name")
-            round["motion"] = request.form.get(str(round["internal_id"])+"-motion")
-            round["info_slide"] = request.form.get(str(round["internal_id"])+"-info-slide")
-            round["achievement"] = request.form.get(str(round["internal_id"])+"-achievement")
+            round["name"] = request.form.get(str(round["seq"])+"-name")
+            round["short_name"] = request.form.get(str(round["seq"])+"-short-name")
+            round["motion"] = request.form.get(str(round["seq"])+"-motion")
+            round["info_slide"] = request.form.get(str(round["seq"])+"-info-slide")
+            round["achievement"] = request.form.get(str(round["seq"])+"-achievement")
             round["tournament_id"] = tournament["id"]
 
             # Import round data into the db
             db_name = "rounds"
-            search_keys = ["internal_id", "tournament_id"]
+            search_keys = ["seq", "tournament_id"]
             update_keys = ["name", "short_name", "achievement"]
             if round["motion"] != "None" and round["motion"] != None:
                 update_keys.append("motion")
@@ -856,8 +856,8 @@ def import_debates():
 
             # Re-Import round data into the db
             db_name = "rounds"
-            search_keys = ["internal_id", "tournament_id"]
-            update_keys = ["name", "short_name", "seq", "stage"]
+            search_keys = ["seq", "tournament_id"]
+            update_keys = ["name", "short_name", "stage"]
             if round["motion"] != None:
                 update_keys.append("motion")
             if round["info_slide"] != None:
@@ -878,7 +878,8 @@ def import_debates():
     round = rounds[0]
     db.execute(f"UPDATE rounds SET import_complete = 0 WHERE id = ?", round["id"])
 
-    debates = lookup_link(f"https://{domain}/api/v1/tournaments/{slug}/rounds/{round_id}/pairings", round["seq"])
+    seq = round["seq"]
+    debates = lookup_link(f"https://{domain}/api/v1/tournaments/{slug}/rounds/{seq}/pairings")
     if debates == None:
         offending_link = round["_links"]["pairing"]
         return apology(f"pairings not imported: {offending_link}", 400)
