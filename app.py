@@ -1440,8 +1440,6 @@ def add_society():
             update_keys = ["name", "short_name"]
             if len(society["city"]) > 0:
                 update_keys.append("city")
-            if len(society["city"]) > 0:
-                update_keys.append("city")
             if len(society["page"]) > 0:
                 update_keys.append("page")
             execute_insert("societies", society, update_keys)
