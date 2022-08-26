@@ -385,3 +385,10 @@ def update_rankings(ranking_type):
             return apology("incorrect arguments for rank_by_rating", 400)
 
     return
+
+
+def tournament_average_rating(tournament):
+        average_rating = round(db.execute(f"SELECT avg(rating) as av FROM speakers INNER JOIN tournament_participants ON speakers.id = tournament_participants.speaker_id WHERE tournament_participants.tournament_id = ? AND tournament_participants.role ='speaker'",
+                               tournament["id"])[0]["av"])
+        db.execute(f"UPDATE tournaments SET average_rating = ? WHERE id = ?", average_rating, tournament["id"])
+        return

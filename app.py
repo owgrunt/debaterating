@@ -7,7 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from urllib.parse import urlparse
 
-from helpers import apology, login_required, lookup_data, lookup_tournament, lookup_link, add_database_entry, split_name_by_format, calculate_elo, update_rankings, execute_insert, has_yo
+from helpers import apology, login_required, lookup_data, lookup_tournament, lookup_link, add_database_entry, split_name_by_format, calculate_elo, update_rankings, execute_insert, tournament_average_rating, has_yo
 
 from datetime import datetime
 from operator import itemgetter
@@ -619,10 +619,7 @@ def add_speakers():
                             add_database_entry(db_name, entry, search_keys, update_keys)
 
         # Record average speaker ELO at the tournament
-        tournament_id = tournament["id"]
-        average_rating = db.execute(f"SELECT avg(rating) as av FROM speakers INNER JOIN tournament_participants ON speakers.id = tournament_participants.speaker_id WHERE tournament_participants.tournament_id = {tournament_id} AND tournament_participants.role ='speaker'")[0]["av"]
-        average_rating = round(average_rating)
-        db.execute(f"UPDATE tournaments SET average_rating = {average_rating} WHERE id = {tournament_id}")
+        tournament_average_rating(tournament)
 
         return redirect("/import/speaker/success")
 
@@ -1367,6 +1364,8 @@ def recalculate_elo():
 
         # Recalculate ELO
         for tournament in tournaments:
+            tournament_average_rating(tournament)
+            
             # Get the list of rounds
             rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
                                 tournament["id"])
