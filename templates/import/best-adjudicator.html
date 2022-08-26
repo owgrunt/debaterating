@@ -56,14 +56,15 @@ onload="autoNotify()"
                 </div>
                 <div class="row">
                     <div class="d-flex justify-content-center">
-                        <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker-scores" role="button">Назад</a>
-                        <button class="btn btn-primary" type="submit" id="submit">Продолжить</button>
-                        <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
+                        <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/speaker-scores" role="button" id="back">Назад</a>
+                        <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">Продолжить</button>
+                        <div class="spinner-border mt-2 mb-2 mx-3" role="status" id="spinner" style="display: none">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                         <script>
                             document.addEventListener('submit', function()
                             {
+                                document.querySelector('#back').setAttribute("class", "btn btn-secondary mt-2 mb-2 mx-1 disabled");
                                 document.querySelector('#submit').setAttribute("disabled", "");
                                 document.querySelector('#spinner').style.display = 'block';
                             });
