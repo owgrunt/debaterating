@@ -41,7 +41,8 @@ CREATE TABLE tournaments (
     type TEXT,
     speaker_name_format TEXT,
     adjudicator_name_format TEXT,
-    import_complete INTEGER
+    import_complete INTEGER,
+    update_complete INTEGER
 );
 CREATE UNIQUE INDEX tournament_id ON tournaments (id);
 CREATE TABLE teams (

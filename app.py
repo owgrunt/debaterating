@@ -1352,31 +1352,36 @@ def import_complete():
 def recalculate_elo():
     """Recalculate ELO for all tournaments values"""
 
-    if request.method == "POST":
-        # Get tournaments
-        tournaments = db.execute("SELECT * FROM tournaments ORDER BY date")
-        if len(tournaments) < 1:
-            return apology("no tournaments found", 400)
+    return render_template("admin/recalculate-elo.html")
 
-        # Set everyone's ELO to 1500
-        db.execute("UPDATE speakers SET rating = 1500")
-        db.execute("UPDATE speeches SET rating_change = 0")
 
-        # Recalculate ELO
-        for tournament in tournaments:
-            tournament_average_rating(tournament)
-            
-            # Get the list of rounds
-            rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
-                                tournament["id"])
-            calculate_elo(rounds, tournament)
+@app.route("/recalculate-elo-success", methods=["GET", "POST"])
+@login_required
+def recalculate_elo():
+    """Recalculate ELO for all tournaments values"""
 
-        update_rankings("rating")
+    db.execute("UPDATE tournaments SET update_complete = 0")
+    # Get tournaments
+    tournaments = db.execute("SELECT * FROM tournaments ORDER BY date")
+    if len(tournaments) < 1:
+        return apology("no tournaments found", 400)
 
-        return render_template("admin/recalculate-elo-success.html")
+    # Set everyone's ELO to 1500
+    db.execute("UPDATE speakers SET rating = 1500")
+    db.execute("UPDATE speeches SET rating_change = 0")
 
-    else:
-        return render_template("admin/recalculate-elo.html")
+    # Recalculate ELO
+    for tournament in tournaments:
+        tournament_average_rating(tournament)
+
+        # Get the list of rounds
+        rounds = db.execute("SELECT id FROM rounds WHERE tournament_id = ? ORDER BY seq",
+                            tournament["id"])
+        calculate_elo(rounds, tournament)
+
+    update_rankings("rating")
+
+    return render_template("admin/recalculate-elo-success.html")
 
 
 @app.route("/add-speaker", methods=["GET", "POST"])
