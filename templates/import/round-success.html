@@ -23,16 +23,16 @@ onload="autoNotify()"
     <h2 class="mb-5 mt-2">Брейки и раунды импортированы</h2>
     <div class="container">
         <div class="section">
-            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/round-check" role="button">Назад</a>
-            <a class="btn btn-primary mt-2 mb-2 mx-1" href="/import/debates" role="button">Продолжить</a>
+            <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import/round-check" role="button" id="back">Назад</a>
+            <a class="btn btn-primary mt-2 mb-2 mx-1" href="/import/debates" role="button" id="next">Продолжить</a>
         </div>
         <div class="spinner-border mx-3" role="status" id="spinner" style="display: none">
             <span class="visually-hidden">Loading...</span>
         </div>
         <script>
-            document.addEventListener('submit', function()
+            document.querySelector('#next').addEventListener('click', function()
             {
-                document.querySelector('#submit').setAttribute("class", "btn btn-secondary mt-2 mb-2 mx-1 disabled");
+                document.querySelector('#next').setAttribute("class", "btn btn-primary mt-2 mb-2 mx-1 disabled");
                 document.querySelector('#back').setAttribute("class", "btn btn-secondary mt-2 mb-2 mx-1 disabled");
                 document.querySelector('#spinner').style.display = 'block';
             });
