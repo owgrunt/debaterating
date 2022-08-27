@@ -8,7 +8,7 @@
     <h2 class="mb-5 mt-2">Редактировать дебатёра - <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["id"] }}</a></h2>
     <div class="container">
         <div class="section">
-            <form action="/add-speaker" method="post">
+            <form action="/edit-speaker" method="post">
                 <table>
                     <thead>
                         <tr>
@@ -22,7 +22,7 @@
                     <tbody>
                             <tr>
                                 <td>
-                                    <input type="text" readonly class="form-control-plaintext" id="id" value="{{ speaker["id"] }}">
+                                    <input type="text" readonly class="form-control-plaintext" id="speaker-id" value="{{ speaker["id"] }}">
                                 </td>
                                 <td>
                                     <div>
