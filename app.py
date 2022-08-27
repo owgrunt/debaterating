@@ -1627,6 +1627,24 @@ def edit_tournament_data():
         return render_template("admin/edit-tournament-data.html", tournament=tournament)
 
 
+@app.route("/edit-tournament-adjudicators", methods=["GET", "POST"])
+@login_required
+def edit_tournament_data():
+    if request.method == "POST":
+        return
+
+    else:
+        if not request.args.get("id"):
+                return apology("must provide tournament id", 400)
+        # Get judges
+        tournament = db.execute(f"SELECT * FROM tournaments WHERE id = ?", request.args.get("id"))
+        if len(tournament) != 1:
+            return apology("tournament not found", 400)
+        tournament = tournament[0]
+
+        return render_template("admin/edit-tournament-data.html", tournament=tournament)
+
+
 
 """ Info Pages """
 
