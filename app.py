@@ -1466,7 +1466,7 @@ def edit_speaker():
         else:
             candidates = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ? AND middle_name = ?",
                                     speaker["last_name"], speaker["first_name"], speaker["middle_name"])
-        if len(candidates) != 0:
+        if len(candidates) > 0 or :
             return apology("speaker already exists", 400)
         else:
             db_name = "speakers"
@@ -1478,6 +1478,8 @@ def edit_speaker():
             if len(speaker["society_id"]) > 0:
                 update_keys.append("society_id")
             add_database_entry(db_name, entry, search_keys, update_keys)
+
+            return render_template("admin/edit-speaker-success.html", speaker=speaker)
 
     else:
         if not request.args.get("id"):
