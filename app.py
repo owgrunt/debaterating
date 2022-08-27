@@ -1460,7 +1460,7 @@ def edit_speaker():
         societies = db.execute(f"SELECT * FROM societies")
 
         if speaker["middle_name"] is None:
-            
+            del speaker["middle_name"]
 
         return render_template("admin/edit-speaker.html", societies=societies, speaker=speaker)
 
