@@ -120,7 +120,7 @@ def import_tournament():
         # Create the variable
         tournament = {}
 
-        # Clear the DB entries
+        # Clear the tournaments that haven't been imported completely
         db.execute("DELETE FROM tournaments WHERE import_complete = 0")
 
         # Ensure the address was submitted
@@ -1370,6 +1370,8 @@ def recalculate_elo_start():
 def recalculate_elo():
     """Recalculate ELO for all tournaments values"""
 
+    # Clear the tournaments that haven't been imported completely
+    db.execute("DELETE FROM tournaments WHERE import_complete = 0")
 
     # Get tournaments
     tournaments = db.execute("SELECT * FROM tournaments WHERE update_complete = 0 ORDER BY date")
