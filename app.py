@@ -1459,7 +1459,7 @@ def edit_speaker():
         speaker["last_name"] = request.form.get("last-name")
         speaker["first_name"] = request.form.get("first-name")
         speaker["middle_name"] = request.form.get("middle-name")
-        speaker["society_id"] = request.form.get("society")
+        speaker["society_id"] = request.form.get("society-id")
         if len(speaker["middle_name"]) < 1:
             candidates = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ?",
                                     speaker["last_name"], speaker["first_name"])
@@ -1473,18 +1473,17 @@ def edit_speaker():
                 candidate = candidates[0]["id"]
                 speaker = speaker["id"]
                 return apology(f"speaker already exists: {candidate}, {speaker}", 400)
-        else:
-            db_name = "speakers"
-            entry = speaker
-            search_keys = ["id"]
-            update_keys = ["last_name", "first_name"]
-            if len(speaker["middle_name"]) > 0:
-                update_keys.append("middle_name")
-            if len(speaker["society_id"]) > 0:
-                update_keys.append("society_id")
-            add_database_entry(db_name, entry, search_keys, update_keys)
+        db_name = "speakers"
+        entry = speaker
+        search_keys = ["id"]
+        update_keys = ["last_name", "first_name"]
+        if len(speaker["middle_name"]) > 0:
+            update_keys.append("middle_name")
+        if request.form.get("first-name"):
+            update_keys.append("society_id")
+        add_database_entry(db_name, entry, search_keys, update_keys)
 
-            return render_template("admin/edit-speaker-success.html", speaker=speaker)
+        return render_template("admin/edit-speaker-success.html", speaker=speaker)
 
     else:
         if not request.args.get("id"):
