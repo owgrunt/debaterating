@@ -1450,7 +1450,20 @@ def add_speaker():
 @login_required
 def edit_speaker():
     if request.method == "POST":
-        return
+        speaker = {}
+        speaker["last_name"] = request.form.get("last-name")
+        speaker["first_name"] = request.form.get("first-name")
+        speaker["middle_name"] = request.form.get("middle-name")
+        speaker["society_id"] = request.form.get("society")
+        if len(speaker["middle_name"]) < 1:
+            candidates = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ?",
+                                    speaker["last_name"], speaker["first_name"])
+        else:
+            candidates = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ? AND middle_name = ?",
+                                    speaker["last_name"], speaker["first_name"], speaker["middle_name"])
+        if len(candidates) != 0:
+            return apology("speaker already exists", 400)
+        else:
 
     else:
         if not request.args.get("id"):
