@@ -1450,7 +1450,7 @@ def add_speaker():
 @login_required
 def edit_speaker():
     if request.method == "POST":
-        
+        return
 
     else:
         if not request.args.get("id"):
@@ -1458,6 +1458,9 @@ def edit_speaker():
 
         speaker = db.execute(f"SELECT * FROM speakers WHERE id = ?", request.args.get("id"))[0]
         societies = db.execute(f"SELECT * FROM societies")
+
+        if speaker["middle_name"] is None:
+            
 
         return render_template("admin/edit-speaker.html", societies=societies, speaker=speaker)
 
