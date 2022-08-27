@@ -1449,6 +1449,11 @@ def add_speaker():
 @app.route("/edit-speaker", methods=["GET", "POST"])
 @login_required
 def edit_speaker_start():
+    if not request.args.get("id"):
+            return apology("must provide debater id", 400)
+
+    speaker = (f"SELECT * FROM speakers WHERE id = ?", request.args.get("id"))
+    societies = db.execute(f"SELECT * FROM societies")
 
 
 @app.route("/add-society", methods=["GET", "POST"])
