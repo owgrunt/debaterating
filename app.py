@@ -1596,10 +1596,10 @@ def join_speakers():
 def edit_tournament_data():
     if request.method == "POST":
         # Update data
-        tournament = []
-        tournament["id"] = request.form.get("tournament_id")
+        tournament = {}
+        tournament["id"] = request.form.get("tournament-id")
         tournament["name"] = request.form.get("name")
-        tournament["short_name"] = request.form.get("short_name")
+        tournament["short_name"] = request.form.get("short-name")
         tournament["date"] = request.form.get("date")
         tournament["type"] = request.form.get("type")
         tournament["page"] = request.form.get("link")
@@ -1610,6 +1610,8 @@ def edit_tournament_data():
         search_keys = ["id"]
         update_keys = ["name", "short_name", "date", "type", "page"]
         add_database_entry(db_name, entry, search_keys, update_keys)
+
+        return render_template("admin/edit-tournament-data-success.html", tournament=tournament)
 
     else:
         if not request.args.get("id"):

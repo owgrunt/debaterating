@@ -31,7 +31,7 @@ onload="autoNotify()"
                     </div>
                     <div class="col-md-4">
                         <label for="short_name" class="form-label">Краткое название</label>
-                        <input autocomplete="off" autofocus class="form-control mx-auto" id="short_name" name="short_name" value="{{ tournament["short_name"] }}" type="text" required>
+                        <input autocomplete="off" autofocus class="form-control mx-auto" id="short-name" name="short-name" value="{{ tournament["short_name"] }}" type="text" required>
                     </div>
                     <div class="col-md-4">
                         <label for="link" class="form-label">Ссылка</label>
@@ -50,6 +50,10 @@ onload="autoNotify()"
                             <option value="proam" {% if tournament["type"] == "open" %}selected{% endif %}>Джедайский</option>
                             <option value="am" {% if tournament["type"] == "open" %}selected{% endif %}>Новичковый</option>
                         </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="tournament-id" class="form-label">ID</label>
+                        <input readonly class="form-control mx-auto" id="tournament-id" value="{{ tournament["id"] }}" name="tournament-id" type="text">
                     </div>
                 </div>
                 <div class="row">
