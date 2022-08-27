@@ -1595,41 +1595,31 @@ def join_speakers():
 @login_required
 def edit_tournament_data():
     if request.method == "POST":
-        # Get tournament
-        tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
-        if len(tournament) != 1:
-            return apology("more than one tournaments being imported", 400)
-        tournament = tournament[0]
-
-        # Update tournament name
+        # Update data
+        tournament["id"] = request.form.get("tournament_id")
         tournament["name"] = request.form.get("name")
         tournament["short_name"] = request.form.get("short_name")
-
-        # Add date and type from form
         tournament["date"] = request.form.get("date")
         tournament["type"] = request.form.get("type")
-        if request.form.get("link"):
-            tournament["page"] = request.form.get("link")
+        tournament["page"] = request.form.get("link")
 
         # Import data into the db
         db_name = "tournaments"
         entry = tournament
-        search_keys = ["slug", "domain"]
-        update_keys = ["name", "short_name", "date", "type"]
-        if "page" in tournament:
-            update_keys.append("page")
+        search_keys = ["id"]
+        update_keys = ["name", "short_name", "date", "type", "page"]
         add_database_entry(db_name, entry, search_keys, update_keys)
 
     else:
         if not request.args.get("id"):
                 return apology("must provide tournament id", 400)
         # Get tournament
-        tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+        tournament = db.execute(f"SELECT * FROM tournaments WHERE id = ?", request.args.get("id"))
         if len(tournament) != 1:
-            return apology("more than one tournaments being imported", 400)
+            return apology("tournament not found", 400)
         tournament = tournament[0]
 
-        return render_template("import/tournament-edit.html", tournament=tournament)
+        return render_template("admin/edit-tournament-data.html", tournament=tournament)
 
 
 
