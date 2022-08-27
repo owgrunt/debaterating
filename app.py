@@ -1591,6 +1591,49 @@ def join_speakers():
         return render_template("admin/join-speakers.html", speakers=speakers)
 
 
+@app.route("/import/tournament/add", methods=["GET", "POST"])
+@login_required
+def add_tournament():
+    """Add the tournament"""
+
+    if request.method == "POST":
+        # Get tournament
+        tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+        if len(tournament) != 1:
+            return apology("more than one tournaments being imported", 400)
+        tournament = tournament[0]
+
+        # Update tournament name
+        tournament["name"] = request.form.get("name")
+        tournament["short_name"] = request.form.get("short_name")
+
+        # Add date and type from form
+        tournament["date"] = request.form.get("date")
+        tournament["type"] = request.form.get("type")
+        if request.form.get("link"):
+            tournament["page"] = request.form.get("link")
+
+        # Import data into the db
+        db_name = "tournaments"
+        entry = tournament
+        search_keys = ["slug", "domain"]
+        update_keys = ["name", "short_name", "date", "type"]
+        if "page" in tournament:
+            update_keys.append("page")
+        add_database_entry(db_name, entry, search_keys, update_keys)
+
+    else:
+        if not request.args.get("id"):
+                return apology("must provide tournament id", 400)
+        # Get tournament
+        tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
+        if len(tournament) != 1:
+            return apology("more than one tournaments being imported", 400)
+        tournament = tournament[0]
+
+        return render_template("import/tournament-edit.html", tournament=tournament)
+
+
 
 """ Info Pages """
 
