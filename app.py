@@ -2031,7 +2031,6 @@ def tournaments_by_speaker():
     return render_template("speaker/participation.html", tournaments=tournaments, speaker=speaker)
 
 
-That is one way to not allow anyone to regirster =)
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
