@@ -1446,6 +1446,11 @@ def add_speaker():
         return render_template("admin/add-speaker.html", societies=societies)
 
 
+@app.route("/edit-speaker", methods=["GET", "POST"])
+@login_required
+def edit_speaker_start():
+
+
 @app.route("/add-society", methods=["GET", "POST"])
 @login_required
 def add_society():
