@@ -13,9 +13,9 @@
                     <thead>
                         <tr>
                             <th>ID 1</th>
-                            <th>Имя</th>
+                            <th>ФИО 1</th>
                             <th>ID 2</th>
-                            <th>Имя</th>
+                            <th>ФИО 2</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,16 +45,22 @@
                     </tbody>
                 </table>
                 <script>
-                    const speakers = {{ speakers|tojson }}
+                    const speakers = {{ speakers|tojson }};
                     document.querySelector('#id-1').addEventListener('input', function()
                     {
-                        var idOne = document.querySelector('#id-1').value;
                         for (let i = 0; i < speakers.length; i++) {
-                            if (speakers[i]["id"] == idOne) {
-                                var nameOne = speakers[i]["last_name"]
+                            if (speakers[i]["id"] == document.querySelector('#id-1').value) {
+                                document.querySelector('#name-1').value = speakers[i]["last_name"] + " " + speakers[i]["first_name"] + " " + speakers[i]["middle_name"]
                             };
                         }
-                        document.querySelector('#name-1').value = nameOne;
+                    });
+                    document.querySelector('#id-2').addEventListener('input', function()
+                    {
+                        for (let i = 0; i < speakers.length; i++) {
+                            if (speakers[i]["id"] == document.querySelector('#id-2').value) {
+                                document.querySelector('#name-2').value = speakers[i]["last_name"] + " " + speakers[i]["first_name"] + " " + speakers[i]["middle_name"]
+                            };
+                        }
                     });
                 </script>
                 <div class="d-flex justify-content-center">
