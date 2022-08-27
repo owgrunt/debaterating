@@ -1580,7 +1580,7 @@ def join_speakers():
         db.execute(f"UPDATE speakers_in_categories SET speaker_id = {speaker_one_id} WHERE speaker_id = {speaker_two_id}")
 
         # Remove speaker two
-        db.execute(f"UPDATE speakers_in_categories SET speaker_id = {speaker_one_id} WHERE speaker_id = {speaker_two_id}")
+        db.execute(f"DELETE FROM speakers WHERE id = {speaker_two_id}")
 
         return render_template("admin/add-speaker-success.html", speaker=speaker)
 
