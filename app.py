@@ -169,7 +169,7 @@ def import_tournament():
 
 @app.route("/import/tournament/edit", methods=["GET", "POST"])
 @login_required
-def edit_tournament():
+def import_tournament_edit():
     # Get tournament
     tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
     if len(tournament) != 1:
@@ -1591,11 +1591,9 @@ def join_speakers():
         return render_template("admin/join-speakers.html", speakers=speakers)
 
 
-@app.route("/import/tournament/add", methods=["GET", "POST"])
+@app.route("/edit-tournament-data", methods=["GET", "POST"])
 @login_required
-def add_tournament():
-    """Add the tournament"""
-
+def edit_tournament_data():
     if request.method == "POST":
         # Get tournament
         tournament = db.execute("SELECT * FROM tournaments WHERE import_complete = 0")
