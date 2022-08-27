@@ -1560,10 +1560,14 @@ def join_speakers():
     if request.method == "POST":
         if not request.form.get("id-1"):
             return apology("speaker_one not specified", 400)
-        speaker_one = request.form.get("id-1")
+        speaker_one_id = request.form.get("id-1")
         if not request.form.get("id-2"):
             return apology("speaker_two not specified", 400)
-        speaker_two = request.form.get("id-2")
+        speaker_two_id = request.form.get("id-2")
+
+        # Check if they've participated in a single comp
+        participations = db.execute(f"SELECT count(id) FROM tournament_participants WHERE speaker_id = {speaker_one_id} OR speaker_id = {speaker_two_id} GROUP BY tournament_id")
+        
 
         return render_template("admin/add-speaker-success.html", speaker=speaker)
 
