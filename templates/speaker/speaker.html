@@ -5,8 +5,12 @@
 {% endblock %}
 
 {% block main %}
-    <h2 class="mb-3 mt-2">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</h2>
-    {% if }<h5 class="mb-5 mt-2"><a href="/society?id={{ society["id"] }}">{{ society["name"] }}</a></h2>
+    {% if society is defined %}
+        <h2 class="mb-3 mt-2">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</h2>
+        <h5 class="mb-5 mt-2"><a href="/society?id={{ society["id"] }}">{{ society["name"] }}</a></h2>
+    {% else %}
+        <h2 class="mb-5 mt-2">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</h2>
+    {% endif %}
     <div class="container">
         <div class="row mt-3">
             <div class="col-sm-12 col-md-6">
