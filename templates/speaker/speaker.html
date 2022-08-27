@@ -6,7 +6,7 @@
 
 {% block main %}
     {% if society is defined %}
-        <h2 class="mb-3 mt-2">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</h2>
+        <h2 class="mb-3 mt-2">{{ speaker["first_name"] }} {{ speaker["last_name"] }} {% if session["user_id"] %}{% endif %}</h2>
         <h5 class="mb-5 mt-2"><a href="/society?id={{ society["id"] }}">{{ society["name"] }}</a></h2>
     {% else %}
         <h2 class="mb-5 mt-2">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</h2>
