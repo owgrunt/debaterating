@@ -1452,9 +1452,9 @@ def edit_speaker():
     if request.method == "POST":
         speaker = {}
         speaker["id"] = request.form.get("speaker-id")
-        if not request.args.get("last-name"):
+        if not request.form.get("last-name"):
             return apology("must provide last_name", 400)
-        if not request.args.get("first-name"):
+        if not request.form.get("first-name"):
             return apology("must provide first_name", 400)
         speaker["last_name"] = request.form.get("last-name")
         speaker["first_name"] = request.form.get("first-name")
@@ -1471,7 +1471,8 @@ def edit_speaker():
                 return apology("more that one speaker with these first_name and last_name", 400)
             if candidates[0]["id"] != speaker["id"]:
                 candidate = candidates[0]["id"]
-                return apology(f"speaker already exists: {candidate}", 400)
+                speaker = speaker["id"]
+                return apology(f"speaker already exists: {candidate}, {speaker}", 400)
         else:
             db_name = "speakers"
             entry = speaker
