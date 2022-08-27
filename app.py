@@ -1468,7 +1468,7 @@ def edit_speaker():
                                     speaker["last_name"], speaker["first_name"], speaker["middle_name"])
         if len(candidates) > 0:
             if len(candidates) > 1:
-                return apology("more that one speaker with ", 400)
+                return apology("more that one speaker with these first_name and last_name", 400)
             if candidates[0]["id"] != speaker["id"]:
                 return apology("speaker already exists", 400)
         else:
