@@ -101,7 +101,7 @@
                 <table id="adjudicators">
                     <thead>
                         <tr>
-                            <th colspan="2">Команда</th>
+                            <th colspan="2">Команда {% if session["user_id"] %}<a href="/edit-tournament-adjudicators?id={{ tournament["id"] }}">(Редактировать судей)</a>{% endif %}</th>
                         </tr>
                     </thead>
                     <tbody>

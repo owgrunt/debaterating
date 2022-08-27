@@ -1629,16 +1629,16 @@ def edit_tournament_data():
 
 @app.route("/edit-tournament-adjudicators", methods=["GET", "POST"])
 @login_required
-def edit_tournament_data():
+def edit_tournament_adjudicators():
     if request.method == "POST":
         return
 
     else:
         if not request.args.get("id"):
                 return apology("must provide tournament id", 400)
-        tournament_id = request.args.get("id"):
+        tournament_id = request.args.get("id")
         # Get judges
-        tournament_participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = {tournament_id} AND (role = 'adjudicator'  OR role = 'ca'")
+        tournament_participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = {tournament_id} AND (role = 'adjudicator'  OR role = 'ca')")
 
         return render_template("admin/edit-tournament-adjudicators.html", tournament_participants=tournament_participants, tournament_id=tournament_id)
 
