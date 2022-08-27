@@ -1637,7 +1637,7 @@ def edit_tournament_data():
         if not request.args.get("id"):
                 return apology("must provide tournament id", 400)
         # Get judges
-        tournament = db.execute(f"SELECT * FROM tournaments WHERE id = ?", request.args.get("id"))
+        tournament = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = ? AND (role = 'adjudicator'  OR role = 'ca'", request.args.get("id"))
         if len(tournament) != 1:
             return apology("tournament not found", 400)
         tournament = tournament[0]
