@@ -1455,6 +1455,8 @@ def edit_speaker_start():
     speaker = (f"SELECT * FROM speakers WHERE id = ?", request.args.get("id"))
     societies = db.execute(f"SELECT * FROM societies")
 
+    return render_template("admin/edit-speaker.html", societies=societies, speaker=speaker)
+
 
 @app.route("/add-society", methods=["GET", "POST"])
 @login_required

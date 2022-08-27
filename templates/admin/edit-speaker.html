@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <h2 class="mb-5 mt-2">Редактировать дебатёра - </h2>
+    <h2 class="mb-5 mt-2">Редактировать дебатёра - <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["id"] }}</a></h2>
     <div class="container">
         <div class="section">
             <form action="/add-speaker" method="post">
@@ -22,22 +22,29 @@
                             <tr>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="last-name" name="last-name" type="text" required>
+                                        <input autocomplete="off" class="form-control mx-auto" id="last-name" name="last-name" value="{{ speaker["last_name"] }}" type="text" required>
                                     </div>
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="first-name" name="first-name" type="text" required>
+                                        <input autocomplete="off" class="form-control mx-auto" id="first-name" name="first-name" value="{{ speaker["first_name"] }}" type="text" required>
                                     </div>
 
                                 </td>
                                 <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="middle-name" name="middle-name" type="text">
+                                        <input autocomplete="off" class="form-control mx-auto" id="middle-name" name="middle-name" {% if speaker["middle_name"] is defined %}value="{{ speaker["middle_name"] }}"{% endif %} type="text">
                                     </div>
                                 </td>
                                 <td>
-                                    Клуб
+                                    <div>
+                                        <select class="form-select" id="society-id" name="society-id">
+                                            <option selected disabled>Выбери клуб</option>
+                                            {% for society in societies %}
+                                                <option value="{{ society["id"] }}" {% if society["id"] == speaker["society_id"] %}selected{% endif %}>{{ society["name"] }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </td>
                             </tr>
                     </tbody>
