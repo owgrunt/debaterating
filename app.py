@@ -1572,7 +1572,8 @@ def join_speakers():
             return apology(f"Speakers appear in the same tournament {tournament_id}", 400)
 
         # Replace speaker two with speaker one
-        db.execute(f"UPDATE teams SET speaker_id = {speaker_one_id} WHERE speaker_id = {speaker_two_id}")
+        db.execute(f"UPDATE teams SET speaker_one_id = {speaker_one_id} WHERE speaker_one_id = {speaker_two_id}")
+        db.execute(f"UPDATE teams SET speaker_two_id = {speaker_one_id} WHERE speaker_two_id = {speaker_two_id}")
         db.execute(f"UPDATE speeches SET speaker_id = {speaker_one_id} WHERE speaker_id = {speaker_two_id}")
         db.execute(f"UPDATE tournament_participants SET speaker_id = {speaker_one_id} WHERE speaker_id = {speaker_two_id}")
         db.execute(f"UPDATE adjudications SET speaker_id = {speaker_one_id} WHERE speaker_id = {speaker_two_id}")
