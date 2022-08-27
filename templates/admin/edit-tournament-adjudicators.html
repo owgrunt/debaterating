@@ -19,49 +19,16 @@
                     <tbody>
                             <tr>
                                 <td>
-                                    <input readonly class="form-control mx-auto" id="speaker-id" value="{{ speaker["id"] }}" name="speaker-id" type="text">
-                                </td>
-                                <td>
                                     <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="last-name" name="last-name" value="{{ speaker["last_name"] }}" type="text" required>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <a class="btn btn-outline-secondary" role="button" id="switch">↔</a>
-                                        <script>
-                                            document.querySelector('#switch').addEventListener('click', function()
-                                            {
-                                                var lastName = document.querySelector('#last-name').value;
-                                                document.querySelector('#last-name').value = document.querySelector('#first-name').value;
-                                                document.querySelector('#first-name').value = lastName;
-                                            });
-                                        </script>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="first-name" name="first-name" value="{{ speaker["first_name"] }}" type="text" required>
-                                    </div>
-
-                                </td>
-                                <td>
-                                    <div>
-                                        <input autocomplete="off" class="form-control mx-auto" id="middle-name" name="middle-name" {% if speaker["middle_name"] is defined %}value="{{ speaker["middle_name"] }}"{% endif %} type="text">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <select class="form-select" id="society-id" name="society-id">
-                                            <option selected disabled>Выбери клуб</option>
-                                            <option value="no">Без клуба</option>
-                                            {% for society in societies %}
-                                                <option value="{{ society["id"] }}" {% if society["id"] == speaker["society_id"] %}selected{% endif %}>{{ society["name"] }}</option>
-                                            {% endfor %}
+                                        <select class="form-select mx-auto" id="role" name="role" required>
+                                            <option value="adjudicator" {% if participant["role"] == "adjudicator" %}selected{% endif %}>судья</option>
+                                            <option value="ca" {% if participant["role"] == "ca" %}selected{% endif %}>ГС</option>
                                         </select>
                                     </div>
                                 </td>
-                            </tr>
+                                <td>
+                                    <input readonly class="form-control mx-auto" id="speaker-id" value="{{ speaker["id"] }}" name="speaker-id" type="text">
+                                </td>
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-center">
