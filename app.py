@@ -1582,7 +1582,7 @@ def join_speakers():
         # Remove speaker two
         db.execute(f"DELETE FROM speakers WHERE id = {speaker_two_id}")
 
-        return render_template("admin/add-speaker-success.html", speaker=speaker)
+        return render_template("admin/join-speakers-success.html", speaker_one_id=speaker_one_id, speaker_two_id=speaker_two_id)
 
     else:
         speakers = db.execute(f"SELECT * FROM speakers")
