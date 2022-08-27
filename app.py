@@ -1603,6 +1603,8 @@ def edit_tournament_data():
         tournament["date"] = request.form.get("date")
         tournament["type"] = request.form.get("type")
         tournament["page"] = request.form.get("link")
+        if len(tournament["page"]) == 0:
+            tournament["page"] = None
 
         # Import data into the db
         db_name = "tournaments"
