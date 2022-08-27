@@ -14,6 +14,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Фамилия</th>
+                            <th></th>
                             <th>Имя</th>
                             <th>Отчество</th>
                             <th>Клуб</th>
@@ -27,6 +28,19 @@
                                 <td>
                                     <div>
                                         <input autocomplete="off" class="form-control mx-auto" id="last-name" name="last-name" value="{{ speaker["last_name"] }}" type="text" required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <a class="btn btn-outline-secondary" role="button" id="switch">↔</a>
+                                        <script>
+                                            document.querySelector('#switch').addEventListener('click', function()
+                                            {
+                                                var lastName = document.querySelector('#last-name').value;
+                                                document.querySelector('#last-name').value = document.querySelector('#first-name').value;
+                                                document.querySelector('#first-name').value = lastName;
+                                            });
+                                        </script>
                                     </div>
                                 </td>
                                 <td>

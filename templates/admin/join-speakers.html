@@ -44,6 +44,15 @@
                             </tr>
                     </tbody>
                 </table>
+                <script>
+                    const
+                    document.querySelector('#id-1').addEventListener('change', function()
+                    {
+                        var lastName = document.querySelector('#last-name').value;
+                        document.querySelector('#last-name').value = document.querySelector('#first-name').value;
+                        document.querySelector('#first-name').value = lastName;
+                    });
+                </script>
                 <div class="d-flex justify-content-center">
                     <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">Объединить</button>
                     <div class="spinner-border mt-2 mb-2 mx-3" role="status" id="spinner" style="display: none">
