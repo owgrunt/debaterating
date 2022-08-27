@@ -1426,7 +1426,7 @@ def add_speaker():
             update_keys = ["last_name", "first_name"]
             if len(speaker["middle_name"]) > 0:
                 update_keys.append("middle_name")
-            if len(speaker["society_id"]) > 0:
+            if speaker["society_id"] is not None:
                 update_keys.append("society_id")
             execute_insert("speakers", speaker, update_keys)
 
