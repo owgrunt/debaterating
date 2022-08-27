@@ -1568,7 +1568,8 @@ def join_speakers():
         # Check if they've participated in a single comp
         participations = db.execute(f"SELECT count(id) as count, tournament_id FROM tournament_participants WHERE speaker_id = {speaker_one_id} OR speaker_id = {speaker_two_id} GROUP BY tournament_id ORDER BY count DESC")
         if participations[0]["count"] > 1:
-            return apology("Speakers appear in the same tournament")
+            tournament_id = participations[0]["tournament_id"]
+            return apology(f"Speakers appear in the same tournament {tournament_id}", 400)
 
 
         return render_template("admin/add-speaker-success.html", speaker=speaker)
