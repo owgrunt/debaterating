@@ -46,16 +46,14 @@ onload="autoNotify()"
                     <div class="col-md-4">
                         <label for="type" class="form-label">Тип</label>
                         <select class="form-select mx-auto" id="type" name="type" required>
-                            <option disabled>Тип турнира</option>
-                            <option value="open" selected>Открытый</option>
-                            <option value="proam">Джедайский</option>
-                            <option value="am">Новичковый</option>
+                            <option value="open" {% if tournament["type"] == "open" %}selected{% endif %}>Открытый</option>
+                            <option value="proam" {% if tournament["type"] == "open" %}selected{% endif %}>Джедайский</option>
+                            <option value="am" {% if tournament["type"] == "open" %}selected{% endif %}>Новичковый</option>
                         </select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="d-flex justify-content-center">
-                        <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/import" role="button" id="back">Назад</a>
                         <button class="btn btn-primary mt-2 mb-2 mx-1" type="submit" id="submit">
                             Продолжить
                         </button>
