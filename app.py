@@ -1467,8 +1467,10 @@ def edit_speaker():
             candidates = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ? AND middle_name = ?",
                                     speaker["last_name"], speaker["first_name"], speaker["middle_name"])
         if len(candidates) > 0:
-            
-            return apology("speaker already exists", 400)
+            if len(candidates) > 1:
+                return apology("more that one speaker with ", 400)
+            if candidates[0]["id"] != speaker["id"]:
+                return apology("speaker already exists", 400)
         else:
             db_name = "speakers"
             entry = speaker
