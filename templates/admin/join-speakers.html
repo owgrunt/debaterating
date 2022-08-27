@@ -48,9 +48,8 @@
                     const speakers = {{ speakers }}
                     document.querySelector('#id-1').addEventListener('change', function()
                     {
-                        var lastName = document.querySelector('#last-name').value;
-                        document.querySelector('#last-name').value = document.querySelector('#first-name').value;
-                        document.querySelector('#first-name').value = lastName;
+                        var idOne = document.querySelector('#id-1').value;
+                        document.querySelector('#name-1').value = idOne;
                     });
                 </script>
                 <div class="d-flex justify-content-center">
