@@ -1460,6 +1460,8 @@ def edit_speaker():
         speaker["first_name"] = request.form.get("first-name")
         speaker["middle_name"] = request.form.get("middle-name")
         speaker["society_id"] = request.form.get("society-id")
+        if speaker["society_id"] == "no":
+            speaker["society_id"] = None
         if len(speaker["middle_name"]) < 1:
             candidates = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ?",
                                     speaker["last_name"], speaker["first_name"])
@@ -1479,7 +1481,7 @@ def edit_speaker():
         update_keys = ["last_name", "first_name"]
         if len(speaker["middle_name"]) > 0:
             update_keys.append("middle_name")
-        if request.form.get("first-name"):
+        if request.form.get("society-id"):
             update_keys.append("society_id")
         add_database_entry(db_name, entry, search_keys, update_keys)
 
