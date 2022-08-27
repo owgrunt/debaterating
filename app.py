@@ -1631,7 +1631,11 @@ def edit_tournament_data():
 @login_required
 def edit_tournament_adjudicators():
     if request.method == "POST":
-        return
+        # Get judges
+        tournament_participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = {tournament_id} AND (role = 'adjudicator'  OR role = 'ca')")
+
+        for participant in tournament_participants:
+            
 
     else:
         if not request.args.get("id"):
