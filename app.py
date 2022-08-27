@@ -1451,6 +1451,11 @@ def add_speaker():
 def edit_speaker():
     if request.method == "POST":
         speaker = {}
+        speaker["id"] = request.form.get("id")
+        if not request.args.get("id"):
+            return apology("must provide debater id", 400)
+        if not request.args.get("id"):
+            return apology("must provide debater id", 400)
         speaker["last_name"] = request.form.get("last-name")
         speaker["first_name"] = request.form.get("first-name")
         speaker["middle_name"] = request.form.get("middle-name")
@@ -1464,6 +1469,15 @@ def edit_speaker():
         if len(candidates) != 0:
             return apology("speaker already exists", 400)
         else:
+            db_name = "speakers"
+            entry = speaker
+            search_keys = ["id"]
+            update_keys = ["last_name", "first_name"]
+            if len(speaker["middle_name"]) > 0:
+                update_keys.append("middle_name")
+            if len(speaker["society_id"]) > 0:
+                update_keys.append("society_id")
+            add_database_entry(db_name, entry, search_keys, update_keys)
 
     else:
         if not request.args.get("id"):
