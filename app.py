@@ -1640,7 +1640,7 @@ def edit_tournament_data():
         # Get judges
         tournament_participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = {tournament_id} AND (role = 'adjudicator'  OR role = 'ca'")
 
-        return render_template("admin/edit-tournament-adjudicators.html", tournament_participants=tournament_participants)
+        return render_template("admin/edit-tournament-adjudicators.html", tournament_participants=tournament_participants, tournament_id=tournament_id)
 
 
 
