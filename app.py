@@ -1636,9 +1636,9 @@ def edit_tournament_adjudicators():
         tournament_participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = {tournament_id} AND (role = 'adjudicator'  OR role = 'ca')")
 
         for participant in tournament_participants:
-            form_id = "role-" + str(participant["id"])
-            if request.form.get(form_id) != participant["role"]:
-                db.execute(f"UPDATE tournament_participants SET role = ? WHERE tournament_id = {tournament_id} AND id = ?", participant["id"])
+            role = request.form.get("role-" + str(participant["id"]))
+            if role != participant["role"]:
+                db.execute(f"UPDATE tournament_participants SET role = ? WHERE tournament_id = {tournament_id} AND id = ?", role, participant["id"])
 
         tournament_participants = db.execute(f"SELECT * FROM tournament_participants WHERE tournament_id = {tournament_id} AND (role = 'adjudicator'  OR role = 'ca')")
         return render_template("admin/edit-tournament-adjudicators-success.html", tournament_participants=tournament_participants, tournament_id=tournament_id)
