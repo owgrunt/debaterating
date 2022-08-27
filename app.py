@@ -1478,9 +1478,9 @@ def edit_speaker():
         db_name = "speakers"
         entry = speaker
         search_keys = ["id"]
-        update_keys = ["last_name", "first_name"]
-        if len(speaker["middle_name"]) > 0:
-            update_keys.append("middle_name")
+        update_keys = ["last_name", "first_name", "middle_name"]
+        if len(speaker["middle_name"]) == 0:
+            speaker["middle_name"] = None
         if request.form.get("society-id"):
             update_keys.append("society_id")
         add_database_entry(db_name, entry, search_keys, update_keys)
