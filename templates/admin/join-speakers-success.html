@@ -22,10 +22,11 @@ onload="autoNotify()"
     </script>
     <h2 class="mb-5 mt-2">Дубликаты объединены</h2>
     <div class="container">
-        <div class="section">Дебатёр с ID {{ speaker_two_id }}, </div>
+        <div class="section">Дебатёр с ID {{ speaker_two_id }} удалён, все его записи добавлены к <a href="/speaker?id={{ speaker_one_id }}">дебатёру с ID {{ speaker_one_id }}</a>. Если удалённый дебатёр участвовал хоть в одном турнире, нужно обязательно пересчитать ELO (это можно сделать после объединения всех записей, которые ты планируешь объединить).</div>
         <div class="section">
             <div class="d-flex justify-content-center">
-                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/speaker?id={{ speaker["id"] }}" role="button" id="next">Ура!</a>
+                <a class="btn btn-secondary mt-2 mb-2 mx-1" href="/join-speakers" role="button" id="next">Объединить ещё</a>
+                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/recalculate-elo" role="button" id="next">Пересчитать ELO</a>
             </div>
         </div>
     </div>
