@@ -1596,6 +1596,7 @@ def join_speakers():
 def edit_tournament_data():
     if request.method == "POST":
         # Update data
+        tournament = []
         tournament["id"] = request.form.get("tournament_id")
         tournament["name"] = request.form.get("name")
         tournament["short_name"] = request.form.get("short_name")

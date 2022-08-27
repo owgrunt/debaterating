@@ -22,10 +22,10 @@ onload="autoNotify()"
     </script>
     <h2 class="mb-5 mt-2">Турнир изменён</h2>
     <div class="container">
-        <div class="section">Название: {{ tournament["name"] }}, </div>
+        <div class="section">Название: {{ tournament["name"] }}, Краткое название: {{ tournament["short_name"] }}, Ссылка: <a href="{{ tournament["link"] }}">{{ tournament["link"] }}</a>, Дата окончания: {{ tournament["date"] }}, Тип: {{ tournament["type"] }}.</div>
         <div class="section">
             <div class="d-flex justify-content-center">
-                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/speaker?id={{ speaker["id"] }}" role="button" id="next">Ура!</a>
+                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/tournament?id={{ tournament["id"] }}" role="button" id="next">Ура!</a>
             </div>
         </div>
     </div>
