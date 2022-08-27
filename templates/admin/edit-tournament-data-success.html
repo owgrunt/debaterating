@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Дебатёр добавлен
+{% endblock %}
+
+{% block audio %}
+onload="autoNotify()"
+{% endblock %}
+
+{% block main %}
+    <audio id="notifypop"> <!--Source the audio file. -->
+        <source src="/static/notification_sound.ogg" type="audio/ogg">
+        <source src="/static/notification_sound.mpeg" type="audio/mpeg">
+    </audio>
+    <script>
+        var popupsound = document.getElementById("notifypop");
+
+        function autoNotify() {
+        popupsound.play(); //play the audio file
+        }
+    </script>
+    <h2 class="mb-5 mt-2">Турнир изменён</h2>
+    <div class="container">
+        <div class="section">Название: {{ tournament["name"] }}, </div>
+        <div class="section">
+            <div class="d-flex justify-content-center">
+                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/speaker?id={{ speaker["id"] }}" role="button" id="next">Ура!</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
