@@ -1403,7 +1403,6 @@ def recalculate_elo():
     return redirect("/recalculate-elo-success")
 
 
-
 @app.route("/add-speaker", methods=["GET", "POST"])
 @login_required
 def add_speaker():
@@ -1553,6 +1552,48 @@ def import_society_speakers():
         societies = db.execute(f"SELECT * FROM societies")
 
         return render_template("admin/add-society-speakers.html", societies=societies)
+
+
+@app.route("/join-speakers", methods=["GET", "POST"])
+@login_required
+def join_speakers():
+    """Add a single speaker"""
+
+    if request.method == "POST":
+        speaker = {}
+        speaker["last_name"] = request.form.get("last-name")
+        speaker["first_name"] = request.form.get("first-name")
+        speaker["middle_name"] = request.form.get("middle-name")
+        speaker["society_id"] = request.form.get("society")
+        if len(speaker["middle_name"]) < 1:
+            candidates = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ?",
+                       speaker["last_name"], speaker["first_name"])
+        else:
+            candidates = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ? AND middle_name = ?",
+                       speaker["last_name"], speaker["first_name"], speaker["middle_name"])
+        if len(candidates) != 0:
+            return apology("speaker already exists", 400)
+        else:
+            update_keys = ["last_name", "first_name"]
+            if len(speaker["middle_name"]) > 0:
+                update_keys.append("middle_name")
+            if len(speaker["society_id"]) > 0:
+                update_keys.append("society_id")
+            execute_insert("speakers", speaker, update_keys)
+
+            if len(speaker["middle_name"]) < 1:
+                speaker = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ?",
+                                speaker["last_name"], speaker["first_name"])[0]
+            else:
+                speaker = db.execute(f"SELECT * FROM speakers WHERE last_name = ? AND first_name = ? AND middle_name = ?",
+                                speaker["last_name"], speaker["first_name"], speaker["middle_name"])[0]
+
+            return render_template("admin/add-speaker-success.html", speaker=speaker)
+
+    else:
+        speakers = db.execute(f"SELECT * FROM speakers")
+
+        return render_template("admin/join-speakers.html", speakers=speakers)
 
 
 
