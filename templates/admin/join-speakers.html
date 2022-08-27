@@ -45,10 +45,13 @@
                     </tbody>
                 </table>
                 <script>
-                    const speakers = {{ speakers }}
+                    const speakers = {{ speakers|tojson }}
                     document.querySelector('#id-1').addEventListener('input', function()
                     {
                         var idOne = document.querySelector('#id-1').value;
+                        for (let i = 0; i < speakers.length; i++) {
+                            text += cars[i] + "<br>";
+                          }
                         document.querySelector('#name-1').value = idOne;
                     });
                 </script>
