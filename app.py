@@ -1452,10 +1452,10 @@ def edit_speaker():
     if request.method == "POST":
         speaker = {}
         speaker["id"] = request.form.get("id")
-        if not request.args.get("id"):
-            return apology("must provide debater id", 400)
-        if not request.args.get("id"):
-            return apology("must provide debater id", 400)
+        if not request.args.get("last_name"):
+            return apology("must provide last_name", 400)
+        if not request.args.get("first_name"):
+            return apology("must provide first_name", 400)
         speaker["last_name"] = request.form.get("last-name")
         speaker["first_name"] = request.form.get("first-name")
         speaker["middle_name"] = request.form.get("middle-name")
