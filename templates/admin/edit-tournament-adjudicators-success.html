@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Судьи турнира отредактированы
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-5 mt-2">Судьи турнира отредактированы - <a href="/tournament?id={{ tournament_id }}">{{ tournament_id }}</a></h2>
+    <div class="container">
+        <div class="section">
+            <form action="/edit-tournament-adjudicators" method="post">
+                <input readonly class="form-control mx-auto" id="tournament_id" value="{{ tournament_id }}" name="tournament_id" type="number" style="display: none">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>роль</th>
+                            <th>судья</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for participant in tournament_participants %}
+                            <tr>
+                                <td>
+                                    {% if participant["role"] == "adjudicator" %}Судья{% else %}ГС{% endif %}
+                                </td>
+                                <td>
+                                    {{ participant["internal_name"] }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-center">
+                    <a class="btn btn-primary mt-2 mb-2 mx-1" href="/tournament?id={{ tournament_id }}" role="button">Ура!</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
