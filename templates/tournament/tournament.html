@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <h2 class="mb-5 mt-2">{{ tournament["name"] }}</h2>
+    <h2 class="mb-5 mt-2">{{ tournament["name"] }} {% if session["user_id"] %}<a class="btn btn-primary mt-2 mb-2 mx-1" href="/edit-tournament-data?id={{ tournament["id"] }}" role="button" id="edit">Редактировать данные</a>{% endif %}</h2>
     <div class="container">
         <div class="row mt-3 mx-1 mb-4">
             <div class="col-sm-6 col-md-3">
