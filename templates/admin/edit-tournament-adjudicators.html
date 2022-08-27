@@ -20,14 +20,14 @@
                             <tr>
                                 <td>
                                     <div>
-                                        <select class="form-select mx-auto" id="role" name="role" required>
+                                        <select class="form-select mx-auto" id="role-{{ participant["id"] }}" name="role-{{ participant["id"] }}" required>
                                             <option value="adjudicator" {% if participant["role"] == "adjudicator" %}selected{% endif %}>судья</option>
                                             <option value="ca" {% if participant["role"] == "ca" %}selected{% endif %}>ГС</option>
                                         </select>
                                     </div>
                                 </td>
                                 <td>
-                                    <input readonly class="form-control mx-auto" id="speaker-id" value="{{ speaker["id"] }}" name="speaker-id" type="text">
+                                    <input readonly class="form-control mx-auto" value="{{ speaker["id"] }}" name="speaker-id" type="text">
                                 </td>
                     </tbody>
                 </table>
