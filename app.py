@@ -1452,9 +1452,7 @@ def edit_speaker():
     if not request.args.get("id"):
         return apology("must provide debater id", 400)
 
-    id = request.args.get("id")
-
-    speaker = (f"SELECT * FROM speakers WHERE id = {id}")[0]
+    speaker = db.execute(f"SELECT * FROM speakers WHERE id = ?", request.args.get("id"))[0]
     societies = db.execute(f"SELECT * FROM societies")
 
     return render_template("admin/edit-speaker.html", societies=societies, speaker=speaker)
