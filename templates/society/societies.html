@@ -8,12 +8,15 @@
     <h2 class="mb-5 mt-2">Клубы</h2>
     <div class="container-md">
         <div class="row">
-            <div class="col" style="text-align: left">
+            {% for society in societies %}
+                <div class="col-sm-6 col-md-3"><h4><a href="/society?id={{ society["id"] }}">{{ society["name"] }}</a></h4></div>
+            {% endfor %}
+            <!-- <div class="col" style="text-align: left">
                 <table id="speakers" class="table table-striped" style="width:100%">
                     <thead>
                         <tr>
                             <th>Клуб</th>
-                            <!-- <th>ELO</th> -->
+                            <th>ELO</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -22,9 +25,9 @@
                                 <td>
                                     <a href="/society?id={{ society["id"] }}">{{ society["name"] }}</a>
                                 </td>
-                                <!-- <td>
+                                <td>
                                     {{ society["rating"] }}
-                                </td> -->
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -44,7 +47,7 @@
                         } );
                     });
                 </script>
-            </div>
+            </div> -->
         </div>
     </div>
 {% endblock %}
