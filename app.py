@@ -44,8 +44,10 @@ def after_request(response):
 
 @app.route("/")
 def index():
+    tournaments = db.execute("SELECT * FROM tournaments WHERE import_complete = 1 ORDER BY date DESC LIMIT 5")
+    speakers = db.execute("SELECT * FROM speakers ORDER BY speaker_score DESC LIMIT 5")
 
-    return render_template("index.html")
+    return render_template("index.html", tournaments=tournaments, speakers=speakers)
 
 
 @app.route("/login", methods=["GET", "POST"])
