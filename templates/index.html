@@ -26,18 +26,12 @@
                             <th>
                                 #
                             </th>
-                        </tr>
-                        <tr>
                             <th>
                                 Спикер
                             </th>
-                        </tr>
-                        <tr>
                             <th>
                                 ELO
                             </th>
-                        </tr>
-                        <tr>
                             <th>
                                 Спик
                             </th>
@@ -47,7 +41,10 @@
                         {% for speaker in speakers %}
                             <tr>
                                 <th>
-                                    
+                                    {{ speaker[ranking_by_rating] }}
+                                </th>
+                                <th>
+                                    <a href="/speaker?id={{ speaker[id] }}">{{ speaker[first_name] }} {{ speaker[first_name] }}</a>
                                 </th>
                             </tr>
                         {% endfor %}
