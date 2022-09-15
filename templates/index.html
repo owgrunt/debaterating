@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">{{ speakers }}
+        <div class="row">
             <div class="col">
                 <table>
                     <thead>
@@ -41,19 +41,63 @@
                         {% for speaker in speakers %}
                             <tr>
                                 <th>
-                                    {{ speaker[ranking_by_rating] }}
+                                    {{ speaker["ranking_by_rating"] }}
                                 </th>
                                 <th>
-                                    <a href="/speaker?id={{ speaker[id] }}">{{ speaker[first_name] }} {{ speaker[last_name] }}</a>
+                                    <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</a>
+                                </th>
+                                <th>
+                                    {{ speaker["rating"] }}
+                                </th>
+                                <th>
+                                    {{ speaker["speaker_score"] }}
                                 </th>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/speakers" role="button">Рейтинг спикеров</a>
+                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/speakers" role="button">Все спикеры</a>
             </div>
-            <a class="btn btn-primary mt-2 mb-2 mx-1" href="/speakers" role="button">Рейтинг спикеров</a>
-            <a class="btn btn-primary mt-2 mb-2 mx-1" href="/tournaments" role="button">Список турниров</a>
+            <div class="col">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Спикер
+                            </th>
+                            <th>
+                                ELO
+                            </th>
+                            <th>
+                                Спик
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for speaker in speakers %}
+                            <tr>
+                                <th>
+                                    {{ speaker["ranking_by_rating"] }}
+                                </th>
+                                <th>
+                                    <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</a>
+                                </th>
+                                <th>
+                                    {{ speaker["rating"] }}
+                                </th>
+                                <th>
+                                    {{ speaker["speaker_score"] }}
+                                </th>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/tournaments" role="button">Список турниров</a>
+            </div>
+
             <a class="btn btn-primary mt-2 mb-2 mx-1" href="/societies" role="button">Список клубов</a>
         </div>
     </div>
