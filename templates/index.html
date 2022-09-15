@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
+            <div class="col-sm-12 col-md-4">
                 <table>
                     <thead>
                         <tr>
@@ -58,44 +58,38 @@
                 </table>
                 <a class="btn btn-primary mt-2 mb-2 mx-1" href="/speakers" role="button">Все спикеры</a>
             </div>
-            <div class="col">
+            <div class="col-sm-12 col-md-4">
                 <table>
                     <thead>
                         <tr>
                             <th>
-                                #
+                                Турнир
                             </th>
                             <th>
-                                Спикер
+                                Дата
                             </th>
                             <th>
-                                ELO
-                            </th>
-                            <th>
-                                Спик
+                                Средний ELO
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for speaker in speakers %}
+                        {% for tournament in tournaments %}
                             <tr>
                                 <th>
-                                    {{ speaker["ranking_by_rating"] }}
+                                    <a href="/tournament?id={{ tournament["id"] }}">{{ tournament["name"] }}</a>
                                 </th>
                                 <th>
-                                    <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</a>
+                                    {{ tournament["date"] }}
                                 </th>
                                 <th>
-                                    {{ speaker["rating"] }}
-                                </th>
-                                <th>
-                                    {{ speaker["speaker_score"] }}
+                                    {{ tournament["average_rating"] }}
                                 </th>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/tournaments" role="button">Список турниров</a>
+                <a class="btn btn-primary mt-2 mb-2 mx-1" href="/tournaments" role="button">Все турниры</a>
             </div>
 
             <a class="btn btn-primary mt-2 mb-2 mx-1" href="/societies" role="button">Список клубов</a>
