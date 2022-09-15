@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row">{{ speakers }}
             <div class="col">
                 <table>
                     <thead>
@@ -44,7 +44,7 @@
                                     {{ speaker[ranking_by_rating] }}
                                 </th>
                                 <th>
-                                    <a href="/speaker?id={{ speaker[id] }}">{{ speaker[first_name] }} {{ speaker[first_name] }}</a>
+                                    <a href="/speaker?id={{ speaker[id] }}">{{ speaker[first_name] }} {{ speaker[last_name] }}</a>
                                 </th>
                             </tr>
                         {% endfor %}
