@@ -30,18 +30,18 @@
                     <tbody>
                         {% for speaker in speakers %}
                             <tr>
-                                <th>
+                                <td>
                                     {{ speaker["ranking_by_rating"] }}
-                                </th>
-                                <th>
+                                </td>
+                                <td>
                                     <a href="/speaker?id={{ speaker["id"] }}">{{ speaker["first_name"] }} {{ speaker["last_name"] }}</a>
-                                </th>
-                                <th>
+                                </td>
+                                <td>
                                     {{ speaker["rating"] }}
-                                </th>
-                                <th>
+                                </td>
+                                <td>
                                     {{ speaker["speaker_score"] }}
-                                </th>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -67,15 +67,15 @@
                     <tbody>
                         {% for tournament in tournaments %}
                             <tr>
-                                <th>
+                                <td>
                                     <a href="/tournament?id={{ tournament["id"] }}">{{ tournament["short_name"] }}</a>
-                                </th>
+                                </td>
                                 <th>
                                     {{ tournament["date"] }}
-                                </th>
-                                <th>
+                                </td>
+                                <td>
                                     {{ tournament["average_rating"] }}
-                                </th>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
