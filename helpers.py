@@ -249,9 +249,8 @@ def split_name_by_format(speaker, name_format):
 def has_yo(name):
     return bool(re.search('[ё]', name))
 
-def calculate_elo(rounds, tournament):
-    
 
+def calculate_elo(rounds, tournament):
     # Make ELO calculation for all the rounds in a sequence
     for round_instance in rounds:
         round_id = round_instance["id"]
