@@ -32,12 +32,8 @@ table a {
     color: #212529;
 }
 
-h2 a {
+h2 a, h4 a, h5 a {
     color: #212529;
-}
-
-h5 a {
-    color: #6c757d;
 }
 
 table th,
