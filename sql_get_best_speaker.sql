@@ -2,9 +2,9 @@ SELECT speaker_id, avg(score) AS average_score
 FROM speeches
 WHERE tournament_id = xxxxxx
 GROUP BY speaker_id
-HAVING speaker_id IN
+HAVING avg(score) IN
     (
-        SELECT speaker_id
+        SELECT avg(score)
         FROM speeches
         WHERE tournament_id = xxxxxx
         GROUP BY speaker_id

@@ -8,9 +8,9 @@ WHERE
 AND
     speakers_in_categories.category_id = yyyyyy
 GROUP BY speeches.speaker_id
-HAVING speeches.speaker_id IN
+HAVING avg(score) IN
     (
-        SELECT speeches.speaker_id
+        SELECT avg(score)
         FROM speeches
         INNER JOIN
             speakers_in_categories ON speeches.speaker_id = speakers_in_categories.speaker_id
@@ -21,5 +21,4 @@ HAVING speeches.speaker_id IN
         GROUP BY speeches.speaker_id
         ORDER BY avg(score) DESC
         LIMIT 1
-    )
-;
+    );
