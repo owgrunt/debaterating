@@ -49,7 +49,7 @@ def lookup_tournament(domain, slug):
     # Contact API
     try:
         # api_key = os.environ.get("API_KEY")
-        url = f"https://{domain}/api/v1/tournaments/{slug}"
+        url = f"{domain}/api/v1/tournaments/{slug}"
         response = requests.get(url)
         response.raise_for_status()
     except requests.RequestException:
@@ -75,7 +75,7 @@ def lookup_data(domain, slug, data_type):
     # Contact API
     try:
         # api_key = os.environ.get("API_KEY")
-        url = f"https://{domain}/api/v1/tournaments/{slug}/{data_type}"
+        url = f"{domain}/api/v1/tournaments/{slug}/{data_type}"
         response = requests.get(url)
         response.raise_for_status()
     except requests.RequestException:
