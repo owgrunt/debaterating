@@ -132,20 +132,20 @@ def import_tournament():
 
         address = urlparse(request.form.get("address"))
 
-        domain = address[1]
+        domain = f"{address[0]}://{address[1]}"
         path = address[2]
 
         # Validate the address
-        i = 1
-        slashes = 0
-        for i in range(len(path)):
-            if slashes > 1:
-                return apology("address format: https://domain.herokuapp.com/tournament/", 400)
-            # Try to validate address further
-            elif address.path[i] == "?" or address.path[i] == ")" or address.path[i] == "=":
-                return apology("address format: https://domain.herokuapp.com/tournament/", 400)
-            elif address.path[i] == "/":
-                slashes = slashes + 1
+        # i = 1
+        # slashes = 0
+        # for i in range(len(path)):
+        #     if slashes > 1:
+        #         return apology("address format: https://domain.herokuapp.com/tournament/", 400)
+        #     # Try to validate address further
+        #     elif address.path[i] == "?" or address.path[i] == ")" or address.path[i] == "=":
+        #         return apology("address format: https://domain.herokuapp.com/tournament/", 400)
+        #     elif address.path[i] == "/":
+        #         slashes = slashes + 1
 
         # Remove slashes from the slug
         slug = path.replace("/", "")
@@ -263,7 +263,7 @@ def import_speaker_categories():
     # If there are no speaker categories, just proceed
     if len(speaker_categories) > 0:
         for category in speaker_categories:
-            category["internal_id"] = category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
+            category["internal_id"] = category["url"].replace(f"{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
             category["achievement"] = "undefined"
             category["tournament_id"] = tournament["id"]
 
@@ -360,7 +360,7 @@ def import_speakers():
                 if len(participant["categories"]) > 0:
                     new_categories = []
                     for category in participant["categories"]:
-                        new_category = category.replace(f"https://{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
+                        new_category = category.replace(f"{domain}/api/v1/tournaments/{slug}/speaker-categories/", "")
                         new_categories = new_categories + [new_category]
                     participant["categories"] = new_categories
 
@@ -732,7 +732,7 @@ def import_rounds():
     # Get break categories
     break_categories = lookup_data(tournament["domain"], tournament["slug"], "break-categories")
     for break_category in break_categories:
-        break_category["internal_id"] = break_category["url"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
+        break_category["internal_id"] = break_category["url"].replace(f"{domain}/api/v1/tournaments/{slug}/break-categories/", "")
         break_category["tournament_id"] = tournament["id"]
         if break_category["is_general"] == True:
             break_category["general"] = 1
@@ -763,7 +763,7 @@ def import_rounds():
         round["short_name"] = round["abbreviation"]
         if "break_category" in round:
             if round["break_category"] is not None:
-                round["break_category_internal_id"] = round["break_category"].replace(f"https://{domain}/api/v1/tournaments/{slug}/break-categories/", "")
+                round["break_category_internal_id"] = round["break_category"].replace(f"{domain}/api/v1/tournaments/{slug}/break-categories/", "")
                 round["break_category"] = db.execute(f"SELECT id FROM break_categories WHERE tournament_id = ? AND internal_id = ?",
                                                      tournament["id"], round["break_category_internal_id"])[0]["id"]
         round["tournament_id"] = tournament["id"]
@@ -895,7 +895,7 @@ def import_debates():
     db.execute(f"UPDATE rounds SET import_complete = 0 WHERE id = ?", round["id"])
 
     seq = round["seq"]
-    debates = lookup_link(f"https://{domain}/api/v1/tournaments/{slug}/rounds/{seq}/pairings")
+    debates = lookup_link(f"{domain}/api/v1/tournaments/{slug}/rounds/{seq}/pairings")
     if debates == None:
         offending_link = round["_links"]["pairing"]
         return apology(f"pairings not imported: {offending_link}", 400)
@@ -919,7 +919,7 @@ def import_debates():
             adjudicator["debate_id"] = debate["id"]
             adjudicator["tournament_id"] = tournament["id"]
             # Get adjudicator's db id
-            adjudicator["internal_id"] = debate["adjudicators"]["chair"].replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
+            adjudicator["internal_id"] = debate["adjudicators"]["chair"].replace(f"{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
             adjudicator_internal_id = adjudicator["internal_id"]
             tournament_id = tournament["id"]
             adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
@@ -933,7 +933,7 @@ def import_debates():
 
             if "panellists" in debate["adjudicators"]:
                 for panellist in debate["adjudicators"]["panellists"]:
-                    adjudicator["internal_id"] = panellist.replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
+                    adjudicator["internal_id"] = panellist.replace(f"{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
                     adjudicator_internal_id = adjudicator["internal_id"]
                     adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
                     adjudicator["role"] = "panellist"
@@ -946,7 +946,7 @@ def import_debates():
 
             if "trainees" in debate["adjudicators"]:
                 for trainee in debate["adjudicators"]["trainees"]:
-                    adjudicator["internal_id"] = trainee.replace(f"https://{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
+                    adjudicator["internal_id"] = trainee.replace(f"{domain}/api/v1/tournaments/{slug}/adjudicators/", "")
                     adjudicator_internal_id = adjudicator["internal_id"]
                     adjudicator["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = {adjudicator_internal_id} AND tournament_id = {tournament_id}")[0]["speaker_id"]
                     adjudicator["role"] = "trainee"
@@ -980,7 +980,7 @@ def import_debates():
                 result["debate_id"] = debate["id"]
                 result["ironman"] = 0
                 # Get team id from db
-                result["team_id"] = result["team"].replace(f"https://{domain}/api/v1/tournaments/{slug}/teams/", "")
+                result["team_id"] = result["team"].replace(f"{domain}/api/v1/tournaments/{slug}/teams/", "")
                 result["team_id"] = db.execute("SELECT id FROM teams WHERE internal_id = ? AND tournament_id = ?",
                                                 result["team_id"], result["tournament_id"])[0]["id"]
                 # Check that team is there
@@ -1025,7 +1025,7 @@ def import_debates():
                             update_keys = ["ironman"]
                             add_database_entry(db_name, entry, search_keys, update_keys)
                         # Get speaker's db id
-                        speech["speaker_internal_id"] = speech["speaker"].replace(f"https://{domain}/api/v1/tournaments/{slug}/speakers/", "")
+                        speech["speaker_internal_id"] = speech["speaker"].replace(f"{domain}/api/v1/tournaments/{slug}/speakers/", "")
                         speech["speaker_id"] = db.execute(f"SELECT speaker_id FROM tournament_participants WHERE internal_id = ? AND tournament_id = ?",
                                                             speech["speaker_internal_id"], tournament["id"])[0]["speaker_id"]
                         # Assign position
