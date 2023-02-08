@@ -2024,58 +2024,58 @@ def tournaments_by_speaker():
     return render_template("speaker/participation.html", tournaments=tournaments, speaker=speaker)
 
 
-# @app.route("/register", methods=["GET", "POST"])
-# def register():
-#     """Register user"""
+@app.route("/veryrandomaddressforregistration", methods=["GET", "POST"])
+def register():
+    """Register user"""
 
-#     # Forget any user_id
-#     session.clear()
+    # Forget any user_id
+    session.clear()
 
-#     # User reached route via POST (as by submitting a form via POST)
-#     if request.method == "POST":
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
 
-#         # Ensure username was submitted
-#         if not request.form.get("username"):
-#             return apology("must provide username", 400)
+        # Ensure username was submitted
+        if not request.form.get("username"):
+            return apology("must provide username", 400)
 
-#         # Ensure password was submitted
-#         elif not request.form.get("password"):
-#             return apology("must provide password", 400)
+        # Ensure password was submitted
+        elif not request.form.get("password"):
+            return apology("must provide password", 400)
 
-#         # Ensure password confirmation is correct
-#         elif request.form.get("password") != request.form.get("confirmation"):
-#             return apology("password confirmation does not match password", 400)
+        # Ensure password confirmation is correct
+        elif request.form.get("password") != request.form.get("confirmation"):
+            return apology("password confirmation does not match password", 400)
 
-#         # Query database for username
-#         rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
+        # Query database for username
+        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
 
-#         # Ensure username does not exist
-#         if len(rows) > 0:
-#             return apology("username already taken", 400)
+        # Ensure username does not exist
+        if len(rows) > 0:
+            return apology("username already taken", 400)
 
-#         # Create username and password hash
-#         username = request.form.get("username")
-#         hash = generate_password_hash(request.form.get("password"))
+        # Create username and password hash
+        username = request.form.get("username")
+        hash = generate_password_hash(request.form.get("password"))
 
-#         # Add the user's entry into the database
-#         db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", username, hash)
+        # Add the user's entry into the database
+        db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", username, hash)
 
-#         # Query database for username
-#         rows = db.execute("SELECT * FROM users WHERE username = ?", username)
+        # Query database for username
+        rows = db.execute("SELECT * FROM users WHERE username = ?", username)
 
-#         # Ensure username does not exist
-#         if len(rows) != 1:
-#             return apology("unknown error", 403)
+        # Ensure username does not exist
+        if len(rows) != 1:
+            return apology("unknown error", 403)
 
-#         # Remember which user has logged in
-#         session["user_id"] = rows[0]["id"]
+        # Remember which user has logged in
+        session["user_id"] = rows[0]["id"]
 
-#         # Redirect user to home page
-#         return redirect("/")
+        # Redirect user to home page
+        return redirect("/")
 
-#     # User reached route via GET (as by clicking a link or via redirect)
-#     else:
-#         return render_template("register.html")
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("register.html")
 
 @app.errorhandler(404)
 def page_not_found(e):
